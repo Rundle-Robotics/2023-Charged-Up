@@ -20,6 +20,7 @@ public class Drivetrain extends SubsystemBase {
 	private MotorController backLeft;
 	private MotorController backRight;
 	private CommandXboxController controller;
+	
 
 	public Drivetrain(CommandXboxController controller) {
 		this.controller = controller;
@@ -78,6 +79,17 @@ public class Drivetrain extends SubsystemBase {
 		frontRight.set(frontRightPower);
 		backLeft.set(backLeftPower);
 		backRight.set(backRightPower);
+
+		//finetuned driving system
+		boolean finetuned;
+		
+		if (finetuned = true) {
+		  Math.abs(frontRightPower/3);
+		  Math.abs(frontLeftPower/3);
+		  Math.abs(backRightPower/3);
+		  Math.abs(backLeftPower/3);
+		}
+
 	}
 
 	public void stop() {
