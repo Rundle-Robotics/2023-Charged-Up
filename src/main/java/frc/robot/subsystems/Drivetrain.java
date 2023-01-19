@@ -21,6 +21,8 @@ public class Drivetrain extends SubsystemBase {
 	private MotorController backRight;
 	private CommandXboxController controller;
 
+
+
 	public Drivetrain(CommandXboxController controller) {
 		this.controller = controller;
 
@@ -35,7 +37,7 @@ public class Drivetrain extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		double joyX = controller.getRawAxis(OperatorConstants.XBOX_LEFT_X_AXIS);
+		double joyX = controller.getRawAxis(OperatorConstants.XBOX_RIGHT_X_AXIS);
 		double joyY = -controller.getRawAxis(OperatorConstants.XBOX_LEFT_Y_AXIS);
 		double rotation = ControlConstants.ROTATION_MULT
 				* (controller.getRightTriggerAxis() - controller.getLeftTriggerAxis());
