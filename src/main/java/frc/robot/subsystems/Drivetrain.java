@@ -89,6 +89,24 @@ public class Drivetrain extends SubsystemBase {
 		  Math.abs(backRightPower/3);
 		  Math.abs(backLeftPower/3);
 		}
+		
+		/*
+		 * The code you've written for the finetuned driving system doesn't have any effect at the moment.
+		 * We can fix this with just a few quick changes!
+		 * 
+		 * First, we need to update the power values we're giving to our motor controllers. This line:
+		 * Math.abs(frontRightPower/3);
+		 * doesn't actually update the value of frontRightPower. Also, we don't need to take the absolute value
+		 * of our value, because then we wouldn't be able to drive backwards! We can change the above line to:
+		 * frontRightPower = frontRightPower / 3;
+		 * which will accomplish our goal. Repeat this for each of the four power values.
+		 * 
+		 * Second, we need to update our values before we tell the motor controllers to drive in order for our
+		 * updates to have any effect! We need to move the entire if statement block (lines 86 to 91 at the time
+		 * of this commit) to before we power the motors (lines 78 to 81 at the time of this commit). We will
+		 * also need to move the line where we declare our finetuned boolean variable to before this point.
+		 * I would recommend moving it to the top of the file and making it private final.
+		 */
 
 	}
 
