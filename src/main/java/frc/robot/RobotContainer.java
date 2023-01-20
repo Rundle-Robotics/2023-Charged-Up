@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
@@ -9,55 +5,96 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and trigger mappings) should be declared here.
- */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+	public static final CommandXboxController m_driverController = new CommandXboxController(
+			OperatorConstants.kDriverControllerPort);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
-    // Configure the trigger bindings
-    configureBindings();
-  }
+	/**
+	 * This is how we create subsystems for our robot. Declare an instance of the
+	 * subsystem class here, then bind any necessary actions in configureBindings()
+	 */
+	private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
-  private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
+	public RobotContainer() {
+		// Configure the trigger bindings
+		configureBindings();
+	}
 
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-  }
+	/**
+	 * Use this method to declare any actions that we want to happen. Examples:
+	 * 1. Execute a new command whenever a subsystem method returns true
+	 * 2. Execute a new command whenever a button is pressed on the Xbox controller
+	 * 3. Call a method whenever a button is pressed on the Xbox controller by using
+	 * an inline command
+	 */
+	private void configureBindings() {
+		// Example 1.
+		// Schedule `ExampleCommand` when `exampleCondition` changes to `true`
+		new Trigger(m_exampleSubsystem::exampleCondition).onTrue(new ExampleCommand(m_exampleSubsystem));
+		/*
+		 * Create a new Trigger to handle this interaction and give the method for the
+		 * trigger to "watch" like so:
+		 * new Trigger(<subsystem variable>::<method name>)
+		 * 
+		 * Then, specify the condition we want our Trigger to act on (in our case we
+		 * want an action whenever this method would return true, so we use .onTrue)
+		 * All the conditions that Trigger can act on are given in the documentation:
+		 * https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj2/
+		 * command/button/Trigger.html#debounce(double)
+		 * 
+		 * Finally, give the onTrue method the command we want it to execute as an
+		 * argument.
+		 */
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
-  }
+		// Example 2.
+		// Schedule `exampleMethodCommand` when the Xbox controller's B button is
+		// pressed, cancelling on release.
+		m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+		/*
+		 * m_driverController.b() returns the Trigger object which is tied to the B
+		 * button on the Xbox controller. We can then bind a condition and an action to
+		 * this Trigger just like in example 1.
+		 * 
+		 * In this example we will use the whileTrue condition (the method .whileTrue())
+		 * This condition starts the given command when the button is first pressed
+		 * (calls the init() method once), then calls execute() repeatedly while the
+		 * button is held down and the command hasn't finished yet (don't worry about
+		 * this, just put your code in execute()). The command is automatically
+		 * cancelled/ended once the button is released (end() is called once)
+		 * 
+		 * This example shows how you can give a command produced by a method in the
+		 * subsystem to the Trigger:
+		 * m_exampleSubsystem.exampleMethodCommand() (this method returns a command)
+		 */
+
+		// Example 3.
+		// Print "Hi!" to the console once when the Xbox controller's A button is
+		// pressed
+		m_driverController.a().onTrue(Commands.runOnce(() -> {
+			System.out.println("Hi!");
+		}, m_exampleSubsystem));
+		/*
+		 * NOTE: this method can quickly make your code hard to read, and this should
+		 * only be used for quick fixes and quick tests.
+		 * 
+		 * Use this method as follows:
+		 * Commands.runOnce(<lambda function with code to run>, <subsytem to bind to>)
+		 * 
+		 * For permanent/long-term code:
+		 * Since this method requires a subsystem to bind to in the first place, you
+		 * might as well create a method in that subsystem and move your code into that
+		 * method! This will help keep configureBindings() clean and keep your code
+		 * organized
+		 */
+	}
+
+	public Command getAutonomousCommand() {
+		// An example command will be run in autonomous
+		return Autos.exampleAuto(m_exampleSubsystem);
+	}
 }
