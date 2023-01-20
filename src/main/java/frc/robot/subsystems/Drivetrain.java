@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.ControlConstants;
 import frc.robot.Constants.OperatorConstants;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 
 public class Drivetrain extends SubsystemBase {
 	
@@ -28,15 +29,15 @@ public class Drivetrain extends SubsystemBase {
 
 	public Drivetrain() {
 
-		frontLeft = new CANSparkMax(0, MotorType.kBrushless);
-		frontRight = new CANSparkMax(1, MotorType.kBrushless);
-		backLeft = new CANSparkMax(2, MotorType.kBrushless);
-		backRight = new CANSparkMax(3, MotorType.kBrushless);
+		frontLeft = new Spark(0);
+		frontRight = new Spark(2);
+		backLeft = new Spark(1);
+		backRight = new Spark(3);
 
 		leftMotors = new MotorControllerGroup (frontLeft, backLeft);
 		rightMotors = new MotorControllerGroup (frontRight, backRight);
 
-		rightMotors.setInverted(false);
+		rightMotors.setInverted(true);
 		drive = new DifferentialDrive(leftMotors, rightMotors);
 
 	}

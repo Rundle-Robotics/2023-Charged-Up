@@ -26,13 +26,13 @@ public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	public static XboxController driverController;
 
-	public static final Drivetrain drivetrain = new Drivetrain();
+	public final Drivetrain drivetrain = new Drivetrain();
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
 	 */
 	public RobotContainer() {
 
-		driverController = new XboxController(0);
+		driverController = new XboxController(1);
 		// Configure the trigger bindings
 		configureBindings();
 	}
