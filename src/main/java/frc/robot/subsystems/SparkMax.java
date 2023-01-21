@@ -20,7 +20,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-public class SparkMax {
+
+public class SparkMax extends SubsystemBase {
     private static final int I = 0;
     public CANSparkMax m;
     public RelativeEncoder e;
@@ -28,15 +29,16 @@ public class SparkMax {
     public SparkMax() {
         m = new CANSparkMax(0,MotorType.kBrushless);
         e = m.getEncoder();
-        while ( I == 0) {
-            public double v = e.getVelocity();
-            public double p = e.getPosition();
-            double CPR = e.getCountsPerRevolution();
-        }   
+ 
     }
-}
 @Override
-	public void periodic() {            
+	public void periodic() { 
+        double v = e.getVelocity();
+        double p = e.getPosition();
+        double CPR = e.getCountsPerRevolution();           
         SmartDashboard.putNumber("Velocity", v);
+        SmartDashboard.putNumber("Position", p);
+        SmartDashboard.putNumber("CountsPerRevolution", CPR);
 
     }
+}
