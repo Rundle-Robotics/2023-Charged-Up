@@ -5,22 +5,25 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.XboxController;
-
+ 
 public class Limelight extends SubsystemBase {
   private NetworkTable table;
     
     private double tx;
     private double ty;
     private double apriltagid;
-    private XboxController controller;
+   
+    
   /** Creates a new Limelight. */
   public Limelight() {
     table = NetworkTableInstance.getDefault().getTable("limelight");
     disableLimelight();
+    
     
   }
   
@@ -35,7 +38,7 @@ public void disableLimelight() {
   public void periodic() {
     tx = table.getEntry("tx").getDouble(0.0);
     ty = table.getEntry("ty").getDouble(0.0);
-    controller = new XboxController(1);
+    
 
    
 
@@ -53,7 +56,7 @@ public void disableLimelight() {
   }
   public void limelightCenter() {
     enableLimelight();
-    if (controller.getBButton()) {
+    if (RobotContainer.driverController.getHID().getBButton()) {
 
       if (tx != 2) {
         Drivetrain.setSpeeds(0, .1);
