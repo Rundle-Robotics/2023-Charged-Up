@@ -48,6 +48,8 @@ public void disableLimelight() {
     SmartDashboard.putNumber("y offset", ty);
 
     SmartDashboard.putNumber("TId", apriltagid);
+
+    limelightCenter();
    
   }
    
