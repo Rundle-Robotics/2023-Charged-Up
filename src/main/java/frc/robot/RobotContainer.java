@@ -23,24 +23,10 @@ public class RobotContainer {
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	private final CommandXboxController driverController = new CommandXboxController(
 			OperatorConstants.DRIVER_CONTROLLER_PORT);
-
-		
-	/*
-	 * The bracket below is causing problems
-	 * How can I tell? 
-	 * 1) All the errors start directly below that line
-	 * 2) Clicking on it highlights the RobotContainer bracket in line 22
-	 * 3) the color matchs the bracket in line 22, and there are no brackets between it could be closing off
-	 * 
-	 * The RobotContainer bracket should encompass all of the code! After all, it is the class we are going to initialize in Robot.java
-	 * 
-	 * Therefore, this bracket should be deleted. Doing so removes all the errors (aside from the second set of comments below)
-	 * 
-	 * If you ever have bracket errors, look at where the errors start, the color, and the paried bracket when clicked on
-	 */
+	private final CommandXboxController XboxController = new CommandXboxController.getHID();
+	private final CommandXboxController kYButton = new XboxController.getYbutton();
 
 
-	}	// THIS BRACKET SHOULD NOT BE HERE AAAHHHH
 	// The robot's subsystems and commands are defined here...
 	private final Drivetrain drivetrain = new Drivetrain(driverController);
 
@@ -51,7 +37,6 @@ public class RobotContainer {
 	public RobotContainer() {
 		// Configure the trigger bindings
 		configureBindings();
-
 
 		/*
 		 * You haven't defined the kYButton variable. What button do we want? We want the Y button of the controller
@@ -74,10 +59,7 @@ public class RobotContainer {
 		 * 
 		 * we can also avoid this mess by changing the object type of driverController to XboxController instead of CommandXboxController.
 		 */
-
-		if (kYButton = true) {
-		boolean finetuned = true;
-
+	
 		}
 
 

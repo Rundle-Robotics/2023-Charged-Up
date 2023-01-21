@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -20,7 +19,7 @@ public class Drivetrain extends SubsystemBase {
 	private MotorController backLeft;
 	private MotorController backRight;
 	private CommandXboxController controller;
-	
+	private final boolean finetuned;
 
 	public Drivetrain(CommandXboxController controller) {
 		this.controller = controller;
@@ -33,6 +32,8 @@ public class Drivetrain extends SubsystemBase {
 		frontRight.setInverted(true);
 		backRight.setInverted(true);
 	}
+
+
 
 	@Override
 	public void periodic() {
@@ -74,33 +75,23 @@ public class Drivetrain extends SubsystemBase {
 		if (Math.abs(backRightPower) > ControlConstants.MAX_ROBOT_SPEED)
 			backRightPower *= ControlConstants.MAX_ROBOT_SPEED / Math.abs(backRightPower);
 
+		//finetuned driving system
+		if (finetuned = true) {
+				frontRightPower = frontRightPower/3;
+				frontLeftPower = frontLeftPower/3;
+				backRightPower = backRightPower/3;
+				backLeftPower= backLeftPower/3;
+
+
 		// Power the motors
 		frontLeft.set(frontLeftPower);
 		frontRight.set(frontRightPower);
 		backLeft.set(backLeftPower);
 		backRight.set(backRightPower);
 
-		//finetuned driving system
-		boolean finetuned;
+
 		
-		if (finetuned = true) {
-		  Math.abs(frontRightPower/3);
-		  Math.abs(frontLeftPower/3);
-		  Math.abs(backRightPower/3);
-		  Math.abs(backLeftPower/3);
-		}
-		
-		/*
-		 * The code you've written for the finetuned driving system doesn't have any effect at the moment.
-		 * We can fix this with just a few quick changes!
-		 * 
-		 * First, we need to update the power values we're giving to our motor controllers. This line:
-		 * Math.abs(frontRightPower/3);
-		 * doesn't actually update the value of frontRightPower. Also, we don't need to take the absolute value
-		 * of our value, because then we wouldn't be able to drive backwards! We can change the above line to:
-		 * frontRightPower = frontRightPower / 3;
-		 * which will accomplish our goal. Repeat this for each of the four power values.
-		 * 
+		/* 
 		 * Second, we need to update our values before we tell the motor controllers to drive in order for our
 		 * updates to have any effect! We need to move the entire if statement block (lines 86 to 91 at the time
 		 * of this commit) to before we power the motors (lines 78 to 81 at the time of this commit). We will
@@ -110,10 +101,10 @@ public class Drivetrain extends SubsystemBase {
 
 	}
 
-	public void stop() {
-		frontLeft.set(0);
-		frontRight.set(0);
-		backLeft.set(0);
-		backRight.set(0);
-	}
+}
+public void stop() {
+	frontLeft.set(0);
+	frontRight.set(0);
+	backLeft.set(0);
+	backRight.set(0);
 }
