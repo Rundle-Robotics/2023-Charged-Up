@@ -49,10 +49,25 @@ public class Drivetrain extends SubsystemBase {
 		double joyYR = RobotContainer.driverController.getRightY();
 		double rightTrigger = RobotContainer.driverController.getRightTriggerAxis();
 		double forwardSpeed = rightTrigger - leftTrigger;
+		double turnSpeed = 0;
 
-		drive.arcadeDrive(forwardSpeed, joyXL);
+		if (Math.abs(joyXL)<= 0.10){
 
+			turnSpeed = 0;
 
+		} else if (joyXL>0.10){
+
+			turnSpeed = (0.555*(Math.pow(joyXL-0.10, 2)))+0.30;
+
+		}
+
+		else if (joyXL<-0.10){
+
+			turnSpeed = (-0.555*(Math.pow(joyXL+0.10, 2)))-0.30;
+
+		}
+
+		drive.arcadeDrive(forwardSpeed, turnSpeed);
 
 	}
 
