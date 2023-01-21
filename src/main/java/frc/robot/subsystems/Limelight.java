@@ -44,7 +44,7 @@ public void disableLimelight() {
     SmartDashboard.putNumber("x offset", tx);
     SmartDashboard.putNumber("y offset", ty);
 
-    SmartDashboard.putNumber("TId, apriltagid");
+    SmartDashboard.putNumber("TId", apriltagid);
    
   }
    
