@@ -89,16 +89,6 @@ public class Drivetrain extends SubsystemBase {
 		backLeft.set(backLeftPower);
 		backRight.set(backRightPower);
 
-
-		
-		/* 
-		 * Second, we need to update our values before we tell the motor controllers to drive in order for our
-		 * updates to have any effect! We need to move the entire if statement block (lines 86 to 91 at the time
-		 * of this commit) to before we power the motors (lines 78 to 81 at the time of this commit). We will
-		 * also need to move the line where we declare our finetuned boolean variable to before this point.
-		 * I would recommend moving it to the top of the file and making it private final.
-		 */
-
 	}
 
 }
