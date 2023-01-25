@@ -49,22 +49,22 @@ public class LimelightFollow extends CommandBase {
      
 
   
-      if (RobotContainer.driverController.getHID().getBButton()) {
+      
 
          if (limelight.getTV() == 0){
-          drivetrain.setSpeeds(0, .1);
+          drivetrain.setSpeeds(0, .5);
           
 
          }
          else if (Math.abs(limelight.getTX()) > 1){
-          drivetrain.setSpeeds(0,limelight.getTX() / Math.abs(limelight.getTX()) * 0.1);
+          drivetrain.setSpeeds(0,limelight.getTX() / Math.abs(limelight.getTX()) * 0.5);
          
         
         }
 
         
 
-    }
+    
 
 
   }
