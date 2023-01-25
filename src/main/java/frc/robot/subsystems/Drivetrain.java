@@ -62,7 +62,8 @@ public class Drivetrain extends SubsystemBase {
 		backLeft.set(0);
 		backRight.set(0);
 	}
-	public static void setSpeeds(double forwardSpeed, double rotationSpeed){
+	public void setSpeeds(double forwardSpeed, double rotationSpeed){
+		drive.arcadeDrive(forwardSpeed,rotationSpeed);
 
 	}
 }

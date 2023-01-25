@@ -10,9 +10,9 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.XboxController;
- 
+import frc.robot.commands.LimelightFollow;;
 public class Limelight extends SubsystemBase {
-  private NetworkTable table;
+  private static NetworkTable table;
     
     private double tx;
     private double ty;
@@ -27,7 +27,7 @@ public class Limelight extends SubsystemBase {
     
   }
   
-public void enableLimelight() {
+public static void enableLimelight() {
   table.getEntry("ledMode").setNumber(3);
 }
 public void disableLimelight() {
@@ -50,20 +50,20 @@ public void disableLimelight() {
     SmartDashboard.putNumber("TId", apriltagid);
 
     limelightCenter();
-   
-  }
-   
-  public double getTX(){
-    return table.getEntry("tx").getDouble(0);
-  }
-  public void limelightCenter() {
-    enableLimelight();
-    if (RobotContainer.driverController.getHID().getBButton()) {
 
-      if (tx != 2) {
-        Drivetrain.setSpeeds(0, .1);
-      }
-    }
+
+   
+  }
+  public double getTX(){
+    return table.getEntry("tx").getDouble(0.0);
+  }
+  public double getTV(){
+    return table.getEntry("tv").getDouble(0.0);
+  }
+   
+  
+  public void limelightCenter() {
+   
     
        
 
