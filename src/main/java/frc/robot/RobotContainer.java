@@ -23,8 +23,8 @@ public class RobotContainer {
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	private final CommandXboxController driverController = new CommandXboxController(
 			OperatorConstants.DRIVER_CONTROLLER_PORT);
-	private final CommandXboxController XboxController = new CommandXboxController.getHID();
-	private final CommandXboxController kYButton = new XboxController.getYbutton();
+	private final XboxController controller  = driverController.getHID();
+	private final XboxController kYButton = new XboxController.getYbutton();
 
 
 	// The robot's subsystems and commands are defined here...
