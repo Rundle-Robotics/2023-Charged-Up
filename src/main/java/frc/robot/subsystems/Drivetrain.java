@@ -12,13 +12,31 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.ControlConstants;
 import frc.robot.Constants.OperatorConstants;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.ControlConstants;
+import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.RobotContainer;
+
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import com.revrobotics.RelativeEncoder;
 public class Drivetrain extends SubsystemBase {
-
-	private MotorController frontLeft;
-	private MotorController frontRight;
-	private MotorController backLeft;
-	private MotorController backRight;
+	public CANSparkMax frontLeft;
+	public CANSparkMax frontRight;
+	public CANSparkMax backLeft;
+	public CANSparkMax backRight;
+    public RelativeEncoder e;
+	private MotorController frontLeftController;
+	private MotorController frontRightController;
+	private MotorController backLeftController;
+	private MotorController backRightController;
 	private CommandXboxController controller;
 
 	public Drivetrain(CommandXboxController controller) {
@@ -28,6 +46,7 @@ public class Drivetrain extends SubsystemBase {
 		frontRight = new CANSparkMax(1, MotorType.kBrushless);
 		backLeft = new CANSparkMax(2, MotorType.kBrushless);
 		backRight = new CANSparkMax(3, MotorType.kBrushless);
+        e = frontLeft.getEncoder();
 
 		frontRight.setInverted(true);
 		backRight.setInverted(true);
@@ -41,6 +60,15 @@ public class Drivetrain extends SubsystemBase {
 				* (controller.getRightTriggerAxis() - controller.getLeftTriggerAxis());
 
 		mecanumDrive(joyX, joyY, rotation);
+		double v = e.getVelocity();
+        double p = e.getPosition();
+        double CPR = e.getCountsPerRevolution();
+        double revolutions = CPR/4;
+        SmartDashboard.putNumber("Velocity", v);
+        SmartDashboard.putNumber("Position", p);
+        SmartDashboard.putNumber("CountsPerRevolution", CPR);
+        SmartDashboard.putNumber("Revolutions", revolutions);
+
 	}
 
 	// 2020 mecanum drive code
@@ -74,10 +102,10 @@ public class Drivetrain extends SubsystemBase {
 			backRightPower *= ControlConstants.MAX_ROBOT_SPEED / Math.abs(backRightPower);
 
 		// Power the motors
-		frontLeft.set(frontLeftPower);
-		frontRight.set(frontRightPower);
-		backLeft.set(backLeftPower);
-		backRight.set(backRightPower);
+		frontLeftController.set(frontLeftPower);
+		frontRightController.set(frontRightPower);
+		backLeftController.set(backLeftPower);
+		backRightController.set(backRightPower);
 	}
 
 	public void stop() {
