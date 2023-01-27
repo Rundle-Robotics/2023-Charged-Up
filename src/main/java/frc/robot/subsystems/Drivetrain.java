@@ -23,7 +23,6 @@ public class Drivetrain extends SubsystemBase {
 
 	public Drivetrain(CommandXboxController controller) {
 		this.controller = controller;
-
 		frontLeft = new CANSparkMax(1, MotorType.kBrushless);
 		frontRight = new CANSparkMax(4, MotorType.kBrushless);
 		backLeft = new CANSparkMax(2, MotorType.kBrushless);
