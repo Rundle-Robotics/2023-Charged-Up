@@ -1,75 +1,74 @@
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
 
-
-
-import edu.wpi.first.wpilibj.DigitalInput;
-
-import com.revrobotics.ColorSensorV3;
-
-import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.I2C.Port;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
+import frc.robot.utilities.LiDAR;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalSource;
+import edu.wpi.first.wpilibj.I2C;
 
-public class NAVX extends SubsystemBase {
- 
-    private static double blue;
-    private static double red;
-    private static double green;
-    private static ColorSensorV3 colorSensor;
-    public final static int threshold = 300;
-    private static DigitalInput distanceSensor;
-    private static DigitalInput distanceSensorFar;
-    private static boolean shortDistance;
-    private static boolean longDistance;
+@SuppressWarnings("unused")
+public class Sensors extends SubsystemBase {
 
-    private static int thresholdDistance = 800;
+    private AHRS navx;
+    private AnalogInput irSensor1;
+    private ColorSensorV3 colourSensor;
+    private LiDAR lidar;
 
+    private RobotContainer container; // This classes reference to the RobotContainer
 
+    public Sensors(RobotContainer container) {
+        this.container = container;
 
-    private static String color;
+        navx = new AHRS(SPI.Port.kMXP, (byte) 50);
+        irSensor1 = new AnalogInput(2);
+        lidar = new LiDAR(Port.kMXP);
 
-    
-    
-    public NAVX() { 
-        distanceSensor = new DigitalInput(1);
-        distanceSensorFar = new DigitalInput(0);
+        this.container.driveTrain.initOdometry(this);
+    }
 
-        colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
-        color = "";
+    public double getGyroX() {
+        return navx.getRawGyroX();
     }
 
     @Override
     public void periodic() {
+    }
 
-        blue = colorSensor.getBlue();
-        red = colorSensor.getRed();
-        green = colorSensor.getGreen();
+    // We could just use 4096 for this, but this method will ensure accuracy if one changes
+
+    // We could just use 4096 for this, but this method will ensure accuracy if one changes
+
+
+    public double getGyroY() {
+        return navx.getRawGyroY();
+    }
+
+    public double getGyroZ() {
+        return navx.getRawGyroZ();
+    }
+
+    public double getIrVoltage() {
+        double sensorVoltage = irSensor1.getVoltage();
+        if (sensorVoltage > 4 || sensorVoltage < 0) { // Eliminate corrupt data
+            sensorVoltage = 0;
+        }
+        return sensorVoltage;
+    }
+
+
+    }
+
+    public double getLidarDistance() {
+        return lidar.getDistance();
     }
     
-
-    // determine the color from the values the sensor is detecting
-    public static String determineColour() {
-        
-        //ranges between 0 and 2047, 800 chosen arbitrarily
-        if (colorSensor.getProximity() > 700 && red > blue){
-        color = "Red";
-        } else if (colorSensor.getProximity() > 700 && blue > red){
-        color = "Blue";
-        } else {
-        color = "Other";
-        }
-
-        SmartDashboard.putNumber("Proximity", colorSensor.getProximity());
-        
-        SmartDashboard.putNumber("red", red);
-        SmartDashboard.putNumber("green", green);
-        SmartDashboard.putNumber("blue", blue);
-
-        SmartDashboard.putString("color detected", color);
-        
-
-        return color;
-        
-    }
 }
