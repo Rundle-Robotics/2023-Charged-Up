@@ -44,26 +44,32 @@ public class Drivetrain extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		double joyXL = RobotContainer.driverController.getLeftX();
+		double joyX = RobotContainer.driverController.getLeftX() *-1;
 		double leftTrigger = RobotContainer.driverController.getLeftTriggerAxis();
-		double joyYR = RobotContainer.driverController.getRightY();
+		double joyY = RobotContainer.driverController.getRightX();
 		double rightTrigger = RobotContainer.driverController.getRightTriggerAxis();
 		double forwardSpeed = rightTrigger - leftTrigger;
 		double turnSpeed = 0;
 
-		if (Math.abs(joyXL)<= 0.10){
+		if (Math.abs(joyX)<= -0.10){
 
 			turnSpeed = 0;
 
-		} else if (joyXL>0.10){
+		} 
 
-			turnSpeed = (0.555*(Math.pow(joyXL-0.10, 2)))+0.30;
+		else if (joyX<-0.10){
+
+			turnSpeed = (-0.555*(Math.pow(joyX+0.10, 2)))-0.30;
 
 		}
 
-		else if (joyXL<-0.10){
+		if (Math.abs(joyY)<= 0.10){
 
-			turnSpeed = (-0.555*(Math.pow(joyXL+0.10, 2)))-0.30;
+			turnSpeed = 0;
+
+		} else if (joyY>0.10){
+
+			turnSpeed = (0.555*(Math.pow(joyY-0.10, 2)))+0.30;
 
 		}
 
