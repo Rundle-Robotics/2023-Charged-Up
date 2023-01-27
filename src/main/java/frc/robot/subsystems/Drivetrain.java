@@ -23,6 +23,7 @@ public class Drivetrain extends SubsystemBase {
 
 	public Drivetrain(CommandXboxController controller) {
 		this.controller = controller;
+		finetuned = false;
 		frontLeft = new CANSparkMax(1, MotorType.kBrushless);
 		frontRight = new CANSparkMax(4, MotorType.kBrushless);
 		backLeft = new CANSparkMax(2, MotorType.kBrushless);
@@ -75,7 +76,7 @@ public class Drivetrain extends SubsystemBase {
 
 		//finetuned driving system
 		
-		if (finetuned = true) {
+		if (finetuned == true) {
 			frontRightPower = frontRightPower/8;
 			frontLeftPower = frontLeftPower/8;
 			backRightPower = backRightPower/8;
