@@ -24,13 +24,12 @@ public class Drivetrain extends SubsystemBase {
 	public Drivetrain(CommandXboxController controller) {
 		this.controller = controller;
 
-		frontLeft = new CANSparkMax(0, MotorType.kBrushless);
-		frontRight = new CANSparkMax(1, MotorType.kBrushless);
+		frontLeft = new CANSparkMax(1, MotorType.kBrushless);
+		frontRight = new CANSparkMax(4, MotorType.kBrushless);
 		backLeft = new CANSparkMax(2, MotorType.kBrushless);
 		backRight = new CANSparkMax(3, MotorType.kBrushless);
 
-		frontRight.setInverted(true);
-		backRight.setInverted(true);
+
 	}
 
 
@@ -76,11 +75,13 @@ public class Drivetrain extends SubsystemBase {
 			backRightPower *= ControlConstants.MAX_ROBOT_SPEED / Math.abs(backRightPower);
 
 		//finetuned driving system
+		
 		if (finetuned = true) {
-				frontRightPower = frontRightPower/3;
-				frontLeftPower = frontLeftPower/3;
-				backRightPower = backRightPower/3;
-				backLeftPower= backLeftPower/3;
+			frontRightPower = frontRightPower/8;
+			frontLeftPower = frontLeftPower/8;
+			backRightPower = backRightPower/8;
+			backLeftPower= backLeftPower/8;
+	}
 
 
 
@@ -90,7 +91,7 @@ public class Drivetrain extends SubsystemBase {
 		backLeft.set(backLeftPower);
 		backRight.set(backRightPower);
 
-	}
+	
 	}
 
 public void finetune(boolean newValue) {
