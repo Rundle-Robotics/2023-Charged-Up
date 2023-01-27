@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Drivetrain; 
 
@@ -24,8 +25,7 @@ public class RobotContainer {
 	private final CommandXboxController driverController = new CommandXboxController(
 			OperatorConstants.DRIVER_CONTROLLER_PORT);
 	private final XboxController controller  = driverController.getHID();
-	private final XboxController kYButton = new XboxController.getYbutton();
-
+	
 
 	// The robot's subsystems and commands are defined here...
 	private final Drivetrain drivetrain = new Drivetrain(driverController);
@@ -38,34 +38,11 @@ public class RobotContainer {
 		// Configure the trigger bindings
 		configureBindings();
 
-		/*
-		 * You haven't defined the kYButton variable. What button do we want? We want the Y button of the controller
-		 * Do we have the controller? Yes - driverController!
-		 * 
-		 * Now, you imported the CommandXboxController class, not the XboxController class. The CommandXboxController lets you tie commands to buttons. 
-		 * If you just want to change a variable (finetuned) to true, we only want to check the button status, not tie it to a command
-		 * 
-		 * To check status, we can't use a CommandXboxController object, we need an ordinary XboxController object.
-		 * 
-		 * Looking at the documentation (https://first.wpi.edu/wpilib/allwpilib/docs/release/java/edu/wpi/first/wpilibj2/command/button/CommandXboxController.html),
-		 * the .getHID() command returns the XboxController that this is based off
-		 * 
-		 * so doing driverController.getHID() gives us an XboxController object we can poll the status for
-		 * 
-		 * to get the Y button of an XboxController Object? Check the documentation. It's .getYButton()
-		 * 
-		 * Therefore, in this case, as you don't want to tie an explicit command to the Y button, and just poll its status,
-		 * we can do driverController.getHID().getYButton()
-		 * 
-		 * we can also avoid this mess by changing the object type of driverController to XboxController instead of CommandXboxController.
-		 */
 	
 		}
 
 
-	}
-
-
+	
 
 	/**
 	 * Use this method to define your trigger->command mappings. Triggers can be
@@ -82,9 +59,8 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
-		// Example: Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-		// new Trigger(drivetrain::exampleCondition)
-		// .onTrue(new ExampleCommand(m_exampleSubsystem));
+
+		driverController.x().whileTrue(new FineTUNECommand(drivetrain));
 
 		// Example: Schedule `exampleMethodCommand` when the Xbox controller's B button
 		// is

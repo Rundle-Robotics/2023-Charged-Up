@@ -19,7 +19,7 @@ public class Drivetrain extends SubsystemBase {
 	private MotorController backLeft;
 	private MotorController backRight;
 	private CommandXboxController controller;
-	private final boolean finetuned;
+	private boolean finetuned;
 
 	public Drivetrain(CommandXboxController controller) {
 		this.controller = controller;
@@ -83,6 +83,7 @@ public class Drivetrain extends SubsystemBase {
 				backLeftPower= backLeftPower/3;
 
 
+
 		// Power the motors
 		frontLeft.set(frontLeftPower);
 		frontRight.set(frontRightPower);
@@ -90,11 +91,19 @@ public class Drivetrain extends SubsystemBase {
 		backRight.set(backRightPower);
 
 	}
+	}
+
+public void finetune(boolean newValue) {
+
+	finetuned = newValue;
 
 }
+
+
 public void stop() {
 	frontLeft.set(0);
 	frontRight.set(0);
 	backLeft.set(0);
 	backRight.set(0);
+}
 }
