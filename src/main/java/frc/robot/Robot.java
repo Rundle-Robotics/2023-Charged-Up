@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -100,6 +101,9 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		encoder.reset();
+		errorSum = 0;
+		lastTimestamp = Timer.getFPGATimestamp();
+
 		m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
 		// schedule the autonomous command (example)
@@ -109,9 +113,16 @@ public class Robot extends TimedRobot {
 	}
 
 	//large kP values cause oscillation
+	//0.222 is initial guess of kP
 	final double kP = 0.222;
 
+	//idk how we're gonna figure this out. Ishan pls help
+	final double kI = 2;
+	final double iLimit = 1;
+
 	double setpoint = 0;
+	double errorSum = 0;
+	double lastTimestamp = 0;
 
 	/** This function is called periodically during autonomous. */
 	@Override
@@ -129,14 +140,22 @@ public class Robot extends TimedRobot {
 
 		//calculations
 		double error = setpoint -sensorPosition;
+		double deltat = Timer.getFPGATimestamp() - lastTimestamp;
 
-		double outputSpeed = kP * error;
+		if (Math.abs(error) < iLimit) {
+			errorSum += error * deltat;
+		}
+
+		double outputSpeed = kP * error + kI * errorSum;
 
 		//output to motoes
 		frontLeft.set(outputSpeed);
 		backLeft.set(outputSpeed);
 		frontRight.set(-outputSpeed);
 		backRight.set(-outputSpeed);
+
+		//update last variables
+		lastTimestamp = Timer.getFPGATimestamp();
 	}
 
 	
