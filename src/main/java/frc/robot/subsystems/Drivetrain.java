@@ -38,8 +38,11 @@ public class Drivetrain extends SubsystemBase {
 		double joyY = -RobotContainer.driverController.getRawAxis(OperatorConstants.XBOX_LEFT_Y_AXIS);
 		double rotation = ControlConstants.ROTATION_MULT
 				* (RobotContainer.driverController.getRightTriggerAxis() - RobotContainer.driverController.getLeftTriggerAxis());
+        double flightX = RobotContainer.joystick.getX();
+        double flightY = RobotContainer.joystick.getY();
+		double flightTwist = RobotContainer.joystick.getZ();
 
-		mecanumDrive(joyX, joyY, rotation);
+		mecanumDrive(flightX, flightY, flightTwist);
 	}
 
 	// 2020 mecanum drive code
@@ -61,6 +64,8 @@ public class Drivetrain extends SubsystemBase {
 		double frontLeftPower = joystickY + joystickX + rotation;
 		double backLeftPower = joystickY - joystickX + rotation;
 		double backRightPower = joystickY + joystickX - rotation;
+
+		
 
 		// Cap motor powers
 		if (Math.abs(frontLeftPower) > ControlConstants.MAX_ROBOT_SPEED)

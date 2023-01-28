@@ -32,6 +32,16 @@ public final class Constants {
     public static final int XBOX_Y_BUTTON = 4;
     public static final int XBOX_BACK_BUTTON = 7;
     public static final int XBOX_START_BUTTON = 8;
+
+    public static final int FLIGHTSTICK_X_AXIS = 0;
+    public static final int FLIGHTSTICK_Y_AXIS = 1;
+    public static final int FLIGHTSTICK_TWIST = 2;
+    public static final int FLIGHTSTICK_TRIGGER = 1;
+    public static final int FLIGHTSTICK_BUTTON2 = 2;
+    public static final int FLIGHTSTICK_BUTTON3 = 3;
+    public static final int FLIGHTSTICK_BUTTON4 = 4;
+    public static final int FLIGHTSTICK_BUTTON5 = 5;
+    public static final int FLIGHTSTICK_BUTTON6 = 6;
   }
 
   public static class ControlConstants {
