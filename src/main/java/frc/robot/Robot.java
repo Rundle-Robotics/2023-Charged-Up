@@ -102,6 +102,7 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		encoder.reset();
 		errorSum = 0;
+		lastError = 0;
 		lastTimestamp = Timer.getFPGATimestamp();
 
 		m_autonomousCommand = m_robotContainer.getAutonomousCommand();
@@ -119,20 +120,25 @@ public class Robot extends TimedRobot {
 	//idk how we're gonna figure this out. Ishan pls help
 	final double kI = 0.222;
 
+	//literally a guess
+	final double kD = 0.1;
+
 	//minimize the overshoot
 	final double iLimit = 1;
 
 	double setpoint = 0;
 	double errorSum = 0;
 	double lastTimestamp = 0;
+	double lastError = 0;
 
 	/** This function is called periodically during autonomous. */
 	@Override
 	public void autonomousPeriodic() {
 
-		//get joystick command
+		//get joystick command 
+		//setpoint is in encoder ticks (42 ticks in one rev., diameter 4 inch, so 252 for around 2 meters)
 		if (joy1.getRawButton(1)) {
-			setpoint = 3;
+			setpoint = 252;
 		} else if (joy1.getRawButton(2)){
 			setpoint = 0;
 		}
@@ -148,7 +154,9 @@ public class Robot extends TimedRobot {
 			errorSum += error * deltat;
 		}
 
-		double outputSpeed = kP * error + kI * errorSum;
+		double errorRate = (error - lastError) / deltat;
+
+		double outputSpeed = kP * error + kI * errorSum + kD * errorRate;
 
 		//output to motoes
 		frontLeft.set(outputSpeed);
@@ -158,6 +166,7 @@ public class Robot extends TimedRobot {
 
 		//update last variables
 		lastTimestamp = Timer.getFPGATimestamp();
+		lastError = error;
 	}
 
 	
