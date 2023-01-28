@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Drivetrain;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -23,6 +24,8 @@ public class RobotContainer {
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	public static final CommandXboxController driverController = new CommandXboxController(
 			OperatorConstants.DRIVER_CONTROLLER_PORT);
+
+	public static final Joystick flightstick = new Joystick(0);
 
 	// The robot's subsystems and commands are defined here...
 	private final Drivetrain drivetrain = new Drivetrain();

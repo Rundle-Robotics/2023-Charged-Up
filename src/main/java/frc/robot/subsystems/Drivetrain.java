@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.ControlConstants;
 import frc.robot.Constants.OperatorConstants;
@@ -44,7 +45,14 @@ public class Drivetrain extends SubsystemBase {
 		double rotation = ControlConstants.ROTATION_MULT
 				* (RobotContainer.driverController.getRightTriggerAxis() - RobotContainer.driverController.getLeftTriggerAxis());
 
+
+
 		mecanumDrive(joyX, joyY, rotation);
+		/* 
+		mecanumDrive(RobotContainer.flightstick.getRawAxis(Constants.OperatorConstants.FLIGHTSTICK_X_AXIS), 
+		RobotContainer.flightstick.getRawAxis(Constants.OperatorConstants.FLIGHTSTICK_Y_AXIS), 
+		RobotContainer.flightstick.getRawAxis(Constants.OperatorConstants.FLIGHTSTICK_TWIST));
+		*/
 	}
 
 	// 2020 mecanum drive code
