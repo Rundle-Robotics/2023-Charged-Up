@@ -16,6 +16,7 @@ public class Limelight extends SubsystemBase {
     
     private double tx;
     private double ty;
+    private double ta;
     private double apriltagid;
    
     
@@ -38,6 +39,7 @@ public void disableLimelight() {
   public void periodic() {
     tx = table.getEntry("tx").getDouble(0.0);
     ty = table.getEntry("ty").getDouble(0.0);
+    ta = table.getEntry("ta").getDouble(0.0);
     
 
    
@@ -46,6 +48,7 @@ public void disableLimelight() {
     
     SmartDashboard.putNumber("x offset", tx);
     SmartDashboard.putNumber("y offset", ty);
+    SmartDashboard.putNumber("area", ta);
 
     SmartDashboard.putNumber("TId", apriltagid);
 
