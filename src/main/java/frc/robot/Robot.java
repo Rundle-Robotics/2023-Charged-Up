@@ -117,7 +117,9 @@ public class Robot extends TimedRobot {
 	final double kP = 0.222;
 
 	//idk how we're gonna figure this out. Ishan pls help
-	final double kI = 2;
+	final double kI = 0.222;
+
+	//minimize the overshoot
 	final double iLimit = 1;
 
 	double setpoint = 0;
