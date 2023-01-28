@@ -46,6 +46,8 @@ public class NAVX extends SubsystemBase {
 
     // We could just use 4096 for this, but this method will ensure accuracy if one changes
 
+    
+    //I moved this into periodic idk if it should be here though
     public double getGyroX() {
         return navx.getRawGyroX();
 
