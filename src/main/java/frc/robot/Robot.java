@@ -4,9 +4,16 @@
 
 package frc.robot;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.math.controller.PIDController;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -21,6 +28,26 @@ public class Robot extends TimedRobot {
 	private Command m_autonomousCommand;
 
 	private RobotContainer m_robotContainer;
+
+	private CANSparkMax frontLeft = new CANSparkMax(0, MotorType.kBrushless);
+	private CANSparkMax frontRight = new CANSparkMax(1, MotorType.kBrushless);
+	private CANSparkMax backLeft = new CANSparkMax(2, MotorType.kBrushless);
+	private CANSparkMax backRight = new CANSparkMax(3, MotorType.kBrushless);
+
+	private Encoder leftEncoder = new Encoder(0, 1);
+	private Encoder rightEncoder = new Encoder (2,3);
+
+	private Joystick joy1 = new Joystick(0);
+
+	private Encoder encoder = new Encoder (0, 1, true, EncodingType.k4X);
+	
+	//this math might be wrong
+	private final double kDriveEncoderTick2Meter = 1.0 / 4096.0 * 0.128 * Math.PI;
+
+	public double getDriveEncoderMeters() {
+		return (leftEncoder.get() + -rightEncoder.get()) / 2 * kDriveEncoderTick2Meter;
+
+	}
 
 	/**
 	 * This function is run when the robot is first started up and should be used
