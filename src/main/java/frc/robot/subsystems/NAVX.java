@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+//why is this not importing?
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
@@ -7,6 +8,7 @@ import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
+//this too...
 import frc.robot.utilities.LiDAR;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -16,16 +18,15 @@ import edu.wpi.first.wpilibj.DigitalSource;
 import edu.wpi.first.wpilibj.I2C;
 
 @SuppressWarnings("unused")
-public class Sensors extends SubsystemBase {
+public class NAVX extends SubsystemBase {
 
     private AHRS navx;
     private AnalogInput irSensor1;
-    private ColorSensorV3 colourSensor;
     private LiDAR lidar;
 
     private RobotContainer container; // This classes reference to the RobotContainer
 
-    public Sensors(RobotContainer container) {
+    public NAVX(RobotContainer container) {
         this.container = container;
 
         navx = new AHRS(SPI.Port.kMXP, (byte) 50);
@@ -35,9 +36,7 @@ public class Sensors extends SubsystemBase {
         this.container.driveTrain.initOdometry(this);
     }
 
-    public double getGyroX() {
-        return navx.getRawGyroX();
-    }
+
 
     @Override
     public void periodic() {
@@ -47,6 +46,10 @@ public class Sensors extends SubsystemBase {
 
     // We could just use 4096 for this, but this method will ensure accuracy if one changes
 
+    public double getGyroX() {
+        return navx.getRawGyroX();
+
+    }
 
     public double getGyroY() {
         return navx.getRawGyroY();
