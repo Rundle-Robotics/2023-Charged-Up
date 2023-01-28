@@ -113,8 +113,8 @@ public class NAVX extends SubsystemBase {
         return sensorVoltage;
     }
 
-    }
-
     public double getLidarDistance() {
         return lidar.getDistance();
     }
+
+}
