@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -21,6 +22,8 @@ public class Drivetrain extends SubsystemBase {
 	private MotorController backLeft;
 	private MotorController backRight;
 
+	private MecanumDrive m_drive;
+
 	public Drivetrain() {
 
 		frontLeft = new CANSparkMax(0, MotorType.kBrushless);
@@ -30,6 +33,8 @@ public class Drivetrain extends SubsystemBase {
 
 		frontRight.setInverted(true);
 		backRight.setInverted(true);
+
+		m_drive = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
 	}
 
 	@Override
@@ -72,11 +77,12 @@ public class Drivetrain extends SubsystemBase {
 		if (Math.abs(backRightPower) > ControlConstants.MAX_ROBOT_SPEED)
 			backRightPower *= ControlConstants.MAX_ROBOT_SPEED / Math.abs(backRightPower);
 
+		m_drive.driveCartesian(joystickX, joystickY, rotation);
 		// Power the motors
-		frontLeft.set(frontLeftPower);
-		frontRight.set(frontRightPower);
-		backLeft.set(backLeftPower);
-		backRight.set(backRightPower);
+		// frontLeft.set(frontLeftPower);
+		// frontRight.set(frontRightPower);
+		// backLeft.set(backLeftPower);
+		// backRight.set(backRightPower);
 	}
 
 	public void stop() {
