@@ -25,15 +25,17 @@ public class Drivetrain extends SubsystemBase {
 
 	private MecanumDrive m_drive;
 
+
+
 	public Drivetrain() {
 
-		frontLeft = new CANSparkMax(0, MotorType.kBrushless);
-		frontRight = new CANSparkMax(1, MotorType.kBrushless);
+		frontLeft = new CANSparkMax(1, MotorType.kBrushless);
+		frontRight = new CANSparkMax(4, MotorType.kBrushless);
 		backLeft = new CANSparkMax(2, MotorType.kBrushless);
 		backRight = new CANSparkMax(3, MotorType.kBrushless);
 
-		frontRight.setInverted(true);
-		backRight.setInverted(true);
+		frontLeft.setInverted(true);
+		backLeft.setInverted(true);
 
 		m_drive = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
 	}
@@ -41,13 +43,13 @@ public class Drivetrain extends SubsystemBase {
 	@Override
 	public void periodic() {
 		double joyX = RobotContainer.driverController.getRawAxis(OperatorConstants.XBOX_LEFT_X_AXIS);
-		double joyY = -RobotContainer.driverController.getRawAxis(OperatorConstants.XBOX_LEFT_Y_AXIS);
+		double joyY = RobotContainer.driverController.getRawAxis(OperatorConstants.XBOX_LEFT_Y_AXIS);
 		double rotation = ControlConstants.ROTATION_MULT
 				* (RobotContainer.driverController.getRightTriggerAxis() - RobotContainer.driverController.getLeftTriggerAxis());
 
 
 
-		mecanumDrive(joyX, joyY, rotation);
+		mecanumDrive(joyY, joyX, rotation);
 		/* 
 		mecanumDrive(RobotContainer.flightstick.getRawAxis(Constants.OperatorConstants.FLIGHTSTICK_X_AXIS), 
 		RobotContainer.flightstick.getRawAxis(Constants.OperatorConstants.FLIGHTSTICK_Y_AXIS), 
