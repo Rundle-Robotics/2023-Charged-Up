@@ -36,12 +36,14 @@ public class Drivetrain extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		double joyX = controller.getRawAxis(OperatorConstants.XBOX_LEFT_X_AXIS);
-		double joyY = -controller.getRawAxis(OperatorConstants.XBOX_LEFT_Y_AXIS);
+		double joyX = -controller.getRawAxis(OperatorConstants.XBOX_LEFT_X_AXIS);
+		double joyY = controller.getRawAxis(OperatorConstants.XBOX_LEFT_Y_AXIS);
 		double rotation = ControlConstants.ROTATION_MULT
-				* (controller.getRightTriggerAxis() - controller.getLeftTriggerAxis());
+				* -(controller.getRightTriggerAxis() - controller.getLeftTriggerAxis());
 
 		mecanumDrive(joyX, joyY, rotation);
+
+
 	}
 
 	// 2020 mecanum drive code
@@ -77,10 +79,10 @@ public class Drivetrain extends SubsystemBase {
 		//finetuned driving system
 		
 		if (finetuned == true) {
-			frontRightPower = frontRightPower/8;
-			frontLeftPower = frontLeftPower/8;
-			backRightPower = backRightPower/8;
-			backLeftPower= backLeftPower/8;
+			frontRightPower = frontRightPower/5;
+			frontLeftPower = frontLeftPower/5;
+			backRightPower = backRightPower/5;
+			backLeftPower= backLeftPower/5;
 	}
 
 
