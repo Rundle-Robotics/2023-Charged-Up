@@ -63,6 +63,9 @@ public void disableLimelight() {
   public double getTV(){
     return table.getEntry("tv").getDouble(0.0);
   }
+  public double getTA(){
+    return table.getEntry("ta").getDouble(0.0);
+  }
    
   
   public void limelightCenter() {
