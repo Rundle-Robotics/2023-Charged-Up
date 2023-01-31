@@ -58,9 +58,12 @@ public class LimelightFollow extends CommandBase {
 
          }
          else if (Math.abs(limelight.getTX()) > 1){
-          drivetrain.setSpeeds(0,limelight.getTX() / Math.abs(limelight.getTX()) * 0.5);
+          drivetrain.setSpeeds(0,limelight.getTX() / Math.abs(limelight.getTX()) * 0.3);
          
         
+        }
+        else if (limelight.getTA()>10){
+          drivetrain.setSpeeds(limelight.getTA()/ Math.abs(limelight.getTA()*0.3),0);
         }
 
         
