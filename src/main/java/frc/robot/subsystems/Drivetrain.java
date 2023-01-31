@@ -36,8 +36,13 @@ public class Drivetrain extends SubsystemBase {
 
 	@Override
 	public void periodic() {
+<<<<<<< Updated upstream
 		double joyX = -controller.getRawAxis(OperatorConstants.XBOX_LEFT_X_AXIS);
 		double joyY = controller.getRawAxis(OperatorConstants.XBOX_LEFT_Y_AXIS);
+=======
+		double joyX = controller.getRawAxis(OperatorConstants.XBOX_LEFT_X_AXIS)* -1;
+		double joyY = -controller.getRawAxis(OperatorConstants.XBOX_LEFT_Y_AXIS);
+>>>>>>> Stashed changes
 		double rotation = ControlConstants.ROTATION_MULT
 				* -(controller.getRightTriggerAxis() - controller.getLeftTriggerAxis());
 
