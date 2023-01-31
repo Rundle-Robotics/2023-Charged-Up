@@ -40,7 +40,8 @@ public class Robot extends TimedRobot {
 	*/
 	
 	private Encoder encoder = new Encoder (0, 1, true, EncodingType.k4X);
-	private final double kDriveTick2Feet = 1.0 / 128 * 6 * Math.PI / 12;
+	private final double kDriveTick2Meter = 1.0 / 4096.0 * 0.128 * Math.PI;
+
 
 	private Command m_autonomousCommand;
 
@@ -81,7 +82,7 @@ public class Robot extends TimedRobot {
 		CommandScheduler.getInstance().run();
 
 		//smartdashboard is our friend for PID. Helps find kP
-		SmartDashboard.putNumber("encoder", encoder.get()* kDriveTick2Feet);
+		SmartDashboard.putNumber("encoder", encoder.get()* kDriveTick2Meter);
 
 	}
 
@@ -138,13 +139,13 @@ public class Robot extends TimedRobot {
 		//get joystick command 
 		//setpoint is in encoder ticks (42 ticks in one rev., diameter 4 inch, so 252 for around 2 meters)
 		if (joy1.getRawButton(1)) {
-			setpoint = 252;
+			setpoint = 3;
 		} else if (joy1.getRawButton(2)){
 			setpoint = 0;
 		}
 
 		//get sensor position
-		double sensorPosition = encoder.get() * kDriveTick2Feet;
+		double sensorPosition = encoder.get() * kDriveTick2Meter;
 
 		//calculations
 		double error = setpoint -sensorPosition;
