@@ -36,7 +36,7 @@ public class Drivetrain extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		double joyX = -controller.getRawAxis(OperatorConstants.XBOX_RIGHT_X_AXIS);
+		double joyX = -controller.getRawAxis(OperatorConstants.XBOX_LEFT_X_AXIS);
 		double joyY = controller.getRawAxis(OperatorConstants.XBOX_LEFT_Y_AXIS);
 		double rotation = ControlConstants.ROTATION_MULT
 				* -(controller.getRightTriggerAxis() - controller.getLeftTriggerAxis());
@@ -76,6 +76,16 @@ public class Drivetrain extends SubsystemBase {
 		if (Math.abs(backRightPower) > ControlConstants.MAX_ROBOT_SPEED)
 			backRightPower *= ControlConstants.MAX_ROBOT_SPEED / Math.abs(backRightPower);
 
+
+		//strafing finetuning
+
+		if (Math.abs(joystickX) <= 0.3)
+			joystickX = Math.tan(joystickY);
+		if (Math.abs(joystickX) >= -0.3)
+			joystickX = Math.tan(joystickY);
+
+
+
 		//finetuned driving system
 		
 		if (finetuned == true) {
@@ -84,7 +94,6 @@ public class Drivetrain extends SubsystemBase {
 			backRightPower = backRightPower/5;
 			backLeftPower= backLeftPower/5;
 	}
-
 
 
 		// Power the motors
