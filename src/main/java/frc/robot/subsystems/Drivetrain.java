@@ -28,15 +28,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.RelativeEncoder;
 public class Drivetrain extends SubsystemBase {
-	public CANSparkMax frontLeft;
-	public CANSparkMax frontRight;
-	public CANSparkMax backLeft;
-	public CANSparkMax backRight;
-    public RelativeEncoder e;
-	private MotorController frontLeftController;
-	private MotorController frontRightController;
-	private MotorController backLeftController;
-	private MotorController backRightController;
+	private CANSparkMax frontLeft;
+	private CANSparkMax frontRight;
+	private CANSparkMax backLeft;
+	private CANSparkMax backRight;
+	private RelativeEncoder frontRighte;
+	private RelativeEncoder backLefte;
+	private RelativeEncoder backRighte;
+    private RelativeEncoder frontLefte;
 	private CommandXboxController controller;
 
 	public Drivetrain(CommandXboxController controller) {
@@ -46,7 +45,10 @@ public class Drivetrain extends SubsystemBase {
 		frontRight = new CANSparkMax(1, MotorType.kBrushless);
 		backLeft = new CANSparkMax(2, MotorType.kBrushless);
 		backRight = new CANSparkMax(3, MotorType.kBrushless);
-        e = frontLeft.getEncoder();
+        frontLefte = frontLeft.getEncoder();
+		frontRighte = frontRight.getEncoder();
+		backLefte = backLeft.getEncoder();
+		backRighte = backRight.getEncoder();
 
 		frontRight.setInverted(true);
 		backRight.setInverted(true);
@@ -60,9 +62,9 @@ public class Drivetrain extends SubsystemBase {
 				* (controller.getRightTriggerAxis() - controller.getLeftTriggerAxis());
 
 		mecanumDrive(joyX, joyY, rotation);
-		double v = e.getVelocity();
-        double p = e.getPosition();
-        double CPR = e.getCountsPerRevolution();
+		double v = frontLefte.getVelocity();
+        double p = frontLefte.getPosition();
+        double CPR = frontLefte.getCountsPerRevolution();
         double revolutions = CPR/4;
         SmartDashboard.putNumber("Velocity", v);
         SmartDashboard.putNumber("Position", p);
@@ -102,12 +104,47 @@ public class Drivetrain extends SubsystemBase {
 			backRightPower *= ControlConstants.MAX_ROBOT_SPEED / Math.abs(backRightPower);
 
 		// Power the motors
-		frontLeftController.set(frontLeftPower);
-		frontRightController.set(frontRightPower);
-		backLeftController.set(backLeftPower);
-		backRightController.set(backRightPower);
+		frontLeft.set(frontLeftPower);
+		frontRight.set(frontRightPower);
+		backLeft.set(backLeftPower);
+		backRight.set(backRightPower);
 	}
-
+	public double getBackRightPosition() {
+		return backRighte.getPosition();
+	}
+	public double getBackLeftPosition() {
+		return backLefte.getPosition();
+	}
+	public double getFrontLeftPosition() {
+		return frontLefte.getPosition();
+	}
+	public double getFrontRightPosition() {
+		return frontRighte.getPosition();
+	}
+	public double getBackRightVelocity() {
+		return backRighte.getVelocity();
+	}
+	public double getBackLeftVelocity() {
+		return backLefte.getVelocity();
+	}
+	public double getFrontLeftVelocity() {
+		return frontLefte.getVelocity();
+	}
+	public double getFrontRightVelocity() {
+		return frontRighte.getVelocity();
+	}
+	public double getBackRightCPR() {
+		return backRighte.getCountsPerRevolution();
+	}
+	public double getBackLeftCPR() {
+		return backLefte.getCountsPerRevolution();
+	}
+	public double getFrontLeftCPR() {
+		return frontLefte.getCountsPerRevolution();
+	}
+	public double getFrontRightCPR() {
+		return frontRighte.getCountsPerRevolution();
+	}
 	public void stop() {
 		frontLeft.set(0);
 		frontRight.set(0);
