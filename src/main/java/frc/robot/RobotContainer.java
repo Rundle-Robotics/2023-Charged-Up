@@ -29,7 +29,7 @@ public class RobotContainer {
 	private final Drivetrain drivetrain = new Drivetrain(driverController);
 
 	//declared NAVX
-	public final NAVX navx;
+	public final NAVX navx = new NAVX();
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -38,8 +38,6 @@ public class RobotContainer {
 		// Configure the trigger bindings
 		configureBindings();
 
-		//initialized?
-		navx = new NAVX(null);
 	}
 
 	/**

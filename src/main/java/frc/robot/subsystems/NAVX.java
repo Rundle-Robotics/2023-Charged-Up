@@ -26,10 +26,7 @@ public class NAVX extends SubsystemBase {
     private AnalogInput irSensor1;
     private LiDAR lidar;
 
-    private RobotContainer container; // This classes reference to the RobotContainer
-
-    public NAVX(RobotContainer container) {
-        this.container = container;
+    public NAVX() {
 
         navx = new AHRS(SPI.Port.kMXP, (byte) 50);
         irSensor1 = new AnalogInput(2);
@@ -89,7 +86,10 @@ public class NAVX extends SubsystemBase {
         SmartDashboard.putNumber("gyroX", getGyroX());
         SmartDashboard.putNumber("gyroY", getGyroY());
         SmartDashboard.putNumber("gyroZ", getGyroZ());
-        
+        SmartDashboard.putNumber("Pitch", getPitch());
+        SmartDashboard.putNumber("Roll",  getRoll());
+        SmartDashboard.putNumber("Yaw",   getYaw());
+        SmartDashboard.putNumber("Lidar Distance", getLidarDistance());
     }
 
     // We could just use 4096 for this, but this method will ensure accuracy if one changes
@@ -100,7 +100,6 @@ public class NAVX extends SubsystemBase {
     //I moved this into periodic idk if it should be here though
     public double getGyroX() {
         return navx.getRawGyroX();
-
     }
 
     public double getGyroY() {
@@ -109,6 +108,18 @@ public class NAVX extends SubsystemBase {
 
     public double getGyroZ() {
         return navx.getRawGyroZ();
+    }
+
+    public double getPitch() {
+        return navx.getPitch();
+    }
+
+    public double getRoll() {
+        return navx.getRoll();
+    }
+
+    public double getYaw() {
+        return navx.getYaw();
     }
 
     public double getIrVoltage() {
