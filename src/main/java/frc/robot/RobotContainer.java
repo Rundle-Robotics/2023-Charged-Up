@@ -9,6 +9,7 @@ import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.NAVX;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -27,12 +28,16 @@ public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	private final Drivetrain drivetrain = new Drivetrain();
 
+	//declared NAVX
+	public final NAVX navx = new NAVX();
+
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
 	 */
 	public RobotContainer() {
 		// Configure the trigger bindings
 		configureBindings();
+
 	}
 
 	/**
