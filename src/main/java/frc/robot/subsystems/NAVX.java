@@ -5,6 +5,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.I2C.Port;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
@@ -84,6 +85,11 @@ public class NAVX extends SubsystemBase {
 
     @Override
     public void periodic() {
+
+        SmartDashboard.putNumber("gyroX", getGyroX());
+        SmartDashboard.putNumber("gyroY", getGyroY());
+        SmartDashboard.putNumber("gyroZ", getGyroZ());
+        
     }
 
     // We could just use 4096 for this, but this method will ensure accuracy if one changes
@@ -116,5 +122,7 @@ public class NAVX extends SubsystemBase {
     public double getLidarDistance() {
         return lidar.getDistance();
     }
+
+    
 
 }
