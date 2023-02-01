@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.ControlConstants;
 import frc.robot.Constants.OperatorConstants;
 
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+
 
 
 
@@ -26,7 +26,7 @@ public class Drivetrain extends SubsystemBase {
 	private MotorController backLeft;
 	private MotorController backRight;
 
-	private MotorController neo;
+	
 
 	private CommandXboxController controller;
 	
@@ -37,30 +37,30 @@ public class Drivetrain extends SubsystemBase {
 	public Drivetrain(CommandXboxController controller) {
 		this.controller = controller;
 
-	    // frontLeft = new Spark(0);
-		// frontRight = new Spark(2);
-		// backLeft = new Spark(1);
-		// backRight = new Spark(3);
+	    frontLeft = new Spark(0);
+		frontRight = new Spark(2);
+		backLeft = new Spark(1);
+		backRight = new Spark(3);
 
-		neo = new PWMSparkMax(4);
+		
 
-		// leftMotors = new MotorControllerGroup(frontLeft,backLeft);
-		// rightMotors = new MotorControllerGroup(frontRight, backRight);
+		leftMotors = new MotorControllerGroup(frontLeft,backLeft);
+		rightMotors = new MotorControllerGroup(frontRight, backRight);
 		
-		// rightMotors.setInverted(true);
+		rightMotors.setInverted(true);
 		
-		// drive = new DifferentialDrive(leftMotors, rightMotors);
+		drive = new DifferentialDrive(leftMotors, rightMotors);
 
 	}
 
 	@Override
 	public void periodic() {
-		// double move = controller.getLeftTriggerAxis();
-		// double turn = controller.getLeftX();
+		double move = controller.getLeftTriggerAxis();
+		double turn = controller.getLeftX();
 
-		// drive.arcadeDrive(move, turn);
+		drive.arcadeDrive(move, turn);
 
-		neo.set(controller.getRightX()/2);
+		
 	}
 
 
