@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.ControlConstants;
 import frc.robot.Constants.OperatorConstants;
 import com.revrobotics.CANSparkMax;
@@ -26,6 +27,7 @@ import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+
 import com.revrobotics.RelativeEncoder;
 public class Drivetrain extends SubsystemBase {
 	private CANSparkMax frontLeft;
@@ -35,11 +37,11 @@ public class Drivetrain extends SubsystemBase {
 	private RelativeEncoder frontRighte;
 	private RelativeEncoder backLefte;
 	private RelativeEncoder backRighte;
-    private RelativeEncoder frontLefte;
+  private RelativeEncoder frontLefte;
 	private CommandXboxController controller;
 
-	public Drivetrain(CommandXboxController controller) {
-		this.controller = controller;
+
+	public Drivetrain() {
 
 		frontLeft = new CANSparkMax(0, MotorType.kBrushless);
 		frontRight = new CANSparkMax(1, MotorType.kBrushless);
@@ -56,10 +58,10 @@ public class Drivetrain extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		double joyX = controller.getRawAxis(OperatorConstants.XBOX_LEFT_X_AXIS);
-		double joyY = -controller.getRawAxis(OperatorConstants.XBOX_LEFT_Y_AXIS);
+		double joyX = RobotContainer.driverController.getRawAxis(OperatorConstants.XBOX_LEFT_X_AXIS);
+		double joyY = -RobotContainer.driverController.getRawAxis(OperatorConstants.XBOX_LEFT_Y_AXIS);
 		double rotation = ControlConstants.ROTATION_MULT
-				* (controller.getRightTriggerAxis() - controller.getLeftTriggerAxis());
+				* (RobotContainer.driverController.getRightTriggerAxis() - RobotContainer.driverController.getLeftTriggerAxis());
 
 		mecanumDrive(joyX, joyY, rotation);
 		double v = frontLefte.getVelocity();
