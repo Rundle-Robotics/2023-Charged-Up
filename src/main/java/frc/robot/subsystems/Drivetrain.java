@@ -60,7 +60,7 @@ public class Drivetrain extends SubsystemBase {
 
 		// drive.arcadeDrive(move, turn);
 
-		neo.set(controller.getRightX());
+		neo.set(controller.getRightX()/2);
 	}
 
 
