@@ -65,7 +65,7 @@ public class Drivetrain extends SubsystemBase {
 		double v = frontLefte.getVelocity();
         double p = frontLefte.getPosition();
         double CPR = frontLefte.getCountsPerRevolution();
-        double revolutions = CPR/4;
+        double revolutions = CPR/4; //not sure where this came from but okay
         SmartDashboard.putNumber("Velocity", v);
         SmartDashboard.putNumber("Position", p);
         SmartDashboard.putNumber("CountsPerRevolution", CPR);
