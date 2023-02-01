@@ -79,15 +79,13 @@ public class Drivetrain extends SubsystemBase {
 
 		//strafing finetuning
 
-		if (Math.abs(joystickX) <= 0.3)
-			joystickX = Math.tan(joystickY);
-		if (Math.abs(joystickX) >= -0.3)
-			joystickX = Math.tan(joystickY);
+		if (Math.cos(joystickX)<= 0.78)
+			joystickX = joystickY;
 
 
 
 		//finetuned driving system
-		
+
 		if (finetuned == true) {
 			frontRightPower = frontRightPower/5;
 			frontLeftPower = frontLeftPower/5;
