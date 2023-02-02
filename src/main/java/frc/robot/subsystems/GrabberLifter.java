@@ -1,7 +1,7 @@
 package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -22,13 +22,16 @@ public class GrabberLifterInfo extends SubsystemBase {
     GrabberLifterInfo() {
         m = new CANSparkMax(0, MotorType.kBrushless);
         e = m.getEncoder();
-        double p = 1;
     }
+    public double getPosOfLift() {
+		return e.getPosition();
+	}
 
-    @Override
+@Override
     public void periodic() {
         double p = e.getPosition();
-        if p >= 400{
+        if (p >= 400) {
+            double g = 1;
             p = 0;
         }
     }
