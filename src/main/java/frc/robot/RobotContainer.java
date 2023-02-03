@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.NAVX;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -31,13 +33,20 @@ public class RobotContainer {
 	//declared NAVX
 	public final NAVX navx = new NAVX();
 
+	private static Compressor compressor;
+
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
 	 */
 	public RobotContainer() {
+
+		compressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
+        compressor.enableDigital();
 		// Configure the trigger bindings
+		
 		configureBindings();
 
+		
 	}
 
 	/**
