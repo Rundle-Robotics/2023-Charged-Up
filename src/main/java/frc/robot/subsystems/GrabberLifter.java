@@ -16,24 +16,35 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.RelativeEncoder;
-public class GrabberLifterInfo extends SubsystemBase {
+public class GrabberLifter extends SubsystemBase {
     private CANSparkMax m;
     private RelativeEncoder e;
-    GrabberLifterInfo() {
+    private boolean lifted;
+    public GrabberLifter() {
         m = new CANSparkMax(0, MotorType.kBrushless);
         e = m.getEncoder();
+        lifted = false;
+    }
+    
+    @Override
+    public void periodic() {
+        double p = e.getPosition();
+        if (lifted == true && p < 400) {
+            m.set(1);
+        }
+        else if (lifted == false && p == 0) {
+            m.set(0);
+        }
+        else {
+            m.set(-1);
+        }
     }
     public double getPosOfLift() {
 		return e.getPosition();
 	}
-
-@Override
-    public void periodic() {
-        double p = e.getPosition();
-        if (p >= 400) {
-            double g = 1;
-            p = 0;
-        }
+    public void lift(boolean newValue) {
+        lifted = newValue;
     }
+    
 }
 
