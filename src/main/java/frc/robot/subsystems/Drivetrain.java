@@ -34,7 +34,6 @@ public class Drivetrain extends SubsystemBase {
 		backLeft = new CANSparkMax(2, MotorType.kBrushless);
 		backRight = new CANSparkMax(3, MotorType.kBrushless);
 
-		
 
 		m_drive = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
 	}
