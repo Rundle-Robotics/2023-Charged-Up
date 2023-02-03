@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.ControlConstants;
@@ -85,7 +86,7 @@ public class Drivetrain extends SubsystemBase {
 		else if (Math.abs(joystickY) >= (Math.tan(0.26))*joystickX)
 			joystickY = 0;
 
-	
+
 
 
 		//finetuned driving system
@@ -96,6 +97,11 @@ public class Drivetrain extends SubsystemBase {
 			backRightPower = backRightPower/5;
 			backLeftPower= backLeftPower/5;
 	}
+
+		SmartDashboard.putNumber("frontRight", frontRightPower);
+		SmartDashboard.putNumber("frontLeft", frontLeftPower);
+		SmartDashboard.putNumber("backLeft", backLeftPower);
+		SmartDashboard.putNumber("backRight", backLeftPower);
 
 
 		// Power the motors
