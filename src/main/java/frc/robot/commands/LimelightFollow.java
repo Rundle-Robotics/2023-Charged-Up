@@ -35,13 +35,17 @@ public class LimelightFollow extends CommandBase {
 	@Override
 	public void execute() {
 		if (limelight.getTV() != 0) {
-			if (Math.abs(limelight.getTX()) > 1) {
-				rotation = (limelight.getTX() * -0.01);
+			if (Math.abs(limelight.getTX()) > 1) { // TX distance from center > 1, want to center
+				System.out.println("Trying to center...");
+				rotation = cap(-limelight.getTX(), -0.3, 0.3);
 			}
-			if (limelight.getTA() < 10) {
-				speed = (limelight.getTA() * -0.1);
+			if (limelight.getTA() < 10) { // TA too small, move forward
+				System.out.println("Trying to move forward...");
+				speed = cap(limelight.getTA(), 0, 0.3);
 			}
 			drivetrain.setSpeeds(speed, rotation);
+		} else {
+			drivetrain.setSpeeds(0, 0.3);
 		}
 	}
 
@@ -55,5 +59,23 @@ public class LimelightFollow extends CommandBase {
 	@Override
 	public boolean isFinished() {
 		return false;
+	}
+
+	/**
+	 * This function is the same as calling Math.max(Math.min(value, max), min);
+	 * 
+	 * @param value the value to limit
+	 * @param min   the minimum permissible value
+	 * @param max   the maximum permissible value
+	 * @return the value limited by the given constraints
+	 */
+	private double cap(double value, double min, double max) {
+		if (value < min) {
+			return min;
+		} else if (value > max) {
+			return max;
+		} else {
+			return value;
+		}
 	}
 }
