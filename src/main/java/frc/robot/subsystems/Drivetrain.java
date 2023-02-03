@@ -34,8 +34,6 @@ public class Drivetrain extends SubsystemBase {
 		backLeft = new CANSparkMax(2, MotorType.kBrushless);
 		backRight = new CANSparkMax(3, MotorType.kBrushless);
 
-		frontLeft.setInverted(true);
-		backLeft.setInverted(true);
 
 		m_drive = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
 	}
@@ -49,12 +47,12 @@ public class Drivetrain extends SubsystemBase {
 
 
 
-		mecanumDrive(joyY, joyX, rotation);
-		/* 
+		//mecanumDrive(joyY, joyX, rotation);
+		 
 		mecanumDrive(RobotContainer.flightstick.getRawAxis(Constants.OperatorConstants.FLIGHTSTICK_X_AXIS), 
 		RobotContainer.flightstick.getRawAxis(Constants.OperatorConstants.FLIGHTSTICK_Y_AXIS), 
 		RobotContainer.flightstick.getRawAxis(Constants.OperatorConstants.FLIGHTSTICK_TWIST));
-		*/
+		
 	}
 
 	// 2020 mecanum drive code
@@ -87,7 +85,7 @@ public class Drivetrain extends SubsystemBase {
 		if (Math.abs(backRightPower) > ControlConstants.MAX_ROBOT_SPEED)
 			backRightPower *= ControlConstants.MAX_ROBOT_SPEED / Math.abs(backRightPower);
 
-		m_drive.driveCartesian(joystickX, joystickY, rotation);
+		m_drive.driveCartesian(joystickY, joystickX, rotation);
 		// Power the motors
 		// frontLeft.set(frontLeftPower);
 		// frontRight.set(frontRightPower);
