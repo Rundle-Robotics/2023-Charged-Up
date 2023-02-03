@@ -34,8 +34,7 @@ public class Drivetrain extends SubsystemBase {
 		backLeft = new CANSparkMax(2, MotorType.kBrushless);
 		backRight = new CANSparkMax(3, MotorType.kBrushless);
 
-		frontLeft.setInverted(true);
-		backLeft.setInverted(true);
+		
 
 		m_drive = new MecanumDrive(frontLeft, backLeft, frontRight, backRight);
 	}
@@ -45,16 +44,16 @@ public class Drivetrain extends SubsystemBase {
 		double joyX = RobotContainer.driverController.getRawAxis(OperatorConstants.XBOX_LEFT_X_AXIS);
 		double joyY = RobotContainer.driverController.getRawAxis(OperatorConstants.XBOX_LEFT_Y_AXIS);
 		double rotation = ControlConstants.ROTATION_MULT
-				* (RobotContainer.driverController.getRightTriggerAxis() - RobotContainer.driverController.getLeftTriggerAxis());
+				* (RobotContainer.driverController.getRawAxis(OperatorConstants.XBOX_RIGHT_X_AXIS));
 
 
 
 		mecanumDrive(joyY, joyX, rotation);
-		/* 
-		mecanumDrive(RobotContainer.flightstick.getRawAxis(Constants.OperatorConstants.FLIGHTSTICK_X_AXIS), 
-		RobotContainer.flightstick.getRawAxis(Constants.OperatorConstants.FLIGHTSTICK_Y_AXIS), 
-		RobotContainer.flightstick.getRawAxis(Constants.OperatorConstants.FLIGHTSTICK_TWIST));
-		*/
+		 
+		// mecanumDrive(RobotContainer.flightstick.getRawAxis(Constants.OperatorConstants.FLIGHTSTICK_X_AXIS), 
+		// RobotContainer.flightstick.getRawAxis(Constants.OperatorConstants.FLIGHTSTICK_Y_AXIS), 
+		// RobotContainer.flightstick.getRawAxis(Constants.OperatorConstants.FLIGHTSTICK_TWIST));
+		
 	}
 
 	// 2020 mecanum drive code
@@ -87,12 +86,12 @@ public class Drivetrain extends SubsystemBase {
 		if (Math.abs(backRightPower) > ControlConstants.MAX_ROBOT_SPEED)
 			backRightPower *= ControlConstants.MAX_ROBOT_SPEED / Math.abs(backRightPower);
 
-		m_drive.driveCartesian(joystickX, joystickY, rotation);
-		// Power the motors
-		// frontLeft.set(frontLeftPower);
-		// frontRight.set(frontRightPower);
-		// backLeft.set(backLeftPower);
-		// backRight.set(backRightPower);
+		//m_drive.driveCartesian(joystickX, joystickY, rotation);
+		//Power the motors
+		frontLeft.set(frontLeftPower);
+		frontRight.set(frontRightPower);
+		backLeft.set(backLeftPower);
+		backRight.set(backRightPower);
 	}
 
 	public void stop() {

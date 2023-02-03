@@ -25,7 +25,7 @@ public class RobotContainer {
 	public static final CommandXboxController driverController = new CommandXboxController(
 			OperatorConstants.DRIVER_CONTROLLER_PORT);
 
-	public static final Joystick flightstick = new Joystick(0);
+	public static final Joystick flightstick = new Joystick(4);
 
 	// The robot's subsystems and commands are defined here...
 	private final Drivetrain drivetrain = new Drivetrain();
