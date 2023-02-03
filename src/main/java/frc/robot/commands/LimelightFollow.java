@@ -14,6 +14,9 @@ public class LimelightFollow extends CommandBase {
 	private Drivetrain drivetrain;
 	private Limelight limelight;
 
+	private final double CENTER_DISTANCE = 1;
+	private final double TARGET_AREA_CUTOFF = 10;
+
 	double rotation = 0;
 	double speed = 0;
 
@@ -34,19 +37,28 @@ public class LimelightFollow extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		if (limelight.getTV() != 0) {
-			if (Math.abs(limelight.getTX()) > 1) { // TX distance from center > 1, want to center
-				System.out.println("Trying to center...");
-				rotation = cap(-limelight.getTX(), -0.3, 0.3);
-			}
-			if (limelight.getTA() < 10) { // TA too small, move forward
-				System.out.println("Trying to move forward...");
-				speed = cap(limelight.getTA(), 0, 0.3);
-			}
-			drivetrain.setSpeeds(speed, rotation);
+		if (limelight.getTV() == 0) {
+			System.out.println("No target found, trying to turn and find one..."); // debug
+			drivetrain.setSpeeds(0, 0.5);
 		} else {
-			drivetrain.setSpeeds(0, 0.3);
+			System.out.println("Target found");
+			// If target is on the right, turn right
+			if (limelight.getTX() > CENTER_DISTANCE) {
+				System.out.println("Target on the right, trying to turn..."); // debug
+				drivetrain.setSpeeds(0, 0.5);
+			}
+			// If target is on the left, turn left
+			else if (limelight.getTX() < CENTER_DISTANCE) {
+				System.out.println("Target on the left, trying to turn..."); // debug
+				drivetrain.setSpeeds(0, 0.5);
+			}
+			// If target area is too small, move forward
+			else if (limelight.getTA() < TARGET_AREA_CUTOFF) {
+				System.out.println("Target too far, trying to move forward..."); // debug
+				drivetrain.setSpeeds(0.5, 0);
+			}
 		}
+		System.out.println(); // debug
 	}
 
 	// Called once the command ends or is interrupted.
@@ -69,6 +81,7 @@ public class LimelightFollow extends CommandBase {
 	 * @param max   the maximum permissible value
 	 * @return the value limited by the given constraints
 	 */
+	@SuppressWarnings("unused")
 	private double cap(double value, double min, double max) {
 		if (value < min) {
 			return min;
