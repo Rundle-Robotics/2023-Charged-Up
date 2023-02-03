@@ -17,7 +17,8 @@ public class LimelightFollow extends CommandBase {
   private Drivetrain drivetrain;
   private Limelight limelight;
   
-  
+  double rotation = 0;
+  double speed = 0;
 
 
   public LimelightFollow(Drivetrain drivetrain, Limelight limelight) {
@@ -44,31 +45,21 @@ public class LimelightFollow extends CommandBase {
   @Override
   public void execute() {
 
-    
-    
-
-     
-
-  
+    if (limelight.getTV() != 0){
       
 
-         if (limelight.getTV() == 0){
-          drivetrain.setSpeeds(0, .5);
-          
-
-         }
-         else if (Math.abs(limelight.getTX()) > 1){
-          drivetrain.setSpeeds(0,limelight.getTX() / Math.abs(limelight.getTX()) * 0.3);
-         
-        
-        }
-        else if (limelight.getTA()>10){
-          drivetrain.setSpeeds(limelight.getTA()/ Math.abs(limelight.getTA()*0.3),0);
-        }
-
-        
-
     
+      if (Math.abs(limelight.getTX()) > 1){
+        rotation = (limelight.getTX()* -0.01);
+        
+      
+      }
+      if (limelight.getTA()<10){
+        speed = (limelight.getTA()*-0.1);
+      }
+
+      drivetrain.setSpeeds(speed, rotation);
+    }
 
 
   }

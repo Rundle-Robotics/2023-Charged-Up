@@ -38,7 +38,7 @@ public void disableLimelight() {
   @Override
   public void periodic() {
     tx = table.getEntry("tx").getDouble(0.0);
-    ty = table.getEntry("ty").getDouble(0.0);
+    ty = table.getEntry("tv").getDouble(0.0);
     ta = table.getEntry("ta").getDouble(0.0);
     
 
