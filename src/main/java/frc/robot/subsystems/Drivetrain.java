@@ -82,7 +82,7 @@ public class Drivetrain extends SubsystemBase {
 		if (Math.abs(joystickX) <= (Math.tan(0.26))*joystickY)
 			joystickX = 0;
 
-		if (Math.abs(joystickY) >= (Math.tan(0.65))*joystickX)
+		else if (Math.abs(joystickY) >= (Math.tan(0.26))*joystickX)
 			joystickY = 0;
 
 	
