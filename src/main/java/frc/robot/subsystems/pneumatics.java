@@ -21,7 +21,7 @@ public class pneumatics extends SubsystemBase {
     public void periodic() {
       // This method will be called once per scheduler run
       
-      if (RobotContainer.driverController.getHID().getAButton()) {
+      if (RobotContainer.driverController.getHID().getAButtonPressed()) {
         // if you press the b button, then go up
         sol1.toggle();
         System.out.println("A button presed");
