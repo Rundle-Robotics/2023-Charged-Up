@@ -61,6 +61,10 @@ public class Drivetrain extends SubsystemBase {
 		backLefte = backLeft.getEncoder();
 		backRighte = backRight.getEncoder();
 
+		double kP = 0.2;
+		double kI = 0.1;
+		double kD = 0.0;
+
 		pidFR = new PIDController(kP,kI,kD);
 		pidBR = new PIDController(kP,kI,kD);
 		pidFL = new PIDController(kP,kI,kD);
@@ -88,9 +92,6 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("CountsPerRevolution", CPR);
         SmartDashboard.putNumber("Revolutions", revolutions);
 
-		double kP = 0.2;
-		double kD = 0.1;
-		double kI = 0;
 
 
 	}
