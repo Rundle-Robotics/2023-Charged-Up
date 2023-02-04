@@ -13,7 +13,7 @@ public class pneumatics extends SubsystemBase {
     public pneumatics() {
   
       // set solenoid values (placeholder values)
-      sol1 = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 1, 2);
+      sol1 = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 2);
       sol1.set(Value.kReverse);
   
     }
@@ -24,7 +24,7 @@ public class pneumatics extends SubsystemBase {
       if (RobotContainer.driverController.getHID().getAButton()) {
         // if you press the b button, then go up
         sol1.toggle();
-      
+        System.out.println("A button presed");
       }
     }
     public void setClimber(Value value) {
