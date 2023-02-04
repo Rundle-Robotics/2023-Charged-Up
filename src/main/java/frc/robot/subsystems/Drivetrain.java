@@ -108,14 +108,6 @@ public class Drivetrain extends SubsystemBase {
 			backRightPower *= ControlConstants.MAX_ROBOT_SPEED / Math.abs(backRightPower);
 
 
-		//strafing finetuning
-
-		if (Math.abs(joystickX) <= (Math.tan(0.26))*joystickY)
-			joystickX = 0;
-
-		else if (Math.abs(joystickY) >= (Math.tan(0.26))*joystickX)
-			joystickY = 0;
-
 
 
 
