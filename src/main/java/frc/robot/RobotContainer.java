@@ -5,7 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.subsystems.Drivetrain;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -27,7 +27,7 @@ public class RobotContainer {
 			OperatorConstants.DRIVER_CONTROLLER_PORT);
 
 	// The robot's subsystems and commands are defined here...
-	private final Drivetrain drivetrain = new Drivetrain();
+	
 
 
 	private static Compressor compressor;
