@@ -13,7 +13,7 @@ public class pneumatics extends SubsystemBase {
     public pneumatics() {
   
       // set solenoid values (placeholder values)
-      sol1 = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
+      sol1 = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1); 
       sol1.set(Value.kReverse);
   
     }
