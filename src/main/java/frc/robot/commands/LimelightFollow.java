@@ -5,13 +5,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.MecanumSubsystem;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.MecanumSubsystem;
 
 public class LimelightFollow extends CommandBase {
 	/** Creates a new LimelightFollow. */
 
-	private Drivetrain drivetrain;
+	private MecanumSubsystem meca;
 	private Limelight limelight;
 
 	private final double CENTER_DISTANCE = 1;
@@ -20,11 +21,11 @@ public class LimelightFollow extends CommandBase {
 	double rotation = 0;
 	double speed = 0;
 
-	public LimelightFollow(Drivetrain drivetrain, Limelight limelight) {
-		this.drivetrain = drivetrain;
+	public LimelightFollow(MecanumSubsystem meca, Limelight limelight) {
+		this.meca = meca;
 		this.limelight = limelight;
 
-		addRequirements(drivetrain);
+		addRequirements(meca);
 		addRequirements(limelight);
 	}
 
@@ -39,23 +40,23 @@ public class LimelightFollow extends CommandBase {
 	public void execute() {
 		if (limelight.getTV() == 0) {
 			System.out.println("No target found, trying to turn and find one..."); // debug
-			drivetrain.setSpeeds(0, 0.25);
+			meca.setSpeeds(0, 0, .25, .1);
 		} else {
 			System.out.println("Target found");
 			// If target is on the right, turn right
 			if (limelight.getTX() > CENTER_DISTANCE) {
 				System.out.println("Target on the right, trying to turn..."); // debug
-				drivetrain.setSpeeds(0, 0.25);
+				meca.setSpeeds(0,0,.25,.1);
 			}
 			// If target is on the left, turn left
 			else if (limelight.getTX() < -CENTER_DISTANCE) {
 				System.out.println("Target on the left, trying to turn..."); // debug
-				drivetrain.setSpeeds(0, -0.25);
+				meca.setSpeeds(0,0, -0.25,.1);
 			}
 			// If target area is too small, move forward
 			else if (limelight.getTA() < TARGET_AREA_CUTOFF) {
 				System.out.println("Target too far, trying to move forward..."); // debug
-				drivetrain.setSpeeds(0.25, 0);
+				meca.setSpeeds(0,.25,0,.1);
 			}
 		}
 		System.out.println(); // debug

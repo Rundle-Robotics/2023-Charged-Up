@@ -6,8 +6,8 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.LimelightFollow;
-import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.MecanumSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -27,7 +27,7 @@ public class RobotContainer {
 		OperatorConstants.DRIVER_CONTROLLER_PORT);
 
 	// The robot's subsystems and commands are defined here...
-	private final Drivetrain drivetrain;
+	private final MecanumSubsystem meca;
 	private final Limelight limelight;
 	
 
@@ -37,7 +37,7 @@ public class RobotContainer {
 	public RobotContainer() {
 		// Configure the trigger bindings
 		configureBindings();
-		drivetrain = new Drivetrain(driverController);
+		meca = new MecanumSubsystem();
 		limelight = new Limelight();
 		
 	}
@@ -58,7 +58,7 @@ public class RobotContainer {
 	 */
 	private void configureBindings() {
 
-		driverController.b().whileTrue(new LimelightFollow(drivetrain, limelight));
+		driverController.b().whileTrue(new LimelightFollow(meca, limelight));
 		// Example: Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 		// new Trigger(drivetrain::exampleCondition)
 		// .onTrue(new ExampleCommand(m_exampleSubsystem));
