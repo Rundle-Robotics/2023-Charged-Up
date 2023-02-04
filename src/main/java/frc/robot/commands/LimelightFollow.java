@@ -39,23 +39,23 @@ public class LimelightFollow extends CommandBase {
 	public void execute() {
 		if (limelight.getTV() == 0) {
 			System.out.println("No target found, trying to turn and find one..."); // debug
-			drivetrain.setSpeeds(0, 0.5);
+			drivetrain.setSpeeds(0, 0.25);
 		} else {
 			System.out.println("Target found");
 			// If target is on the right, turn right
 			if (limelight.getTX() > CENTER_DISTANCE) {
 				System.out.println("Target on the right, trying to turn..."); // debug
-				drivetrain.setSpeeds(0, 0.5);
+				drivetrain.setSpeeds(0, 0.25);
 			}
 			// If target is on the left, turn left
-			else if (limelight.getTX() < CENTER_DISTANCE) {
+			else if (limelight.getTX() < -CENTER_DISTANCE) {
 				System.out.println("Target on the left, trying to turn..."); // debug
-				drivetrain.setSpeeds(0, -0.5);
+				drivetrain.setSpeeds(0, -0.25);
 			}
 			// If target area is too small, move forward
 			else if (limelight.getTA() < TARGET_AREA_CUTOFF) {
 				System.out.println("Target too far, trying to move forward..."); // debug
-				drivetrain.setSpeeds(0.5, 0);
+				drivetrain.setSpeeds(0.25, 0);
 			}
 		}
 		System.out.println(); // debug

@@ -27,8 +27,8 @@ public class RobotContainer {
 		OperatorConstants.DRIVER_CONTROLLER_PORT);
 
 	// The robot's subsystems and commands are defined here...
-	private final Drivetrain drivetrain = new Drivetrain(driverController);
-	private final Limelight limelight = new Limelight();
+	private final Drivetrain drivetrain;
+	private final Limelight limelight;
 	
 
 	/**
@@ -37,6 +37,8 @@ public class RobotContainer {
 	public RobotContainer() {
 		// Configure the trigger bindings
 		configureBindings();
+		drivetrain = new Drivetrain(driverController);
+		limelight = new Limelight();
 		
 	}
 
