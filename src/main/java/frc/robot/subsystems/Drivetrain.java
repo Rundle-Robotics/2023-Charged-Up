@@ -62,7 +62,7 @@ public class Drivetrain extends SubsystemBase {
 		backRighte = backRight.getEncoder();
 
 		double kP = 0.2;
-		double kI = 0.1;
+		double kI = 0.05;
 		double kD = 0.0;
 
 		pidFR = new PIDController(kP,kI,kD);
