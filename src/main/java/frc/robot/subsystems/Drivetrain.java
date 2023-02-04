@@ -6,8 +6,8 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.RobotContainer;
@@ -38,13 +38,13 @@ public class Drivetrain extends SubsystemBase {
 	private RelativeEncoder backLefte;
 	private RelativeEncoder backRighte;
   private RelativeEncoder frontLefte;
-	private CommandXboxController controller;
+	private boolean finetuned;
 
 
 	public Drivetrain() {
-
-		frontLeft = new CANSparkMax(0, MotorType.kBrushless);
-		frontRight = new CANSparkMax(1, MotorType.kBrushless);
+		finetuned = false;
+		frontLeft = new CANSparkMax(1, MotorType.kBrushless);
+		frontRight = new CANSparkMax(4, MotorType.kBrushless);
 		backLeft = new CANSparkMax(2, MotorType.kBrushless);
 		backRight = new CANSparkMax(3, MotorType.kBrushless);
         frontLefte = frontLeft.getEncoder();
@@ -52,12 +52,14 @@ public class Drivetrain extends SubsystemBase {
 		backLefte = backLeft.getEncoder();
 		backRighte = backRight.getEncoder();
 
-		frontRight.setInverted(true);
-		backRight.setInverted(true);
+
 	}
+
+
 
 	@Override
 	public void periodic() {
+
 		double joyX = RobotContainer.driverController.getRawAxis(OperatorConstants.XBOX_LEFT_X_AXIS);
 		double joyY = -RobotContainer.driverController.getRawAxis(OperatorConstants.XBOX_LEFT_Y_AXIS);
 		double rotation = ControlConstants.ROTATION_MULT
@@ -105,11 +107,31 @@ public class Drivetrain extends SubsystemBase {
 		if (Math.abs(backRightPower) > ControlConstants.MAX_ROBOT_SPEED)
 			backRightPower *= ControlConstants.MAX_ROBOT_SPEED / Math.abs(backRightPower);
 
+
+
+
+
+		//finetuned driving system
+
+		if (finetuned == true) {
+			frontRightPower = frontRightPower/5;
+			frontLeftPower = frontLeftPower/5;
+			backRightPower = backRightPower/5;
+			backLeftPower= backLeftPower/5;
+	}
+
+		SmartDashboard.putNumber("frontRight", frontRightPower);
+		SmartDashboard.putNumber("frontLeft", frontLeftPower);
+		SmartDashboard.putNumber("backLeft", backLeftPower);
+		SmartDashboard.putNumber("backRight", backLeftPower);
+
+
 		// Power the motors
 		frontLeft.set(frontLeftPower);
 		frontRight.set(frontRightPower);
 		backLeft.set(backLeftPower);
 		backRight.set(backRightPower);
+
 	}
 	public double getBackRightPosition() {
 		return backRighte.getPosition();
@@ -153,4 +175,11 @@ public class Drivetrain extends SubsystemBase {
 		backLeft.set(0);
 		backRight.set(0);
 	}
+
+public void finetune(boolean newValue) {
+
+	finetuned = newValue;
+
+}
+
 }
