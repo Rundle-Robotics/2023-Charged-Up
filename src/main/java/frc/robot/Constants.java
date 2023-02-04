@@ -41,5 +41,10 @@ public final class Constants {
     public static final double MAX_ROBOT_SPEED = 1;
     public static final double MIN_ROBOT_SPEED = -1;
     public static final double MAX_TURN_SPEED = 0.7;
+
+    public static final double kp = 0.2;
+    public static final double ki = 0.2;
+    public static final double kd = 0.0;
+
   }
 }
