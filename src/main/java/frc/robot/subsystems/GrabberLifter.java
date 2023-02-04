@@ -20,6 +20,7 @@ public class GrabberLifter extends SubsystemBase {
     private CANSparkMax m;
     private RelativeEncoder e;
     private boolean lifted;
+    private boolean lowered;
     public GrabberLifter() {
         m = new CANSparkMax(0, MotorType.kBrushless);
         e = m.getEncoder();
@@ -29,14 +30,17 @@ public class GrabberLifter extends SubsystemBase {
     @Override
     public void periodic() {
         double p = e.getPosition();
-        if (lifted == true && p < 400) {
-            m.set(1);
+        if (lifted == true && lowered == false) {
+            m.set(2);
         }
-        else if (lifted == false && p == 0) {
+        else if (lifted == false && lowered == false && p >= 180 && p <= 220 || lifted == false && lowered == false && p >= 380 && p <= 420 || lifted == false && lowered == false && p >= 580 && p <= 620 || lifted == false && lowered == false && p >= 780 && p <= 820 ) {
             m.set(0);
         }
+        else if (lowered == false && lifted == false){
+            m.set(-2);
+        }
         else {
-            m.set(-1);
+            m.set(-2);
         }
     }
     public double getPosOfLift() {
@@ -44,6 +48,9 @@ public class GrabberLifter extends SubsystemBase {
 	}
     public void lift(boolean newValue) {
         lifted = newValue;
+    }
+    public void lower(boolean newValue) {
+        lowered = newValue;
     }
     
 }
