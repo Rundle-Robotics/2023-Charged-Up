@@ -3,10 +3,12 @@ import frc.robot.subsystems.GrabberLifter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 public class GrabberLifterCommand extends CommandBase {
     private final GrabberLifter m_GrabberLifter;
+    private double Speed;
   
-    public GrabberLifterCommand(GrabberLifter subsystem) {
+    public GrabberLifterCommand(double speed, GrabberLifter subsystem) {
   
       m_GrabberLifter = subsystem;
+      double Speed = speed;
       
   
       //addRequirements(m_Drivetrain);
@@ -19,7 +21,7 @@ public class GrabberLifterCommand extends CommandBase {
     @Override
     public void initialize() {
   
-      m_GrabberLifter.lift(true);
+      m_GrabberLifter.lift(Speed);
   
   
     }
@@ -37,7 +39,7 @@ public class GrabberLifterCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
   
-      m_GrabberLifter.lift(false);
+      m_GrabberLifter.lift(Speed);
   
     }
 }

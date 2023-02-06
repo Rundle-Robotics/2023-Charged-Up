@@ -11,7 +11,6 @@ import frc.robot.subsystems.GrabberLifter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.GrabberLowerCommand;
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a
@@ -54,8 +53,8 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
-		driverController.y().whileTrue(new GrabberLifterCommand(grabberLifter));
-		driverController.a().whileTrue(new GrabberLowerCommand(grabberLifter));
+		driverController.y().onTrue(new GrabberLifterCommand(0.4, grabberLifter));
+		driverController.a().onTrue(new GrabberLifterCommand(-0.4, grabberLifter));
 		// Example: Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 		// new Trigger(drivetrain::exampleCondition)
 		// .onTrue(new ExampleCommand(m_exampleSubsystem));
