@@ -51,6 +51,10 @@ public class Drivetrain extends SubsystemBase {
 		frontRighte = frontRight.getEncoder();
 		backLefte = backLeft.getEncoder();
 		backRighte = backRight.getEncoder();
+		frontLeft.setIdleMode(CANSparkMax.IdleMode.kBrake);
+		frontRight.setIdleMode(CANSparkMax.IdleMode.kBrake);
+		backLeft.setIdleMode(CANSparkMax.IdleMode.kBrake);
+		backRight.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
 
 	}
