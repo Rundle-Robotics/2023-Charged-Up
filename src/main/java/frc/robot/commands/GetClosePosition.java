@@ -10,7 +10,7 @@ public class GetClosePosition extends CommandBase {
     private double position;
 
 
-    GetClosePosition(GrabberLifter subsystem) {
+    public GetClosePosition(GrabberLifter subsystem) {
         m_GrabberLifter = subsystem;
         lowHeight = 200;
         midHeight = 400;
@@ -21,7 +21,10 @@ public class GetClosePosition extends CommandBase {
     @Override
     public void initialize() {
       position = m_GrabberLifter.getPosOfLift();
-      if(midHeight < position) {
+      if(highHeight < position){
+        m_GrabberLifter.lift(-0.3);
+        }
+      else if(midHeight < position) {
         if((position-midHeight) < (highHeight-position)) {
             m_GrabberLifter.lift(-0.3);
         }
@@ -37,27 +40,19 @@ public class GetClosePosition extends CommandBase {
             m_GrabberLifter.lift(0.3);
         }
       }
-      else if(highHeight < position){
-        m_GrabberLifter.lift(-0.3);
-        }
   
   
   
-    }
-    public void periodic() {
-        position = m_GrabberLifter.getPosOfLift();
-        if(position >= lowHeight-10 && position <= lowHeight+10 || position >= midHeight-10 && position <= midHeight+10 || position >= highHeight-10 && position <= highHeight+10) {
-            m_GrabberLifter.lift(0);
-        }
     }
   
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-  
-  
-  
-  
+        position = m_GrabberLifter.getPosOfLift();
+        if(position >= lowHeight-10 && position <= lowHeight+10 || position >= midHeight-10 && position <= midHeight+10 || position >= highHeight-10 && position <= highHeight+10) {
+            m_GrabberLifter.lift(0);
+            isFinished();
+        }
     }
   
     // Called once the command ends or is interrupted.

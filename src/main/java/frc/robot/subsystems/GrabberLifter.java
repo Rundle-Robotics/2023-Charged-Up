@@ -18,8 +18,7 @@ public class GrabberLifter extends SubsystemBase {
 		return e.getPosition();
 	}
     public void lift(double newValue) {
-        lifted = newValue;
-        m.set(lifted);
+        m.set(newValue);
     }
     
 }
