@@ -67,8 +67,7 @@ public class Drivetrain extends SubsystemBase {
 		double joyX = RobotContainer.driverController.getRawAxis(OperatorConstants.XBOX_LEFT_X_AXIS);
 		double joyY = -RobotContainer.driverController.getRawAxis(OperatorConstants.XBOX_LEFT_Y_AXIS);
 		double rotation = ControlConstants.ROTATION_MULT
-				* (RobotContainer.driverController.getRightTriggerAxis() - RobotContainer.driverController.getLeftTriggerAxis());
-
+				* (RobotContainer.driverController.getRawAxis(OperatorConstants.XBOX_RIGHT_X_AXIS));
 		mecanumDrive(joyX, joyY, rotation);
 		double v = frontLefte.getVelocity();
         double p = frontLefte.getPosition();
