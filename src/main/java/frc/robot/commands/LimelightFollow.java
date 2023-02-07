@@ -69,26 +69,14 @@ public class LimelightFollow extends CommandBase {
 
 	// Returns true when the command should end.
 	@Override
-	public boolean isFinished() {
-		return false;
-	}
+public boolean isFinished() {
+  boolean hasTarget = limelight.getTV() != 0;
+  boolean isCentered = Math.abs(limelight.getTX()) < CENTER_DISTANCE;
+  boolean isCloseEnough = limelight.getTA() > TARGET_AREA_CUTOFF;
+  return hasTarget && isCentered && isCloseEnough;
+}
+	
 
-	/**
-	 * This function is the same as calling Math.max(Math.min(value, max), min);
-	 * 
-	 * @param value the value to limit
-	 * @param min   the minimum permissible value
-	 * @param max   the maximum permissible value
-	 * @return the value limited by the given constraints
-	 */
-	@SuppressWarnings("unused")
-	private double cap(double value, double min, double max) {
-		if (value < min) {
-			return min;
-		} else if (value > max) {
-			return max;
-		} else {
-			return value;
-		}
-	}
+	
+	
 }
