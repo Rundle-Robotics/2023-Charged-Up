@@ -22,7 +22,6 @@ public class GrabberLifterCommand extends CommandBase {
     public void initialize() {
   
       m_GrabberLifter.lift(Speed);
-      isFinished();
   
   
     }
@@ -40,6 +39,10 @@ public class GrabberLifterCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
   
+    }
+    @Override
+    public boolean isFinished() {
+        return true;
     }
 }
 

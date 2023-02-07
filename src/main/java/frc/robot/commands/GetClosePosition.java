@@ -8,6 +8,7 @@ public class GetClosePosition extends CommandBase {
     private final double midHeight;
     private final double highHeight;
     private double position;
+    private boolean finished;
 
 
     public GetClosePosition(GrabberLifter subsystem) {
@@ -16,6 +17,7 @@ public class GetClosePosition extends CommandBase {
         midHeight = 400;
         highHeight = 600;
         position = 0;
+        finished = false;
     }
 
     @Override
@@ -40,6 +42,9 @@ public class GetClosePosition extends CommandBase {
             m_GrabberLifter.lift(0.3);
         }
       }
+      else{
+        m_GrabberLifter.lift(0.3);
+      }
   
   
   
@@ -51,7 +56,7 @@ public class GetClosePosition extends CommandBase {
         position = m_GrabberLifter.getPosOfLift();
         if(position >= lowHeight-10 && position <= lowHeight+10 || position >= midHeight-10 && position <= midHeight+10 || position >= highHeight-10 && position <= highHeight+10) {
             m_GrabberLifter.lift(0);
-            isFinished();
+            finished = true;
         }
     }
   
@@ -59,5 +64,9 @@ public class GetClosePosition extends CommandBase {
     @Override
     public void end(boolean interrupted) {
   
+    }
+    @Override
+    public boolean isFinished() {
+      return finished;
     }
 }

@@ -54,14 +54,13 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
-		driverController.y().onTrue(new GrabberLifterCommand(0.4, grabberLifter));
-		driverController.a().onTrue(new GrabberLifterCommand(-0.4, grabberLifter));
-		driverController.povUp().onTrue(new GrabberLifterCommand(0.2, grabberLifter));
-		driverController.povDown().onTrue(new GrabberLifterCommand(-0.2, grabberLifter));
-		driverController.povUp().onFalse(new GrabberLifterCommand(0, grabberLifter));
-		driverController.povDown().onFalse(new GrabberLifterCommand(0, grabberLifter));
-		driverController.y().onFalse(new GetClosePosition(grabberLifter));
-		driverController.a().onFalse(new GetClosePosition(grabberLifter));
+		driverController.y().onTrue(new GrabberLifterCommand(0.4, grabberLifter)).onFalse(new GetClosePosition(grabberLifter));
+
+		driverController.a().onTrue(new GrabberLifterCommand(-0.4, grabberLifter)).onFalse(new GetClosePosition(grabberLifter));
+
+		driverController.povUp().onTrue(new GrabberLifterCommand(0.2, grabberLifter)).onFalse(new GrabberLifterCommand(0, grabberLifter));
+
+		driverController.povDown().onTrue(new GrabberLifterCommand(-0.2, grabberLifter)).onFalse(new GrabberLifterCommand(0, grabberLifter));
 		// Example: Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 		// new Trigger(drivetrain::exampleCondition)
 		// .onTrue(new ExampleCommand(m_exampleSubsystem));
