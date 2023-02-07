@@ -39,7 +39,6 @@ public class GrabberLifterCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
   
-      m_GrabberLifter.lift(Speed);
   
     }
 }
