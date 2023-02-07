@@ -37,7 +37,7 @@ public class RobotContainer {
 	 */
 	public RobotContainer() {
 
-		compressor = new Compressor(1, PneumaticsModuleType.CTREPCM);
+		compressor = new Compressor(1, PneumaticsModuleType.REVPH);
         compressor.enableDigital();
 		// Configure the trigger bindings
 		
