@@ -4,16 +4,19 @@
 
 package frc.robot;
 
+import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.GetClosePosition;
+import frc.robot.commands.GrabberLifterCommand;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.GrabberLifter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.subsystems.Drivetrain; 
 import frc.robot.commands.FineTUNECommand;
 import frc.robot.subsystems.NAVX;
-
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -31,7 +34,9 @@ public class RobotContainer {
 	private final XboxController controller  = driverController.getHID();
 	
 
+
 	// The robot's subsystems and commands are defined here...
+	private final GrabberLifter grabberLifter = new GrabberLifter();
 	private final Drivetrain drivetrain = new Drivetrain();
 
 	//declared NAVX
@@ -60,6 +65,16 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
+		driverController.y().onTrue(new GrabberLifterCommand(0.4, grabberLifter)).onFalse(new GetClosePosition(grabberLifter));
+
+		driverController.a().onTrue(new GrabberLifterCommand(-0.4, grabberLifter)).onFalse(new GetClosePosition(grabberLifter));
+
+		driverController.povUp().onTrue(new GrabberLifterCommand(0.2, grabberLifter)).onFalse(new GrabberLifterCommand(0, grabberLifter));
+
+		driverController.povDown().onTrue(new GrabberLifterCommand(-0.2, grabberLifter)).onFalse(new GrabberLifterCommand(0, grabberLifter));
+		// Example: Schedule `ExampleCommand` when `exampleCondition` changes to `true`
+		// new Trigger(drivetrain::exampleCondition)
+		// .onTrue(new ExampleCommand(m_exampleSubsystem));
 
 		driverController.x().whileTrue(new FineTUNECommand(drivetrain));
 

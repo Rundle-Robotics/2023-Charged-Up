@@ -6,25 +6,20 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.ControlConstants;
 import frc.robot.Constants.OperatorConstants;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.motorcontrol.MotorController;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Constants.ControlConstants;
-import frc.robot.Constants.OperatorConstants;
+
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.RobotContainer;
 
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
@@ -34,12 +29,12 @@ public class Drivetrain extends SubsystemBase {
 	private CANSparkMax frontRight;
 	private CANSparkMax backLeft;
 	private CANSparkMax backRight;
+
 	private RelativeEncoder frontRighte;
 	private RelativeEncoder backLefte;
 	private RelativeEncoder backRighte;
   private RelativeEncoder frontLefte;
 	private boolean finetuned;
-
 
 	public Drivetrain() {
 		finetuned = false;
@@ -69,6 +64,7 @@ public class Drivetrain extends SubsystemBase {
 		double rotation = ControlConstants.ROTATION_MULT
 				* (RobotContainer.driverController.getRawAxis(OperatorConstants.XBOX_RIGHT_X_AXIS));
 		mecanumDrive(joyX, joyY, rotation);
+
 		double v = frontLefte.getVelocity();
         double p = frontLefte.getPosition();
         double CPR = frontLefte.getCountsPerRevolution();
@@ -76,7 +72,6 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("Velocity", v);
         SmartDashboard.putNumber("Position", p);
         SmartDashboard.putNumber("CountsPerRevolution", CPR);
-        SmartDashboard.putNumber("Revolutions", revolutions);
 
 	}
 
