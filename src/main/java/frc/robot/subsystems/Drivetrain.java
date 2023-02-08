@@ -13,15 +13,15 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class Drivetrain extends SubsystemBase {
 
-	private MotorController frontLeft;
-	private MotorController frontRight;
-	private MotorController backLeft;
-	private MotorController backRight;
+	public MotorController frontLeft;
+	public MotorController frontRight;
+	public MotorController backLeft;
+	public MotorController backRight;
 
 	private CommandXboxController controller;
 
-	private MotorControllerGroup leftMotors;
-	private MotorControllerGroup rightMotors;
+	public MotorControllerGroup leftMotors;
+	public MotorControllerGroup rightMotors;
 	private DifferentialDrive drive;
 
 	public Drivetrain(CommandXboxController controller) {

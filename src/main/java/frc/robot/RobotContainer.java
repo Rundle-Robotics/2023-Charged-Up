@@ -36,9 +36,11 @@ public class RobotContainer {
 	 */
 	public RobotContainer() {
 		// Configure the trigger bindings
-		configureBindings();
+		
 		drivetrain = new Drivetrain(driverController);
 		limelight = new Limelight();
+
+		configureBindings();
 	
 		
 	}

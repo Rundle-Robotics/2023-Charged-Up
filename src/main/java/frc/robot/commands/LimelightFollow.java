@@ -39,7 +39,11 @@ public class LimelightFollow extends CommandBase {
 	public void execute() {
 		if (limelight.getTV() == 0) {
 			System.out.println("No target found, trying to turn and find one..."); // debug
-			drivetrain.setSpeeds(0, 0.25);
+			//drivetrain.setSpeeds(0, 0.25);
+			drivetrain.frontLeft.set(.3);
+			drivetrain.backLeft.set(.3);
+			drivetrain.frontRight.set(-.3);
+			drivetrain.backRight.set(-.3);
 		} else {
 			System.out.println("Target found");
 			// If target is on the right, turn right
