@@ -13,6 +13,7 @@ public class AutoBalanceNAvX extends CommandBase {
 
   private Drivetrain drivetrain;
   private NAVX navx;
+  private boolean finished;
   /** Creates a new AutoBalanceNAvX. */
   public AutoBalanceNAvX(Drivetrain drivetrain, NAVX navx) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -32,22 +33,44 @@ public class AutoBalanceNAvX extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+
+    finished = false;
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    
+    double pitch = navx.getPitch();
+    double speed = 0;
+    
 
+    if (Math.abs(pitch) > 2.5){
+      speed = pitch / 100;
+    }
+    else{
+      speed = 0;
+      finished = true;
+    }
+  
+    drivetrain.mecanumDrive(speed, 0, 0);
     
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    drivetrain.mecanumDrive(0, 0, 0);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    
+
+    
+    return finished;
   }
 }
