@@ -12,6 +12,12 @@ import frc.robot.subsystems.GrabberLifter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+
+import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.FineTUNECommand;
+import frc.robot.subsystems.NAVX;
+
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a
@@ -23,13 +29,19 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
 	// Replace with CommandPS4Controller or CommandJoystick if needed
-	private final CommandXboxController driverController = new CommandXboxController(
+	public static final CommandXboxController driverController = new CommandXboxController(
 			OperatorConstants.DRIVER_CONTROLLER_PORT);
+	private final XboxController controller  = driverController.getHID();
+	
 
 
 	// The robot's subsystems and commands are defined here...
-	private final Drivetrain drivetrain = new Drivetrain(driverController);
 	private final GrabberLifter grabberLifter = new GrabberLifter();
+	private final Drivetrain drivetrain = new Drivetrain();
+
+	//declared NAVX
+	public final NAVX navx = new NAVX();
+
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -37,8 +49,7 @@ public class RobotContainer {
 	public RobotContainer() {
 		// Configure the trigger bindings
 		configureBindings();
-	}
-
+		}
 	/**
 	 * Use this method to define your trigger->command mappings. Triggers can be
 	 * created via the
@@ -64,6 +75,8 @@ public class RobotContainer {
 		// Example: Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 		// new Trigger(drivetrain::exampleCondition)
 		// .onTrue(new ExampleCommand(m_exampleSubsystem));
+
+		driverController.x().whileTrue(new FineTUNECommand(drivetrain));
 
 		// Example: Schedule `exampleMethodCommand` when the Xbox controller's B button
 		// is
