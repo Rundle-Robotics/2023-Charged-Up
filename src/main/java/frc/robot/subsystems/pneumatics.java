@@ -4,13 +4,12 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
-public class pneumatics extends SubsystemBase {
+public class Pneumatics extends SubsystemBase {
     private DoubleSolenoid sol1;
     /** Creates a new Climber. */
-    public pneumatics() {
+    public Pneumatics() {
   
       // set solenoid values (placeholder values)
       sol1 = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0, 1); 
@@ -29,7 +28,7 @@ public class pneumatics extends SubsystemBase {
       if (RobotContainer.driverController.getHID().getAButtonPressed()) {
         // if you press the b button, then go up
         sol1.toggle();
-        System.out.println("A button presed");
+        System.out.println("A button pressed");
       }
     }
     public void setClimber(Value value) {
