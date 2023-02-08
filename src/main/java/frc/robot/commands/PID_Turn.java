@@ -43,9 +43,8 @@ public class PID_Turn extends PIDCommand {
         navx::getYaw(),
         // This should return the setpoint (can also be a constant)
         //    !!!this should turn 90 degrees right, right?
-        targetAngleDegrees(int 90) {
-          return 90;
-        }
+
+        targetAngleDegrees,
         // This uses the output
         output -> drive.arcadeDrive(0, output),
           // Use the output here
