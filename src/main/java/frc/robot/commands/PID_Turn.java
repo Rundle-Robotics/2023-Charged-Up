@@ -34,7 +34,7 @@ public class PID_Turn extends PIDCommand {
 
    private static DoubleSupplier targetAngleDegreesDoubleSupplier;
 
-  public int PID_Turn(double targetAngleDegrees, Drivetrain drive, NAVX navx) {
+  public PID_Turn(double targetAngleDegrees, Drivetrain drive, NAVX navx) {
     super(
         // these constants have the potential to be dangerously wrong...
         new PIDController(0.333, 0.3, 0.03),
