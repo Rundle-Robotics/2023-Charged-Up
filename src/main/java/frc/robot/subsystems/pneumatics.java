@@ -13,14 +13,19 @@ public class pneumatics extends SubsystemBase {
     public pneumatics() {
   
       // set solenoid values (placeholder values)
-      sol1 = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1); 
+      sol1 = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0, 1); 
       sol1.set(Value.kReverse);
   
     }
     @Override
     public void periodic() {
       // This method will be called once per scheduler run
-      
+      boolean enabled = RobotContainer.compressor.isEnabled();
+      boolean pressureSwitch = RobotContainer.compressor.getPressureSwitchValue();
+      double current = RobotContainer.compressor.getCurrent();
+      System.out.println(enabled);
+      System.out.print(pressureSwitch);
+      System.out.print(current);
       if (RobotContainer.driverController.getHID().getAButtonPressed()) {
         // if you press the b button, then go up
         sol1.toggle();

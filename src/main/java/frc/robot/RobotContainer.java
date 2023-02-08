@@ -30,15 +30,17 @@ public class RobotContainer {
 	
 
 
-	private static Compressor compressor;
+	public static Compressor compressor;
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
 	 */
 	public RobotContainer() {
 
-		compressor = new Compressor(1, PneumaticsModuleType.CTREPCM);
+		compressor = new Compressor(PneumaticsModuleType.REVPH);
         compressor.enableDigital();
+
+		
 		// Configure the trigger bindings
 		
 		configureBindings();
