@@ -24,7 +24,9 @@ public class PID_Turn extends PIDCommand {
    //   !!! where does this go?
    public Rotation2d getHeadingRotation2d;
 
-  public PID_Turn(double targetAngleDegrees, Object DrivetrainSubsystem, Drivetrain drive) {
+   private static DoubleSupplier targetAngleDegreesDoubleSupplier;
+
+  public int PID_Turn(double targetAngleDegrees, NAVX navx) {
     super(
         // these constants have the potential to be dangerously wrong...
         new PIDController(0.333, 0.3, 0.03),
@@ -33,7 +35,7 @@ public class PID_Turn extends PIDCommand {
         navx::getYaw(),
         // This should return the setpoint (can also be a constant)
         //    !!!this should turn 90 degrees right, right?
-        private static DoubleSupplier targetAngleDegrees(int 90) {
+        targetAngleDegrees(int 90) {
           return 90;
         }
         // This uses the output
