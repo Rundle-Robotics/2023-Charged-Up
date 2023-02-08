@@ -4,11 +4,13 @@
 
 package frc.robot.commands;
 
+import java.util.function.DoubleConsumer;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.NAVX;
 
@@ -16,6 +18,12 @@ import frc.robot.subsystems.NAVX;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class PID_Turn extends PIDCommand {
+  public PID_Turn(PIDController controller, DoubleSupplier measurementSource, DoubleSupplier setpointSource,
+      DoubleConsumer useOutput, Subsystem[] requirements) {
+    super(controller, measurementSource, setpointSource, useOutput, requirements);
+    //TODO Auto-generated constructor stub
+  }
+
   /** Creates a new PID_Turn. 
    * 
    /      !!!  does this even need to be here?
@@ -26,7 +34,7 @@ public class PID_Turn extends PIDCommand {
 
    private static DoubleSupplier targetAngleDegreesDoubleSupplier;
 
-  public int PID_Turn(double targetAngleDegrees, NAVX navx) {
+  public int PID_Turn(double targetAngleDegrees, Drivetrain drive, NAVX navx) {
     super(
         // these constants have the potential to be dangerously wrong...
         new PIDController(0.333, 0.3, 0.03),
@@ -53,6 +61,10 @@ public class PID_Turn extends PIDCommand {
 
   }
 
+  private NAVX getYaw() {
+    return null;
+  }
+
   private static DoubleSupplier targetAngleDegrees(int i) {
     return null;
   }
@@ -60,6 +72,6 @@ public class PID_Turn extends PIDCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return getController().atSetpoint();
   }
 }
