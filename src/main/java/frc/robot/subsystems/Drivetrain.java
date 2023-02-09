@@ -24,6 +24,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 import com.revrobotics.RelativeEncoder;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
+import edu.wpi.first.math.controller.PIDController;
+
+
 public class Drivetrain extends SubsystemBase {
 	private CANSparkMax frontLeft;
 	private CANSparkMax frontRight;
@@ -35,6 +39,11 @@ public class Drivetrain extends SubsystemBase {
 	private RelativeEncoder backRighte;
   private RelativeEncoder frontLefte;
 	private boolean finetuned;
+	
+	private PIDController pidFR;
+	private PIDController pidBR;
+	private PIDController pidFL; 
+	private PIDController pidBL; 
 
 	public Drivetrain() {
 		finetuned = false;
@@ -51,10 +60,18 @@ public class Drivetrain extends SubsystemBase {
 		backLeft.setIdleMode(CANSparkMax.IdleMode.kBrake);
 		backRight.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
+		double kP = 0.2;
+		double kI = 0.05;
+		double kD = 0.0;
+
+		pidFR = new PIDController(kP,kI,kD);
+		pidBR = new PIDController(kP,kI,kD);
+		pidFL = new PIDController(kP,kI,kD);
+		pidBL = new PIDController(kP,kI,kD);
+
+
 
 	}
-
-
 
 	@Override
 	public void periodic() {
@@ -72,6 +89,8 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("Velocity", v);
         SmartDashboard.putNumber("Position", p);
         SmartDashboard.putNumber("CountsPerRevolution", CPR);
+
+
 
 	}
 
@@ -107,8 +126,6 @@ public class Drivetrain extends SubsystemBase {
 
 
 
-
-
 		//finetuned driving system
 
 		if (finetuned == true) {
@@ -125,10 +142,10 @@ public class Drivetrain extends SubsystemBase {
 
 
 		// Power the motors
-		frontLeft.set(frontLeftPower);
-		frontRight.set(frontRightPower);
-		backLeft.set(backLeftPower);
-		backRight.set(backRightPower);
+		frontLeft.set(pidFL.calculate(frontLefte.getVelocity(), frontLeftPower));
+		frontRight.set(pidFR.calculate(frontRighte.getVelocity(), frontRightPower));
+		backLeft.set(pidBL.calculate(backLefte.getVelocity(), frontLeftPower));
+		backRight.set(pidBR.calculate(backRighte.getVelocity(), frontLeftPower));
 
 	}
 	public double getBackRightPosition() {
