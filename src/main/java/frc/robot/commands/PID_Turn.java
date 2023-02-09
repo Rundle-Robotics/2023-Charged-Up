@@ -60,7 +60,9 @@ public class PID_Turn extends PIDCommand {
 
   }
 
-  private NAVX getYaw() {
+  private NAVX getYaw; {
+
+    // !!! why is this wrong?
     return null;
   }
 
