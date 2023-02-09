@@ -48,7 +48,7 @@ public class Drivetrain extends SubsystemBase {
 		double leftTrigger = RobotContainer.driverController.getLeftTriggerAxis();
 		double joyXR = RobotContainer.driverController.getRightX()*-1;
 		double rightTrigger = RobotContainer.driverController.getRightTriggerAxis();
-		double forwardSpeed = joyXL / 6;
+		double forwardSpeed = joyXL / 2;
 		double turnSpeed = 0;
 
 		if (Math.abs(joyXR)<= 0.10){
@@ -57,13 +57,13 @@ public class Drivetrain extends SubsystemBase {
 
 		} else if (joyXR>0.10){
 
-			turnSpeed = (0.555*(Math.pow(joyXR-0.10, 2)))+0.30;
+			turnSpeed = (0.3*(Math.pow(joyXR-0.10, 2)))+0.30;
 
 		}
 
 		else if (joyXR<-0.10){
 
-			turnSpeed = (-0.555*(Math.pow(joyXR+0.10, 2)))-0.30;
+			turnSpeed = (-0.3*(Math.pow(joyXR+0.10, 2)))-0.30;
 
 		}
 
