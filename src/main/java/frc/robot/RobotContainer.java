@@ -32,7 +32,7 @@ public class RobotContainer {
 	 */
 	public RobotContainer() {
 
-		driverController = new XboxController(1);
+		driverController = new XboxController(3 );
 		// Configure the trigger bindings
 		configureBindings();
 	}
