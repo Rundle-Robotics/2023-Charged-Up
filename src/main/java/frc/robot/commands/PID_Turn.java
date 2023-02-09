@@ -40,7 +40,7 @@ public class PID_Turn extends PIDCommand {
         new PIDController(0.333, 0.3, 0.03),
         // This should return the measurement
         //     !!!I already feel that this is wrong... pls help
-        navx::getYaw(),
+        navx::getYaw,
         // This should return the setpoint (can also be a constant)
         //    !!!this should turn 90 degrees right, right?
 
