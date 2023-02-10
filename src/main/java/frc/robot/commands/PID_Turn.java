@@ -50,7 +50,7 @@ public class PID_Turn extends PIDCommand {
 
     //      !!!i dont really know how to do this... 
     //      !!!does that seem like a reasonable tolerance? should I put it in constants?
-    getController().setTolerance(0.1);
+    getController().setTolerance(1);
 
   }
 
