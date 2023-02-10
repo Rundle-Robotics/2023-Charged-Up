@@ -48,7 +48,7 @@ public class Drivetrain extends SubsystemBase {
 		double leftTrigger = RobotContainer.driverController.getLeftTriggerAxis();
 		double joyXR = RobotContainer.driverController.getRightX()*-1;
 		double rightTrigger = RobotContainer.driverController.getRightTriggerAxis();
-		double forwardSpeed = rightTrigger - leftTrigger;
+		double forwardSpeed = rightTrigger - leftTrigger * 0.7;
 		double turnSpeed = 0;
 
 		if (Math.abs(joyXL)<= 0.10){
