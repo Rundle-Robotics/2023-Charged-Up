@@ -31,7 +31,8 @@ public class LimelightFollow extends CommandBase {
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
-		Limelight.enableLimelight();
+		limelight.enableLimelight();
+		limelight.setPipeline(0); // Pipeline 0 is for AprilTag detection
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
@@ -39,7 +40,7 @@ public class LimelightFollow extends CommandBase {
 	public void execute() {
 		if (limelight.getTV() == 0) {
 			System.out.println("No target found, trying to turn and find one..."); // debug
-			//drivetrain.setSpeeds(0, 0.25);
+			// drivetrain.setSpeeds(0, 0.25);
 			drivetrain.frontLeft.set(.3);
 			drivetrain.backLeft.set(.3);
 			drivetrain.frontRight.set(-.3);
@@ -69,18 +70,16 @@ public class LimelightFollow extends CommandBase {
 	@Override
 	public void end(boolean interrupted) {
 		limelight.disableLimelight();
+		limelight.setPipeline(2); // Pipeline 2 is for driver vision
 	}
 
 	// Returns true when the command should end.
 	@Override
-public boolean isFinished() {
-  boolean hasTarget = limelight.getTV() != 0;
-  boolean isCentered = Math.abs(limelight.getTX()) < CENTER_DISTANCE;
-  boolean isCloseEnough = limelight.getTA() > TARGET_AREA_CUTOFF;
-  return hasTarget && isCentered && isCloseEnough;
-}
-	
+	public boolean isFinished() {
+		boolean hasTarget = limelight.getTV() != 0;
+		boolean isCentered = Math.abs(limelight.getTX()) < CENTER_DISTANCE;
+		boolean isCloseEnough = limelight.getTA() > TARGET_AREA_CUTOFF;
+		return hasTarget && isCentered && isCloseEnough;
+	}
 
-	
-	
 }

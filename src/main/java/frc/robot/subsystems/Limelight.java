@@ -22,7 +22,7 @@ public class Limelight extends SubsystemBase {
 		disableLimelight();
 	}
 
-	public static void enableLimelight() {
+	public void enableLimelight() {
 		table.getEntry("ledMode").setNumber(3);
 	}
 
@@ -62,6 +62,10 @@ public class Limelight extends SubsystemBase {
 
 	public void limelightCenter() {
 
+	}
+
+	public void setPipeline(int n) {
+		table.getEntry("pipeline").setNumber(n);
 	}
 
 }
