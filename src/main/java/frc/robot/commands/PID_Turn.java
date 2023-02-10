@@ -40,7 +40,7 @@ public class PID_Turn extends PIDCommand {
 
         targetAngleDegrees,
         // This uses the output
-        output -> drive.mecanumDrive(),
+        output -> drive.mecanumDrive(0, 0, output),
           // Use the output here
           drive);
     // Use addRequirements() here to declare subsystem dependencies.
