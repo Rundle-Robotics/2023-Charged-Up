@@ -12,10 +12,10 @@ import frc.robot.subsystems.Drivetrain;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class PID_Drive_Straight extends PIDCommand {
   /** Creates a new PID_Drive_Straight. */
-  public PID_Drive_Straight() {
+  public PID_Drive_Straight(double getDistance, Drivetrain drive) {
     super(
         // The controller that the command will use
-        new PIDController(0, 0, 0),
+        new PIDController(0.222,0.222,01)
         // This should return the measurement
         () -> 0,
         // This should return the setpoint (can also be a constant)
