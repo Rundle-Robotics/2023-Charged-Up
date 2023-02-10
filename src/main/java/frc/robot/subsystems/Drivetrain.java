@@ -46,7 +46,7 @@ public class Drivetrain extends SubsystemBase {
 	public void periodic() {
 		double joyXL = RobotContainer.driverController.getLeftY();
 		double leftTrigger = RobotContainer.driverController.getLeftTriggerAxis();
-		double joyXR = RobotContainer.driverController.getRightX()*-1;
+		double joyXR = RobotContainer.driverController.getRightX();
 		double rightTrigger = RobotContainer.driverController.getRightTriggerAxis();
 		double forwardSpeed = joyXL / 2;
 		double turnSpeed = 0;
