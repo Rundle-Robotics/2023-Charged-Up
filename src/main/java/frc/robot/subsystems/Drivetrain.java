@@ -46,7 +46,7 @@ public class Drivetrain extends SubsystemBase {
 		double move = controller.getLeftTriggerAxis();
 		double turn = controller.getLeftX();
 
-		drive.arcadeDrive(move, turn);
+		drive.arcadeDrive(-move, turn);
 	}
 
 	public void stop() {
