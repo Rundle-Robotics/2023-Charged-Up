@@ -18,12 +18,6 @@ import frc.robot.subsystems.NAVX;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class PID_Turn extends PIDCommand {
-  public PID_Turn(PIDController controller, DoubleSupplier measurementSource, DoubleSupplier setpointSource,
-      DoubleConsumer useOutput, Subsystem[] requirements) {
-    super(controller, measurementSource, setpointSource, useOutput, requirements);
-    //TODO Auto-generated constructor stub
-  }
-
   /** Creates a new PID_Turn. 
    * 
    /      !!!  does this even need to be here?
@@ -46,7 +40,7 @@ public class PID_Turn extends PIDCommand {
 
         targetAngleDegrees,
         // This uses the output
-        output -> drive.arcadeDrive(0, output),
+        output -> drive.mecanumDrive(),
           // Use the output here
           drive);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -58,12 +52,6 @@ public class PID_Turn extends PIDCommand {
     //      !!!does that seem like a reasonable tolerance? should I put it in constants?
     getController().setTolerance(0.1);
 
-  }
-
-  private NAVX getYaw; {
-
-    // !!! why is this wrong?
-    return null;
   }
 
   private static DoubleSupplier targetAngleDegrees(int i) {
