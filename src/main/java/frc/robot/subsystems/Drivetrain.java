@@ -8,11 +8,9 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 
-import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.ControlConstants;
 import frc.robot.Constants.OperatorConstants;
@@ -20,7 +18,6 @@ import frc.robot.Constants.OperatorConstants;
 
 import frc.robot.subsystems.Drivetrain;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 import com.revrobotics.RelativeEncoder;
@@ -68,7 +65,6 @@ public class Drivetrain extends SubsystemBase {
 		double v = frontLefte.getVelocity();
         double p = frontLefte.getPosition();
         double CPR = frontLefte.getCountsPerRevolution();
-        double revolutions = CPR/4; //not sure where this came from but okay
         SmartDashboard.putNumber("Velocity", v);
         SmartDashboard.putNumber("Position", p);
         SmartDashboard.putNumber("CountsPerRevolution", CPR);

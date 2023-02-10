@@ -24,8 +24,14 @@ public class AutoLifterCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
+        if (m_GrabberLifter.getPosOfLift() < Height) {
+            m_GrabberLifter.lift(0.3);
+        }
+        else{
+            m_GrabberLifter.lift(-0.3);
+        }
   
-      m_GrabberLifter.lift(0.3);
+      
 
   
   
