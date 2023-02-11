@@ -43,11 +43,12 @@ public class LimelightFollow extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		if (!closeToTargeta){
+		limelight.putTargetPoseDataonSmartDashboard();
+		if (!closeToTargeta) {
 			if (limelight.getTV() == 0) {
 				System.out.println("No target found, trying to turn and find one..."); // debug
 				// drivetrain.setSpeeds(0, 0.25);
-				drivetrain.setSpeeds(0,0.6);
+				drivetrain.setSpeeds(0, 0.6);
 			} else {
 				System.out.println("Target found");
 				// If target is on the right, turn right
@@ -64,26 +65,23 @@ public class LimelightFollow extends CommandBase {
 				else if (limelight.getTA() < TARGET_AREA_CUTOFF) {
 					System.out.println("Target too far, trying to move forward..."); // debug
 					drivetrain.setSpeeds(-0.5, 0);
-				}else{
+				} else {
 					closeToTargeta = true;
 				}
 
-				
 			}
-			
 
-		}else {
+		} else {
 			double[] tmom = limelight.getTARGETPOSECAMERA();
-		
-			if (Math.abs(tmom[5])>10){
+
+			if (Math.abs(tmom[5]) > 10) {
 				System.out.println("trying to oddly center");
-				drivetrain.setSpeeds(0,tmom[5]/Math.abs(tmom[5])*0.45);
-				
-			}
-			else{
+				drivetrain.setSpeeds(0, tmom[5] / Math.abs(tmom[5]) * 0.45);
+			} else {
+				System.out.println("Aligned!");
 				finite = true;
 			}
-			
+
 		}
 
 		System.out.println(); // debug

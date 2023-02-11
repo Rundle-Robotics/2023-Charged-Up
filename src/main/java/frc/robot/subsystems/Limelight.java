@@ -58,6 +58,18 @@ public class Limelight extends SubsystemBase {
 
 	}
 
+	// Debug
+	public void putTargetPoseDataonSmartDashboard() {
+		targetpose_cameraspace = getTARGETPOSECAMERA();
+		SmartDashboard.putNumberArray("TPArray", targetpose_cameraspace);
+		SmartDashboard.putNumber("TP0", targetpose_cameraspace[0]);
+		SmartDashboard.putNumber("TP1", targetpose_cameraspace[1]);
+		SmartDashboard.putNumber("TP2", targetpose_cameraspace[2]);
+		SmartDashboard.putNumber("TP3", targetpose_cameraspace[3]);
+		SmartDashboard.putNumber("TP4", targetpose_cameraspace[4]);
+		SmartDashboard.putNumber("TP5", targetpose_cameraspace[5]);
+	}
+
 	public double getTX() {
 		return table.getEntry("tx").getDouble(0.0);
 	}
@@ -70,15 +82,15 @@ public class Limelight extends SubsystemBase {
 		return table.getEntry("ta").getDouble(0.0);
 	}
 
-	public double getTSHORT(){
+	public double getTSHORT() {
 		return table.getEntry("tshort").getDouble(0.0);
 	}
 
-	public double getTLONG(){
+	public double getTLONG() {
 		return table.getEntry("tlong").getDouble(0.0);
 	}
 
-	public double[] getTARGETPOSECAMERA(){
+	public double[] getTARGETPOSECAMERA() {
 		return table.getEntry("targetpose_cameraspace").getDoubleArray(new double[6]);
 	}
 
