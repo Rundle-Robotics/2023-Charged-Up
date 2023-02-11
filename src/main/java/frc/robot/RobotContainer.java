@@ -31,7 +31,7 @@ public class RobotContainer {
 
 	private void configureBindings() {
 		// Bind A button to climber solenoid (toggle)
-		driverController.a().onTrue(pneumatics.toggleClimberSolenoid());
+		driverController.a().onTrue(pneumatics.toggleGrabberSolenoid());
 	}
 
 	public Command getAutonomousCommand() {

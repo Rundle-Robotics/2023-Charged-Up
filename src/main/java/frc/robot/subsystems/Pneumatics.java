@@ -8,25 +8,43 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Pneumatics extends SubsystemBase {
 	private DoubleSolenoid sol1;
+	private DoubleSolenoid armsolenoid;
+	private boolean israised;
 
 	public Pneumatics() {
 		// set solenoid values (placeholder values)
+		israised = true;
+		
 		sol1 = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0, 1); 
 		sol1.set(Value.kReverse);
+
+		armsolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 2, 3);
+		armsolenoid.set(Value.kReverse);
 	}
 
 	@Override
 	public void periodic() {
 	}
 
-	public void setClimber(Value value) {
+	public void setGrabber(Value value) {
 		sol1.set(value);
 	}
 
-	public CommandBase toggleClimberSolenoid() {
+	public void setLifter(Value value) {
+		armsolenoid.set(value);
+	}
+
+
+	public CommandBase toggleGrabberSolenoid() {
 		return runOnce(() -> {
 			sol1.toggle();
-			System.out.println("Toggling climber solenoid"); // debug
+			System.out.println("Toggling Grabber solenoid"); // debug
+		});
+	}
+	public CommandBase toggleLifter() {
+		return runOnce(() -> {
+			armsolenoid.toggle();
+			System.out.println("Toggling Grabber solenoid"); // debug
 		});
 	}
 }
