@@ -39,6 +39,12 @@ public class Drivetrain extends SubsystemBase {
 	private boolean firstStrafe;
 	private boolean strafeLock;
 
+	double forwardSpeed;
+	double desiredHeading; 
+	double currentHeading; 
+	double rotation; 
+	double turnPower; 
+	double kP = 0.1;
 
 
 	public Drivetrain() {
@@ -56,6 +62,7 @@ public class Drivetrain extends SubsystemBase {
 		frontRight.setIdleMode(CANSparkMax.IdleMode.kBrake);
 		backLeft.setIdleMode(CANSparkMax.IdleMode.kBrake);
 		backRight.setIdleMode(CANSparkMax.IdleMode.kBrake);
+		
 
 
 	}
@@ -99,6 +106,8 @@ public class Drivetrain extends SubsystemBase {
 		double backLeftPower = joystickY - joystickX + rotation;
 		double backRightPower = joystickY + joystickX - rotation;
 
+	
+	
 
 		// Cap motor powers
 		if (Math.abs(frontLeftPower) > ControlConstants.MAX_ROBOT_SPEED)
@@ -110,35 +119,30 @@ public class Drivetrain extends SubsystemBase {
 		if (Math.abs(backRightPower) > ControlConstants.MAX_ROBOT_SPEED)
 			backRightPower *= ControlConstants.MAX_ROBOT_SPEED / Math.abs(backRightPower);
 
+			currentHeading =NAVX.getYaw();
+
 		// strafe lock 
-		if (Math.abs(joystickX) <= (Math.tan(0.26))*joystickY)
+		if (Math.abs(joystickX) <= (Math.tan(0.26))*joystickY){
 				joystickX = 0;
 				strafeLock = true;
-		if (Math.abs(joystickY) <= (Math.tan(0.26))*joystickX)
+				if (firstStrafe == true){
+					firstStrafe = false;
+					desiredHeading = NAVX.getYaw();
+				}
+				if (desiredHeading != currentHeading){
+					turnPower = (currentHeading - desiredHeading)*(kP);
+					rotation = turnPower;
+				 }
+			}
+		else if (Math.abs(joystickY) <= (Math.tan(0.26))*joystickX){
 				joystickY = 0;
 				strafeLock = true;
-	
-		
-		if (firstStrafe == true){
-			firstStrafe = false;
-			desiredHeading = getYaw;
 		}
-		
-		//maria needs to put in a kP values 
-		// not sure abour making current heading... smth like this???  currentHeading = getNavXHeading(Yaw);
-
-		if (desiredheading != currentHeading){
-		   turnPower = (currentHeading - desiredHeading)*(kP); //math mari a
-		   forwardSpeed = joystickX;
-		   rotation = turnPower;
-
-	   else if (strafeLock == false) //not sure about this one either
-		   firstStrafe = true; //reset
-		   forwardSpeed = joystickX;
-		   turnSpeed = rotation;
-	   
-	   
-	   }
+		else { 
+			firstStrafe = true;
+			strafeLock = false;
+		}	
+	
 
 		//finetuned driving system
 
