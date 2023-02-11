@@ -14,8 +14,8 @@ public class LimelightFollow extends CommandBase {
 	private Drivetrain drivetrain;
 	private Limelight limelight;
 
-	private final double CENTER_DISTANCE = 1.5;
-	private final double TARGET_AREA_CUTOFF = 20;
+	private final double CENTER_DISTANCE = 2;
+	private final double TARGET_AREA_CUTOFF = 6;
 
 	double rotation = 0;
 	double speed = 0;
@@ -57,7 +57,7 @@ public class LimelightFollow extends CommandBase {
 			// If target area is too small, move forward
 			else if (limelight.getTA() < TARGET_AREA_CUTOFF) {
 				System.out.println("Target too far, trying to move forward..."); // debug
-				drivetrain.setSpeeds(0.45, 0);
+				drivetrain.setSpeeds(-0.45, 0);
 			}
 		}
 		System.out.println(); // debug
@@ -75,7 +75,7 @@ public class LimelightFollow extends CommandBase {
 	public boolean isFinished() {
 		boolean hasTarget = limelight.getTV() != 0;
 		boolean isCentered = Math.abs(limelight.getTX()) < CENTER_DISTANCE;
-		boolean isCloseEnough = limelight.getTA() < TARGET_AREA_CUTOFF;
+		boolean isCloseEnough = limelight.getTA() > TARGET_AREA_CUTOFF;
 		return hasTarget && isCentered && isCloseEnough;
 	}
 
