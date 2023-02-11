@@ -25,14 +25,19 @@ public class NAVX extends SubsystemBase {
     private AHRS navx;
     private AnalogInput irSensor1;
     private LiDAR lidar;
+    private DigitalInput limitSwitch;
 
     public NAVX() {
 
         navx = new AHRS(SPI.Port.kMXP, (byte) 50);
         irSensor1 = new AnalogInput(2);
         lidar = new LiDAR(Port.kMXP);
+        limitSwitch = new DigitalInput(2);
 
     }
+    public boolean switchState() {
+        return limitSwitch.get();
+      }
 
     public class LiDAR {
 
