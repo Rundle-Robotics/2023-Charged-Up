@@ -35,6 +35,9 @@ public class Drivetrain extends SubsystemBase {
 	private RelativeEncoder backRighte;
   private RelativeEncoder frontLefte;
 	private boolean finetuned;
+	private boolean firstStrafe;
+
+
 
 	public Drivetrain() {
 		finetuned = false;
@@ -53,8 +56,6 @@ public class Drivetrain extends SubsystemBase {
 
 
 	}
-
-
 
 	@Override
 	public void periodic() {
@@ -95,6 +96,7 @@ public class Drivetrain extends SubsystemBase {
 		double backLeftPower = joystickY - joystickX + rotation;
 		double backRightPower = joystickY + joystickX - rotation;
 
+
 		// Cap motor powers
 		if (Math.abs(frontLeftPower) > ControlConstants.MAX_ROBOT_SPEED)
 			frontLeftPower *= ControlConstants.MAX_ROBOT_SPEED / Math.abs(frontLeftPower);
@@ -105,8 +107,20 @@ public class Drivetrain extends SubsystemBase {
 		if (Math.abs(backRightPower) > ControlConstants.MAX_ROBOT_SPEED)
 			backRightPower *= ControlConstants.MAX_ROBOT_SPEED / Math.abs(backRightPower);
 
+		// strafe lock 
+		if (Math.abs(joystickX) <= (Math.tan(0.26))*joystickY)
+				joystickX = 0;
+		if (Math.abs(joystickY) <= (Math.tan(0.26))*joystickX)
+				joystickY = 0;
+	
+	
+		
+		if (firstStrafe == true){
+			firstStrafe = false;
+			desiredHeading = getNavXHeading(Yaw);
+		}
 
-
+	
 
 
 		//finetuned driving system
