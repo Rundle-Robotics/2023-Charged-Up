@@ -46,9 +46,11 @@ public class AutoBalanceNAvX extends CommandBase {
     double pitch = navx.getPitch();
     double speed = 0;
     
+    drivetrain.mecanumDrive(1, 0, 0);
+
 
     if (Math.abs(pitch) > 2.5){
-      speed = pitch / 100;
+      speed = pitch / 10;
     }
     else{
       speed = 0;
