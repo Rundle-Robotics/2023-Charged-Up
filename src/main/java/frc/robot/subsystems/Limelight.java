@@ -15,6 +15,8 @@ public class Limelight extends SubsystemBase {
 	private double tx;
 	private double ty;
 	private double ta;
+	private double tshort;
+	private double tlong;
 	private double apriltagid;
 
 	public Limelight() {
@@ -35,6 +37,8 @@ public class Limelight extends SubsystemBase {
 		tx = table.getEntry("tx").getDouble(0.0);
 		ty = table.getEntry("tv").getDouble(0.0);
 		ta = table.getEntry("ta").getDouble(0.0);
+		tshort = table.getEntry("tshort").getDouble(0.0);
+		tlong = table.getEntry("tlong").getDouble(0.0);
 
 		apriltagid = table.getEntry("tid").getDouble(0.0);
 
@@ -43,6 +47,9 @@ public class Limelight extends SubsystemBase {
 		SmartDashboard.putNumber("area", ta);
 
 		SmartDashboard.putNumber("TId", apriltagid);
+
+		SmartDashboard.putNumber("tshort", tshort);
+		SmartDashboard.putNumber("tlong", tlong);
 
 		limelightCenter();
 
@@ -58,6 +65,14 @@ public class Limelight extends SubsystemBase {
 
 	public double getTA() {
 		return table.getEntry("ta").getDouble(0.0);
+	}
+
+	public double getTSHORT(){
+		return table.getEntry("tshort").getDouble(0.0);
+	}
+
+	public double getTLONG(){
+		return table.getEntry("tlong").getDouble(0.0);
 	}
 
 	public void limelightCenter() {
