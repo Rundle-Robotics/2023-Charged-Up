@@ -52,7 +52,7 @@ public class Limelight extends SubsystemBase {
 
 		SmartDashboard.putNumber("tshort", tshort);
 		SmartDashboard.putNumber("tlong", tlong);
-		SmartDashboard.putNumberArray("targetpose", targetpose_cameraspace);
+		SmartDashboard.putNumber("targetpose", targetpose_cameraspace[5]);
 
 		limelightCenter();
 

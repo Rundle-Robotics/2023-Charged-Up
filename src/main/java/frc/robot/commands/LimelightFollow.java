@@ -19,7 +19,7 @@ public class LimelightFollow extends CommandBase {
 
 	double rotation = 0;
 	double speed = 0;
-	boolean closeToTargeta = false;
+	boolean closeToTargeta;
 	boolean finite;
 
 	public LimelightFollow(Drivetrain drivetrain, Limelight limelight) {
@@ -37,6 +37,7 @@ public class LimelightFollow extends CommandBase {
 		limelight.setPipeline(0); // Pipeline 0 is for AprilTag detection
 
 		finite = false;
+		closeToTargeta = false;
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
