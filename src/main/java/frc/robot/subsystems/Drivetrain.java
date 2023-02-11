@@ -19,6 +19,7 @@ import frc.robot.Constants.OperatorConstants;
 
 
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.NAVX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -36,11 +37,13 @@ public class Drivetrain extends SubsystemBase {
   private RelativeEncoder frontLefte;
 	private boolean finetuned;
 	private boolean firstStrafe;
+	private boolean strafeLock;
 
 
 
 	public Drivetrain() {
 		finetuned = false;
+		firstStrafe = true;
 		frontLeft = new CANSparkMax(1, MotorType.kBrushless);
 		frontRight = new CANSparkMax(4, MotorType.kBrushless);
 		backLeft = new CANSparkMax(2, MotorType.kBrushless);
@@ -110,18 +113,32 @@ public class Drivetrain extends SubsystemBase {
 		// strafe lock 
 		if (Math.abs(joystickX) <= (Math.tan(0.26))*joystickY)
 				joystickX = 0;
+				strafeLock = true;
 		if (Math.abs(joystickY) <= (Math.tan(0.26))*joystickX)
 				joystickY = 0;
-	
+				strafeLock = true;
 	
 		
 		if (firstStrafe == true){
 			firstStrafe = false;
-			desiredHeading = getNavXHeading(Yaw);
+			desiredHeading = getYaw;
 		}
+		
+		//maria needs to put in a kP values 
+		// not sure abour making current heading... smth like this???  currentHeading = getNavXHeading(Yaw);
 
-	
+		if (desiredheading != currentHeading){
+		   turnPower = (currentHeading - desiredHeading)*(kP); //math mari a
+		   forwardSpeed = joystickX;
+		   rotation = turnPower;
 
+	   else if (strafeLock == false) //not sure about this one either
+		   firstStrafe = true; //reset
+		   forwardSpeed = joystickX;
+		   turnSpeed = rotation;
+	   
+	   
+	   }
 
 		//finetuned driving system
 
