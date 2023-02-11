@@ -20,7 +20,7 @@ public class LimelightFollow extends CommandBase {
 	double rotation = 0;
 	double speed = 0;
 	boolean closeToTargeta = false;
-	boolean finite = false;
+	boolean finite;
 
 	public LimelightFollow(Drivetrain drivetrain, Limelight limelight) {
 		this.drivetrain = drivetrain;
@@ -35,6 +35,8 @@ public class LimelightFollow extends CommandBase {
 	public void initialize() {
 		limelight.enableLimelight();
 		limelight.setPipeline(0); // Pipeline 0 is for AprilTag detection
+
+		finite = false;
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
@@ -44,23 +46,23 @@ public class LimelightFollow extends CommandBase {
 			if (limelight.getTV() == 0) {
 				System.out.println("No target found, trying to turn and find one..."); // debug
 				// drivetrain.setSpeeds(0, 0.25);
-				drivetrain.setSpeeds(0,0.5);
+				drivetrain.setSpeeds(0,0.6);
 			} else {
 				System.out.println("Target found");
 				// If target is on the right, turn right
 				if (limelight.getTX() > CENTER_DISTANCE) {
 					System.out.println("Target on the right, trying to turn..."); // debug
-					drivetrain.setSpeeds(0, -0.45);
+					drivetrain.setSpeeds(0, -0.5);
 				}
 				// If target is on the left, turn left
 				else if (limelight.getTX() < -CENTER_DISTANCE) {
 					System.out.println("Target on the left, trying to turn..."); // debug
-					drivetrain.setSpeeds(0, 0.45);
+					drivetrain.setSpeeds(0, 0.5);
 				}
 				// If target area is too small, move forward
 				else if (limelight.getTA() < TARGET_AREA_CUTOFF) {
 					System.out.println("Target too far, trying to move forward..."); // debug
-					drivetrain.setSpeeds(-0.45, 0);
+					drivetrain.setSpeeds(-0.5, 0);
 				}else{
 					closeToTargeta = true;
 				}
@@ -73,6 +75,7 @@ public class LimelightFollow extends CommandBase {
 			double[] tmom = limelight.getTARGETPOSECAMERA();
 		
 			if (Math.abs(tmom[5])>10){
+				System.out.println("trying to oddly center");
 				drivetrain.setSpeeds(0,tmom[5]/Math.abs(tmom[5])*0.45);
 				
 			}
