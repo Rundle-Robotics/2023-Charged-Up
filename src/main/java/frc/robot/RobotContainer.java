@@ -5,13 +5,16 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.Pneumatics;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import frc.robot.commands.GetClosePosition;
 import frc.robot.commands.GrabberLifterCommand;
 import frc.robot.commands.Switch;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.GrabberLifter;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import edu.wpi.first.wpilibj.XboxController;
@@ -19,17 +22,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.FineTUNECommand;
 import frc.robot.subsystems.NAVX;
 
-/**
- * This class is where the bulk of the robot should be declared. Since
- * Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in
- * the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of
- * the robot (including
- * subsystems, commands, and trigger mappings) should be declared here.
- */
 public class RobotContainer {
-	// Replace with CommandPS4Controller or CommandJoystick if needed
 	public static final CommandXboxController driverController = new CommandXboxController(
 			OperatorConstants.DRIVER_CONTROLLER_PORT);
 	private final XboxController controller  = driverController.getHID();
@@ -38,6 +31,10 @@ public class RobotContainer {
 			OperatorConstants.SECONDARY_CONTROLLER_PORT);
 	
 
+
+	// Subsystems
+	private static Compressor compressor;
+	private final Pneumatics pneumatics;
 
 	// The robot's subsystems and commands are defined here...
 	private final GrabberLifter grabberLifter = new GrabberLifter();
@@ -51,6 +48,11 @@ public class RobotContainer {
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
 	 */
 	public RobotContainer() {
+		compressor = new Compressor(PneumaticsModuleType.REVPH);
+        compressor.enableDigital();
+
+		pneumatics = new Pneumatics();
+		
 		// Configure the trigger bindings
 		configureBindings();
 		}
@@ -82,6 +84,9 @@ public class RobotContainer {
 
 		driverController.x().whileTrue(new FineTUNECommand(drivetrain));
 
+		driverController.a().onTrue(pneumatics.toggleGrabberSolenoid());
+		driverController.b().onTrue(pneumatics.toggleLifter());
+
 		// Example: Schedule `exampleMethodCommand` when the Xbox controller's B button
 		// is
 		// pressed,
@@ -89,11 +94,6 @@ public class RobotContainer {
 		// m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 	}
 
-	/**
-	 * Use this to pass the autonomous command to the main {@link Robot} class.
-	 *
-	 * @return the command to run in autonomous
-	 */
 	public Command getAutonomousCommand() {
 		return null;
 	}
