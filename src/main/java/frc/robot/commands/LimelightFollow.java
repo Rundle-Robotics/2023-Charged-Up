@@ -7,7 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.MecanumSubsystem;
 import frc.robot.subsystems.Limelight;
-import frc.robot.subsystems.MecanumSubsystem;
+
 
 public class LimelightFollow extends CommandBase {
 	/** Creates a new LimelightFollow. */
@@ -21,9 +21,14 @@ public class LimelightFollow extends CommandBase {
 	double rotation = 0;
 	double speed = 0;
 
+	boolean closeToTargeta;
+	boolean finite;
+
 	public LimelightFollow(MecanumSubsystem meca, Limelight limelight) {
 		this.meca = meca;
 		this.limelight = limelight;
+
+		
 
 		addRequirements(meca);
 		addRequirements(limelight);
@@ -33,63 +38,77 @@ public class LimelightFollow extends CommandBase {
 	@Override
 	public void initialize() {
 		Limelight.enableLimelight();
+
+		limelight.setPipeline(0); // Pipeline 0 is for AprilTag detection
+
+		finite = false;
+		
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		if (limelight.getTV() == 0) {
-			System.out.println("No target found, trying to turn and find one..."); // debug
-			meca.setSpeeds(0, 0, .25, .1);
-		} else {
-			System.out.println("Target found");
-			// If target is on the right, turn right
-			if (limelight.getTX() > CENTER_DISTANCE) {
-				System.out.println("Target on the right, trying to turn..."); // debug
-				meca.setSpeeds(0,0,.25,.1);
-			}
-			// If target is on the left, turn left
-			else if (limelight.getTX() < -CENTER_DISTANCE) {
-				System.out.println("Target on the left, trying to turn..."); // debug
-				meca.setSpeeds(0,0, -0.25,.1);
-			}
-			// If target area is too small, move forward
-			else if (limelight.getTA() < TARGET_AREA_CUTOFF) {
-				System.out.println("Target too far, trying to move forward..."); // debug
-				meca.setSpeeds(0,.25,0,.1);
-			}
+		limelight.putTargetPoseDataonSmartDashboard();
+		
+			if (limelight.getTV() == 0) {
+				System.out.println("No target found, trying to turn and find one..."); // debug
+				// drivetrain.setSpeeds(0, 0.25);
+				meca.setSpeeds(0, 0, 0.6, 0);
+			} else {
+				System.out.println("Target found");
+				// If target is on the right, turn right
+				if (limelight.getTX() > CENTER_DISTANCE) {
+					System.out.println("Target on the right, trying to turn..."); // debug
+					meca.setSpeeds(0,-0.5, 0, 0);
+				}
+				// If target is on the left, turn left
+				else if (limelight.getTX() < -CENTER_DISTANCE) {
+					System.out.println("Target on the left, trying to turn..."); // debug
+					meca.setSpeeds(0,0.5, 0, 0);
+				}
+				// If target area is too small, move forward
+				else if (limelight.getTA() < TARGET_AREA_CUTOFF) {
+					System.out.println("Target too far, trying to move forward..."); // debug
+					meca.setSpeeds(-0.5, 0, 0, 0);
+				} else {
+					double[] tmom = limelight.getTARGETPOSECAMERA();
+
+					if (Math.abs(tmom[5]) > 10) {
+						System.out.println("trying to oddly center");
+						meca.setSpeeds(0,0, tmom[5] / Math.abs(tmom[5]) * 0.45, 0);
+					} else {
+						System.out.println("Aligned!");
+						finite = true;
+					}
+				}
+
+			
+
 		}
+
 		System.out.println(); // debug
 	}
+
+	
 
 	// Called once the command ends or is interrupted.
 	@Override
 	public void end(boolean interrupted) {
 		limelight.disableLimelight();
+		
+		limelight.setPipeline(2); // Pipeline 2 is for driver vision
 	}
 
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-		return false;
+		// boolean hasTarget = limelight.getTV() != 0;
+		// boolean isCentered = Math.abs(limelight.getTX()) < CENTER_DISTANCE;
+		// boolean isCloseEnough = limelight.getTA() > TARGET_AREA_CUTOFF;
+		// return hasTarget && isCentered && isCloseEnough;
+		return finite;
 	}
 
-	/**
-	 * This function is the same as calling Math.max(Math.min(value, max), min);
-	 * 
-	 * @param value the value to limit
-	 * @param min   the minimum permissible value
-	 * @param max   the maximum permissible value
-	 * @return the value limited by the given constraints
-	 */
-	@SuppressWarnings("unused")
-	private double cap(double value, double min, double max) {
-		if (value < min) {
-			return min;
-		} else if (value > max) {
-			return max;
-		} else {
-			return value;
-		}
-	}
+	
+	
 }
