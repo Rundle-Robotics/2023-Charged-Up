@@ -9,7 +9,7 @@ public class GrabberLifter extends SubsystemBase {
     private CANSparkMax lm;
     private RelativeEncoder e;
     public GrabberLifter() {
-        rm = new CANSparkMax(6, MotorType.kBrushless);
+        rm = new CANSparkMax(5, MotorType.kBrushless);
         lm = new CANSparkMax(7, MotorType.kBrushless);
         lm.setInverted(true);
         e = rm.getEncoder();
