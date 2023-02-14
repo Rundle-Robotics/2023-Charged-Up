@@ -119,7 +119,7 @@ public class Drivetrain extends SubsystemBase {
 		if (Math.abs(backRightPower) > ControlConstants.MAX_ROBOT_SPEED)
 			backRightPower *= ControlConstants.MAX_ROBOT_SPEED / Math.abs(backRightPower);
 
-			currentHeading =NAVX.getYaw();
+			currentHeading =RobotContainer.getNavXInstance().getYaw();
 
 		// strafe lock 
 		if (Math.abs(joystickX) <= (Math.tan(0.26))*joystickY){

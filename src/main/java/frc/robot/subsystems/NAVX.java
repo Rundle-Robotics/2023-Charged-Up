@@ -25,6 +25,7 @@ public class NAVX extends SubsystemBase {
     private AHRS navx;
     private AnalogInput irSensor1;
     private LiDAR lidar;
+    public static NAVX NavX = new NAVX();
 
     public NAVX() {
 
@@ -119,7 +120,7 @@ public class NAVX extends SubsystemBase {
     }
 
     public static double getYaw() {
-        return navx.getYaw();
+        return NavX.getYaw();
     }
 
     public double getIrVoltage() {

@@ -40,7 +40,7 @@ public class RobotContainer {
 	private final Drivetrain drivetrain = new Drivetrain();
 
 	//declared NAVX
-	public final NAVX navx = new NAVX();
+	public static NAVX NavX = new NAVX();
 
 
 	/**
@@ -93,4 +93,11 @@ public class RobotContainer {
 	public Command getAutonomousCommand() {
 		return null;
 	}
+
+
+	public static NAVX getNavXInstance() { 
+		return this.NavX; 
+	}
+
+
 }
