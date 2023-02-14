@@ -32,6 +32,9 @@ public class RobotContainer {
 	public static final CommandXboxController driverController = new CommandXboxController(
 			OperatorConstants.DRIVER_CONTROLLER_PORT);
 	private final XboxController controller  = driverController.getHID();
+
+	public static final CommandXboxController secondaryController = new CommandXboxController(
+			OperatorConstants.SECONDARY_CONTROLLER_PORT);
 	
 
 
@@ -65,13 +68,13 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
-		driverController.y().onTrue(new GrabberLifterCommand(0.4, grabberLifter)).onFalse(new GetClosePosition(grabberLifter));
+		secondaryController.y().onTrue(new GrabberLifterCommand(0.4, grabberLifter)).onFalse(new GetClosePosition(grabberLifter));
 
-		driverController.a().onTrue(new GrabberLifterCommand(-0.4, grabberLifter)).onFalse(new GetClosePosition(grabberLifter));
+		secondaryController.a().onTrue(new GrabberLifterCommand(-0.4, grabberLifter)).onFalse(new GetClosePosition(grabberLifter));
 
-		driverController.povUp().onTrue(new GrabberLifterCommand(0.2, grabberLifter)).onFalse(new GrabberLifterCommand(0, grabberLifter));
+		secondaryController.povUp().onTrue(new GrabberLifterCommand(0.2, grabberLifter)).onFalse(new GrabberLifterCommand(0, grabberLifter));
 
-		driverController.povDown().onTrue(new GrabberLifterCommand(-0.2, grabberLifter)).onFalse(new GrabberLifterCommand(0, grabberLifter));
+		secondaryController.povDown().onTrue(new GrabberLifterCommand(-0.2, grabberLifter)).onFalse(new GrabberLifterCommand(0, grabberLifter));
 		// Example: Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 		// new Trigger(drivetrain::exampleCondition)
 		// .onTrue(new ExampleCommand(m_exampleSubsystem));
