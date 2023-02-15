@@ -32,7 +32,7 @@ public class GrabberLifter extends SubsystemBase {
 		return e.getPosition();
 	}
     public void lift(double newValue) {
-        rm.set(newValue);
+        rm.set(newValue); //positive speed on rm is up
         lm.set(newValue);
     }
 
@@ -40,24 +40,68 @@ public class GrabberLifter extends SubsystemBase {
     public void periodic() {
 
         double speed = rm.get();
-        if (getTopSwitch() && speed > 0)
+        if (stopArm(speed))
         {
             lift(0);
         } 
-        else if (getMiddleSwitch() && speed < 0)
+
+    }
+    /*
+     * IMPORTANT
+     * ADJUST EXCLAMATION MARKS TO CHANGE LOGICs
+     */
+
+    public boolean getTopSwitch() {return !topSwitch.get(); } //top switch is 'active' when low
+    public boolean getMiddleSwitch() {return middleSwitch.get(); } //middle switch is 'active' when high
+    public boolean getBottomSwitch() {return !bottomSwitch.get(); } //bottom siwtch is 'active' when low
+
+    public boolean stopArm(double speed) 
+    {
+
+        //assume positive speed is moving up
+        if (getTopSwitch() && speed > 0) //at top, wanting to move higher
         {
-            lift(0);
-        }
-        else if (!getBottomSwitch() && getMiddleSwitch())
+            return true;
+        } 
+        else if (getMiddleSwitch() && speed < 0) //at bottom, wanting to move lower
         {
-            lift(0);
+            return true;
         }
+        else if (!getBottomSwitch() && getMiddleSwitch()) //arm lifter is up, arm is down - can't move in either direction
+        {
+            return true;
+        }
+        else if (!getBottomSwitch() && !getMiddleSwitch() && speed < 0) //arm lifter is up, arm is not tucked and wants to move lower
+        {
+            return true;
+        }
+
+        return false;
+
     }
 
+    public boolean lifterNeedsLowering(double speed)
+    {
+        if (!getBottomSwitch() && getMiddleSwitch()) //arm lifter is up, arm is down - can't move in either direction
+        {
+            return true;
+        }
+        else if (!getBottomSwitch() && !getMiddleSwitch() && speed < 0) //arm lifter is up, arm is not tucked and wants to move lower
+        {
+            return true;
+        }
 
-    public boolean getTopSwitch() {return topSwitch.get(); }
-    public boolean getMiddleSwitch() {return middleSwitch.get(); }
-    public boolean getBottomSwitch() {return bottomSwitch.get(); }
+        return false;
+    }
+
+    public boolean lifterNeedsRaising(double speed)
+    {
+        if (getBottomSwitch() && getMiddleSwitch())
+        {
+            return true;
+        }
+        return false;
+    }
     
 }
 

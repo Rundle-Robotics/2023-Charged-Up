@@ -21,19 +21,12 @@ public class GrabberLifterCommand extends CommandBase {
     @Override
     public void initialize() {
   
-      if (m_GrabberLifter.getTopSwitch() && Speed > 0)
-      {
-        Speed = 0;
-      } 
-      else if (m_GrabberLifter.getMiddleSwitch() && Speed < 0)
-      {
-        Speed = 0;
-      }
-      else if (!m_GrabberLifter.getBottomSwitch() && m_GrabberLifter.getMiddleSwitch())
-      {
-        Speed = 0;
-      }
-      m_GrabberLifter.lift(Speed);
+    if (m_GrabberLifter.stopArm(Speed))
+    {
+      Speed = 0;
+    }
+
+    m_GrabberLifter.lift(Speed);
   
   
     }
