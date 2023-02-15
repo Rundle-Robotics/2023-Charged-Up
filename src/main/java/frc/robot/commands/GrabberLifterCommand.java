@@ -1,7 +1,6 @@
 package frc.robot.commands;
 import frc.robot.subsystems.GrabberLifter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.commands.Switch;
 public class GrabberLifterCommand extends CommandBase {
     private final GrabberLifter m_GrabberLifter;
     private double Speed;
@@ -22,6 +21,18 @@ public class GrabberLifterCommand extends CommandBase {
     @Override
     public void initialize() {
   
+      if (m_GrabberLifter.getTopSwitch() && Speed > 0)
+      {
+        Speed = 0;
+      } 
+      else if (m_GrabberLifter.getMiddleSwitch() && Speed < 0)
+      {
+        Speed = 0;
+      }
+      else if (!m_GrabberLifter.getBottomSwitch() && m_GrabberLifter.getMiddleSwitch())
+      {
+        Speed = 0;
+      }
       m_GrabberLifter.lift(Speed);
   
   
@@ -30,8 +41,6 @@ public class GrabberLifterCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-      
-        
   
     }
   
