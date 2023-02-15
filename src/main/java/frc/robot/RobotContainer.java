@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import frc.robot.commands.GetClosePosition;
 import frc.robot.commands.GrabberLifterCommand;
-import frc.robot.commands.Switch;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.GrabberLifter;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
