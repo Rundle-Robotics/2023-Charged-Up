@@ -119,8 +119,8 @@ public class NAVX extends SubsystemBase {
         return navx.getRoll();
     }
 
-    public static double getYaw() {
-        return NavX.getYaw();
+    public double getYaw() {
+        return navx.getYaw();
     }
 
     public double getIrVoltage() {

@@ -39,14 +39,7 @@ public class Drivetrain extends SubsystemBase {
 	private boolean firstStrafe;
 	private boolean strafeLock;
 
-	double forwardSpeed;
-	double desiredHeading; 
-	double currentHeading; 
-	double rotation; 
-	double turnPower; 
-	double kP = 0.1;
-
-
+	
 	public Drivetrain() {
 		finetuned = false;
 		firstStrafe = true;
@@ -70,12 +63,7 @@ public class Drivetrain extends SubsystemBase {
 	@Override
 	public void periodic() {
 
-		double joyX = RobotContainer.driverController.getRawAxis(OperatorConstants.XBOX_LEFT_X_AXIS);
-		double joyY = -RobotContainer.driverController.getRawAxis(OperatorConstants.XBOX_LEFT_Y_AXIS);
-		double rotation = ControlConstants.ROTATION_MULT
-				* (RobotContainer.driverController.getRawAxis(OperatorConstants.XBOX_RIGHT_X_AXIS));
-		mecanumDrive(joyX, joyY, rotation);
-
+		
 		double v = frontLefte.getVelocity();
         double p = frontLefte.getPosition();
         double CPR = frontLefte.getCountsPerRevolution();
@@ -106,8 +94,6 @@ public class Drivetrain extends SubsystemBase {
 		double backLeftPower = joystickY - joystickX + rotation;
 		double backRightPower = joystickY + joystickX - rotation;
 
-	
-	
 
 		// Cap motor powers
 		if (Math.abs(frontLeftPower) > ControlConstants.MAX_ROBOT_SPEED)
@@ -119,32 +105,6 @@ public class Drivetrain extends SubsystemBase {
 		if (Math.abs(backRightPower) > ControlConstants.MAX_ROBOT_SPEED)
 			backRightPower *= ControlConstants.MAX_ROBOT_SPEED / Math.abs(backRightPower);
 
-			currentHeading =RobotContainer.getNavXInstance().getYaw();
-
-		// strafe lock 
-		if (Math.abs(joystickX) <= (Math.tan(0.26))*joystickY){
-				joystickX = 0;
-				strafeLock = true;
-				if (firstStrafe == true){
-					firstStrafe = false;
-					desiredHeading = NAVX.getYaw();
-				}
-				if (desiredHeading != currentHeading){
-					turnPower = (currentHeading - desiredHeading)*(kP);
-					rotation = turnPower;
-				 }
-			}
-		else if (Math.abs(joystickY) <= (Math.tan(0.26))*joystickX){
-				joystickY = 0;
-				strafeLock = true;
-		}
-		else { 
-			firstStrafe = true;
-			strafeLock = false;
-		}	
-	
-
-		//finetuned driving system
 
 		if (finetuned == true) {
 			frontRightPower = frontRightPower/5;

@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.GetClosePosition;
 import frc.robot.commands.GrabberLifterCommand;
+import frc.robot.commands.MecanumDrive;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.GrabberLifter;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -40,7 +41,9 @@ public class RobotContainer {
 	private final Drivetrain drivetrain = new Drivetrain();
 
 	//declared NAVX
-	public static NAVX NavX = new NAVX();
+	private final NAVX navx = new NAVX();
+
+	private final MecanumDrive mecanumDefaultCommand;
 
 
 	/**
@@ -48,6 +51,9 @@ public class RobotContainer {
 	 */
 	public RobotContainer() {
 		// Configure the trigger bindings
+		
+		mecanumDefaultCommand = new MecanumDrive(drivetrain, navx);
+		drivetrain.setDefaultCommand(mecanumDefaultCommand);
 		configureBindings();
 		}
 	/**
@@ -92,11 +98,6 @@ public class RobotContainer {
 	 */
 	public Command getAutonomousCommand() {
 		return null;
-	}
-
-
-	public static NAVX getNavXInstance() { 
-		return this.NavX; 
 	}
 
 
