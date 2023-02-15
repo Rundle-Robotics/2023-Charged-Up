@@ -36,14 +36,12 @@ public class GrabberLifter extends SubsystemBase {
         lm.set(newValue);
     }
 
+    public double getLiftSpeed(){
+        return rm.get();
+    }
+
     @Override
     public void periodic() {
-
-        double speed = rm.get();
-        if (stopArm(speed))
-        {
-            lift(0);
-        } 
 
     }
     /*
