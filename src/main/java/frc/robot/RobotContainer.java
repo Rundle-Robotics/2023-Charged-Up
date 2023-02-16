@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.LimelightFollow;
+import frc.robot.commands.RetroReflectiveFollow;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.MecanumSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -59,6 +60,7 @@ public class RobotContainer {
 	private void configureBindings() {
 
 		driverController.b().whileTrue(new LimelightFollow(meca, limelight));
+		driverController.rightBumper().whileTrue(new RetroReflectiveFollow(meca, limelight) );
 		// Example: Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 		// new Trigger(drivetrain::exampleCondition)
 		// .onTrue(new ExampleCommand(m_exampleSubsystem));
