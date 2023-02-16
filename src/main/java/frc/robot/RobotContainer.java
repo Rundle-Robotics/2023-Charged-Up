@@ -25,37 +25,35 @@ import frc.robot.subsystems.NAVX;
 public class RobotContainer {
 	public static final CommandXboxController driverController = new CommandXboxController(
 			OperatorConstants.DRIVER_CONTROLLER_PORT);
-	private final XboxController controller  = driverController.getHID();
+	private final XboxController controller = driverController.getHID();
 
 	public static final CommandXboxController secondaryController = new CommandXboxController(
 			OperatorConstants.SECONDARY_CONTROLLER_PORT);
-	
-
 
 	// Subsystems
-	//private static Compressor compressor;
+	// private static Compressor compressor;
 	private final Pneumatics pneumatics;
 
 	// The robot's subsystems and commands are defined here...
 	private final GrabberLifter grabberLifter = new GrabberLifter();
 	private final Drivetrain drivetrain = new Drivetrain();
 
-	//declared NAVX
+	// declared NAVX
 	public final NAVX navx = new NAVX();
-
 
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
 	 */
 	public RobotContainer() {
-		//compressor = new Compressor(PneumaticsModuleType.REVPH);
-       // compressor.enableDigital();
+		// compressor = new Compressor(PneumaticsModuleType.REVPH);
+		// compressor.enableDigital();
 
 		pneumatics = new Pneumatics();
-		
+
 		// Configure the trigger bindings
 		configureBindings();
-		}
+	}
+
 	/**
 	 * Use this method to define your trigger->command mappings. Triggers can be
 	 * created via the
@@ -71,13 +69,22 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
-		// driverController.y().onTrue(new GrabberLifterCommand(0.4, grabberLifter)).onFalse(new GetClosePosition(grabberLifter));
+		// driverController.y().onTrue(new GrabberLifterCommand(0.4,
+		// grabberLifter)).onFalse(new GetClosePosition(grabberLifter));
 
-		// driverController.a().onTrue(new GrabberLifterCommand(-0.4, grabberLifter)).onFalse(new GetClosePosition(grabberLifter));
+		// driverController.a().onTrue(new GrabberLifterCommand(-0.4,
+		// grabberLifter)).onFalse(new GetClosePosition(grabberLifter));
 
-		driverController.rightBumper().onTrue(new GrabberLifterCommand(0.2, grabberLifter, false)).onFalse(new GrabberLifterCommand(0, grabberLifter, false));
+		// driverController.rightBumper().onTrue(new GrabberLifterCommand(0.2,
+		// grabberLifter, false)).onFalse(new GrabberLifterCommand(0, grabberLifter,
+		// false));
+		// driverController.leftBumper().onTrue(new GrabberLifterCommand(0.2,
+		// grabberLifter, true)).onFalse(new GrabberLifterCommand(0, grabberLifter,
+		// false));
 
-		driverController.leftBumper().onTrue(new GrabberLifterCommand(0.2, grabberLifter, true)).onFalse(new GrabberLifterCommand(0, grabberLifter, false));
+		driverController.rightBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, false));
+		driverController.leftBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, true));
+
 		// Example: Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 		// new Trigger(drivetrain::exampleCondition)
 		// .onTrue(new ExampleCommand(m_exampleSubsystem));
