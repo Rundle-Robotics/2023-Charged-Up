@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import frc.robot.commands.GetClosePosition;
 import frc.robot.commands.GrabberLifterCommand;
-import frc.robot.commands.Switch;
+//import frc.robot.commands.Switch;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.GrabberLifter;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -33,7 +33,7 @@ public class RobotContainer {
 
 
 	// Subsystems
-	private static Compressor compressor;
+	//private static Compressor compressor;
 	private final Pneumatics pneumatics;
 
 	// The robot's subsystems and commands are defined here...
@@ -48,8 +48,8 @@ public class RobotContainer {
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
 	 */
 	public RobotContainer() {
-		compressor = new Compressor(PneumaticsModuleType.REVPH);
-        compressor.enableDigital();
+		//compressor = new Compressor(PneumaticsModuleType.REVPH);
+       // compressor.enableDigital();
 
 		pneumatics = new Pneumatics();
 		
@@ -71,13 +71,13 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
-		secondaryController.y().onTrue(new GrabberLifterCommand(0.4, grabberLifter)).onFalse(new GetClosePosition(grabberLifter));
+		// driverController.y().onTrue(new GrabberLifterCommand(0.4, grabberLifter)).onFalse(new GetClosePosition(grabberLifter));
 
-		secondaryController.a().onTrue(new GrabberLifterCommand(-0.4, grabberLifter)).onFalse(new GetClosePosition(grabberLifter));
+		// driverController.a().onTrue(new GrabberLifterCommand(-0.4, grabberLifter)).onFalse(new GetClosePosition(grabberLifter));
 
-		secondaryController.povUp().onTrue(new GrabberLifterCommand(0.2, grabberLifter)).onFalse(new GrabberLifterCommand(0, grabberLifter));
+		driverController.rightBumper().onTrue(new GrabberLifterCommand(0.2, grabberLifter, false)).onFalse(new GrabberLifterCommand(0, grabberLifter, false));
 
-		secondaryController.povDown().onTrue(new GrabberLifterCommand(-0.2, grabberLifter)).onFalse(new GrabberLifterCommand(0, grabberLifter));
+		driverController.leftBumper().onTrue(new GrabberLifterCommand(0.2, grabberLifter, true)).onFalse(new GrabberLifterCommand(0, grabberLifter, false));
 		// Example: Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 		// new Trigger(drivetrain::exampleCondition)
 		// .onTrue(new ExampleCommand(m_exampleSubsystem));

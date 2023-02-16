@@ -3,6 +3,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.RelativeEncoder;
 
@@ -10,6 +11,9 @@ public class GrabberLifter extends SubsystemBase {
     private CANSparkMax rm;
     private CANSparkMax lm;
     private RelativeEncoder e;
+    private RelativeEncoder eL;
+
+
 
     private DigitalInput bottomSwitch;
     private DigitalInput middleSwitch;
@@ -18,8 +22,10 @@ public class GrabberLifter extends SubsystemBase {
     public GrabberLifter() {
         rm = new CANSparkMax(5, MotorType.kBrushless);
         lm = new CANSparkMax(7, MotorType.kBrushless);
-        lm.setInverted(true);
+        rm.setInverted(true);
+        eL = lm.getEncoder();
         e = rm.getEncoder();
+        
         rm.setIdleMode(CANSparkMax.IdleMode.kBrake);
         lm.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
@@ -52,6 +58,10 @@ public class GrabberLifter extends SubsystemBase {
         {
             lift(0);
         }
+        SmartDashboard.putNumber("right encoder", e.getPosition());
+        SmartDashboard.putNumber("left encoder", eL.getPosition());
+        SmartDashboard.putNumber("left encoder rpm", eL.getVelocity());
+        SmartDashboard.putNumber(" right encoder rpm", e.getVelocity());
     }
 
 
