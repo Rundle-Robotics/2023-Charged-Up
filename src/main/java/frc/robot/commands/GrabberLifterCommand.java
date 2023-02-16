@@ -16,7 +16,7 @@ public class GrabberLifterCommand extends CommandBase {
       speed = -speed;
     }
 
-    // addRequirements(m_Drivetrain);
+    addRequirements(subsystem);
 
     // Use addRequirements() here to declare subsystem dependencies
 
