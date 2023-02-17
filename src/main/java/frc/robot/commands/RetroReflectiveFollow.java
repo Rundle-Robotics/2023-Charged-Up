@@ -93,8 +93,8 @@ public class RetroReflectiveFollow extends CommandBase {
 	@Override
 	public boolean isFinished() {
 		boolean hasTarget = limelight.getTV() != 0;
-		boolean isCentered = Math.abs(limelight.getTX()) < CENTER_DISTANCE;
-		boolean isCloseEnough = limelight.getTA() > TARGET_AREA_CUTOFF;
+		boolean isCentered = Math.abs(limelight.getTX()) <= CENTER_DISTANCE;
+		boolean isCloseEnough = limelight.getTA() >= TARGET_AREA_CUTOFF;
 		return hasTarget && isCentered && isCloseEnough;
 		
 	}
