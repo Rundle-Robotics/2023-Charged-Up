@@ -48,7 +48,7 @@ public class LimelightFollow extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		limelight.putTargetPoseDataonSmartDashboard();
+		
 		
 			if (limelight.getTV() == 0) {
 				System.out.println("No target found, trying to turn and find one..."); // debug
@@ -70,24 +70,14 @@ public class LimelightFollow extends CommandBase {
 				else if (limelight.getTA() < TARGET_AREA_CUTOFF) {
 					System.out.println("Target too far, trying to move forward..."); // debug
 					meca.setSpeeds(-0.5, 0, 0, 0);
-				} else {
-					double[] tmom = limelight.getTARGETPOSECAMERA();
-
-					if (Math.abs(tmom[5]) > 10) {
-						System.out.println("trying to oddly center");
-						meca.setSpeeds(0,0, tmom[5] / Math.abs(tmom[5]) * 0.45, 0);
-					} else {
-						System.out.println("Aligned!");
-						finite = true;
-					}
-				}
+				} 
+			}
 
 			
 
 		}
-
-		System.out.println(); // debug
-	}
+		System.out.println("DONE CENTERING");
+}
 
 	
 
@@ -102,11 +92,11 @@ public class LimelightFollow extends CommandBase {
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-		// boolean hasTarget = limelight.getTV() != 0;
-		// boolean isCentered = Math.abs(limelight.getTX()) < CENTER_DISTANCE;
-		// boolean isCloseEnough = limelight.getTA() > TARGET_AREA_CUTOFF;
-		// return hasTarget && isCentered && isCloseEnough;
-		return finite;
+		boolean hasTarget = limelight.getTV() != 0;
+		boolean isCentered = Math.abs(limelight.getTX()) < CENTER_DISTANCE;
+		boolean isCloseEnough = limelight.getTA() > TARGET_AREA_CUTOFF;
+		return hasTarget && isCentered && isCloseEnough;
+		
 	}
 
 	

@@ -48,7 +48,7 @@ public class RetroReflectiveFollow extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		limelight.putTargetPoseDataonSmartDashboard();
+		
 		
 			if (limelight.getTV() == 0) {
 				System.out.println("No target found, trying to turn and find one..."); // debug
@@ -71,12 +71,12 @@ public class RetroReflectiveFollow extends CommandBase {
 					System.out.println("Target too far, trying to move forward..."); // debug
 					meca.setSpeeds(-0.5, 0, 0, 0);
 				}
-
+//Values are placeholders at the moment. 
 			
 
 		}
 
-		System.out.println(); // debug
+		System.out.println("DONE CENTEING"); // debug
 	}
 
 	
@@ -92,11 +92,11 @@ public class RetroReflectiveFollow extends CommandBase {
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-		// boolean hasTarget = limelight.getTV() != 0;
-		// boolean isCentered = Math.abs(limelight.getTX()) < CENTER_DISTANCE;
-		// boolean isCloseEnough = limelight.getTA() > TARGET_AREA_CUTOFF;
-		// return hasTarget && isCentered && isCloseEnough;
-		return finite;
+		boolean hasTarget = limelight.getTV() != 0;
+		boolean isCentered = Math.abs(limelight.getTX()) < CENTER_DISTANCE;
+		boolean isCloseEnough = limelight.getTA() > TARGET_AREA_CUTOFF;
+		return hasTarget && isCentered && isCloseEnough;
+		
 	}
 
 	
