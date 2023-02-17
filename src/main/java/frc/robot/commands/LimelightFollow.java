@@ -70,16 +70,15 @@ public class LimelightFollow extends CommandBase {
 				else if (limelight.getTA() < TARGET_AREA_CUTOFF) {
 					System.out.println("Target too far, trying to move forward..."); // debug
 					meca.setSpeeds(-0.5, 0, 0, 0);
-				} 
-			}
-
+				}
+//Values are placeholders at the moment. 
 			
 
 		}
-		System.out.println("DONE CENTERING");
-}
 
-	
+		System.out.println("DONE CENTEING"); // debug
+	}
+//why is there an error here---
 
 	// Called once the command ends or is interrupted.
 	@Override
