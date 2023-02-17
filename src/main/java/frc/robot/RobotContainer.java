@@ -59,8 +59,8 @@ public class RobotContainer {
 	 */
 	private void configureBindings() {
 
-		driverController.b().whileTrue(new LimelightFollow(meca, limelight));
-		driverController.rightBumper().whileTrue(new RetroReflectiveFollow(meca, limelight) );
+		driverController.x().whileTrue(new LimelightFollow(meca, limelight));
+		driverController.b().whileTrue(new RetroReflectiveFollow(meca, limelight) );
 		// Example: Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 		// new Trigger(drivetrain::exampleCondition)
 		// .onTrue(new ExampleCommand(m_exampleSubsystem));
