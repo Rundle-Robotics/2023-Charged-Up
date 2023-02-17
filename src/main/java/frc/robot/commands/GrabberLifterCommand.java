@@ -6,16 +6,17 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class GrabberLifterCommand extends CommandBase {
   private final GrabberLifter m_GrabberLifter;
-  private double speed;
+  private double speed2;
+  private boolean tof2;
 
   public GrabberLifterCommand(double speed, GrabberLifter subsystem, boolean tof) {
 
     m_GrabberLifter = subsystem;
-    speed = this.speed;
+    speed2 = speed;
+    tof2 = tof;
+    
+    if (tof2) {speed2 = -speed; }
 
-    if (tof) {
-      speed = -speed;
-    }
 
     addRequirements(subsystem);
 
@@ -32,7 +33,8 @@ public class GrabberLifterCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_GrabberLifter.lift(speed);
+
+    m_GrabberLifter.lift(speed2);
 
     SmartDashboard.putBoolean("middle", m_GrabberLifter.getMiddleSwitch());
     SmartDashboard.putBoolean("bottom", m_GrabberLifter.getBottomSwitch());
@@ -47,8 +49,8 @@ public class GrabberLifterCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    boolean top = m_GrabberLifter.getTopSwitch() && speed > 0;
-    boolean middle = m_GrabberLifter.getMiddleSwitch() && speed < 0;
+    boolean top = m_GrabberLifter.getTopSwitch() && speed2 > 0;
+    boolean middle = m_GrabberLifter.getMiddleSwitch() && speed2 < 0;
     boolean bottom = m_GrabberLifter.getBottomSwitch() && m_GrabberLifter.getMiddleSwitch();
     return top || middle || bottom;
   }
