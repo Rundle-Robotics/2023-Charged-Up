@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.Constants.ControlConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Pneumatics;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -96,19 +97,27 @@ public class RobotContainer {
 		// grabberLifter, true)).onFalse(new GrabberLifterCommand(0, grabberLifter,
 		// false));
 
-		driverController.rightBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, false));
-		driverController.leftBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, true));
+		secondaryController.rightTrigger(ControlConstants.JOY_DEADBAND).whileTrue(new GrabberLifterCommand(0.2, grabberLifter, false));
+		secondaryController.leftTrigger(ControlConstants.JOY_DEADBAND).whileTrue(new GrabberLifterCommand(0.2, grabberLifter, true));
+
+		secondaryController.rightBumper().whileTrue(new GrabberLifterCommand(0.4, grabberLifter, false)).onFalse(new GetClosePosition(grabberLifter));
+		secondaryController.leftBumper().whileTrue(new GrabberLifterCommand(0.4, grabberLifter, true)).onFalse(new GetClosePosition(grabberLifter));
+		
 
 		// Example: Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 		// new Trigger(drivetrain::exampleCondition)
 		// .onTrue(new ExampleCommand(m_exampleSubsystem));
 
-		driverController.x().whileTrue(new FineTUNECommand(drivetrain));
+		driverController.leftTrigger(ControlConstants.JOY_DEADBAND).whileTrue(new FineTUNECommand(drivetrain));
 
-		driverController.a().onTrue(pneumatics.toggleGrabberSolenoid());
-		driverController.b().onTrue(pneumatics.toggleLifter());
 
-		driverController.start().onTrue(
+		//driverController.b().whileTrue(new --the limelight retro reflective -- );
+		//driverController.x().whileTrue(new --limelight follow--);
+
+		secondaryController.b().onTrue(pneumatics.toggleGrabberSolenoid());
+		secondaryController.a().onTrue(pneumatics.toggleLifter());
+
+		driverController.rightTrigger(ControlConstants.JOY_DEADBAND).whileTrue(
 			new StartEndCommand(
 				() -> cameraSelection.setString(armCamera.getName()),
 				() -> cameraSelection.setString(mastCamera.getName())
