@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.GrabberLifter;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class GrabberLifterCommand extends CommandBase {
@@ -32,6 +33,10 @@ public class GrabberLifterCommand extends CommandBase {
   @Override
   public void execute() {
     m_GrabberLifter.lift(speed);
+
+    SmartDashboard.putBoolean("middle", m_GrabberLifter.getMiddleSwitch());
+    SmartDashboard.putBoolean("bottom", m_GrabberLifter.getBottomSwitch());
+    SmartDashboard.putBoolean("top", m_GrabberLifter.getTopSwitch());
   }
 
   // Called once the command ends or is interrupted.
@@ -44,7 +49,7 @@ public class GrabberLifterCommand extends CommandBase {
   public boolean isFinished() {
     boolean top = m_GrabberLifter.getTopSwitch() && speed > 0;
     boolean middle = m_GrabberLifter.getMiddleSwitch() && speed < 0;
-    boolean bottom = !m_GrabberLifter.getBottomSwitch() && m_GrabberLifter.getMiddleSwitch();
+    boolean bottom = m_GrabberLifter.getBottomSwitch() && m_GrabberLifter.getMiddleSwitch();
     return top || middle || bottom;
   }
 }

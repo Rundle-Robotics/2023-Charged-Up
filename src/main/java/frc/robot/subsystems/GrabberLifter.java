@@ -46,22 +46,11 @@ public class GrabberLifter extends SubsystemBase {
     public void periodic() {
 
         double speed = rm.get();
-        if (getTopSwitch() && speed > 0)
-        {
-            lift(0);
-        } 
-        else if (getMiddleSwitch() && speed < 0)
-        {
-            lift(0);
-        }
-        else if (!getBottomSwitch() && getMiddleSwitch())
-        {
-            lift(0);
-        }
         SmartDashboard.putNumber("right encoder", e.getPosition());
         SmartDashboard.putNumber("left encoder", eL.getPosition());
         SmartDashboard.putNumber("left encoder rpm", eL.getVelocity());
         SmartDashboard.putNumber(" right encoder rpm", e.getVelocity());
+        
     }
 
 
