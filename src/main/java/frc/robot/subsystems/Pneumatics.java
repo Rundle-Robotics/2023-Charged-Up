@@ -14,8 +14,8 @@ public class Pneumatics extends SubsystemBase {
 	public Pneumatics() {
 		// set solenoid values (placeholder values)
 		israised = true;
-		
-		sol1 = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0, 1); 
+
+		sol1 = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0, 1);
 		sol1.set(Value.kReverse);
 
 		armsolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 2, 3);
@@ -34,13 +34,13 @@ public class Pneumatics extends SubsystemBase {
 		armsolenoid.set(value);
 	}
 
-
 	public CommandBase toggleGrabberSolenoid() {
 		return runOnce(() -> {
 			sol1.toggle();
 			System.out.println("Toggling Grabber solenoid"); // debug
 		});
 	}
+
 	public CommandBase toggleLifter() {
 		return runOnce(() -> {
 			armsolenoid.toggle();

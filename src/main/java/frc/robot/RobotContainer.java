@@ -19,7 +19,9 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import frc.robot.commands.GrabberLifterCommand;
+import frc.robot.commands.LimelightFollow;
 import frc.robot.subsystems.GrabberLifter;
+import frc.robot.subsystems.Limelight;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.FineTUNECommand;
 import frc.robot.subsystems.NAVX;
@@ -42,6 +44,7 @@ public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	private final GrabberLifter grabberLifter = new GrabberLifter();
 	private final Drivetrain drivetrain = new Drivetrain();
+	private final Limelight limelight = new Limelight();
 
 	// declared NAVX
 	public final NAVX navx = new NAVX();
@@ -62,6 +65,7 @@ public class RobotContainer {
 
 		// Configure the trigger bindings
 		configureBindings();
+
 	}
 
 	/**
@@ -103,6 +107,9 @@ public class RobotContainer {
 
 		// Autobalance binding
 		driverController.x().whileTrue(new AutoBalanceNAvX(drivetrain, navx));
+
+		// Limelight follow binding
+		driverController.y().whileTrue(new LimelightFollow(drivetrain, limelight));
 
 		// FineTune binding
 		driverController.leftTrigger(ControlConstants.JOY_DEADBAND).whileTrue(new FineTUNECommand(drivetrain));
