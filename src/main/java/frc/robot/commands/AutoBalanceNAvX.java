@@ -14,6 +14,7 @@ public class AutoBalanceNAvX extends CommandBase {
   private Drivetrain drivetrain;
   private NAVX navx;
   private boolean finished;
+  private boolean HasMoved;
   /** Creates a new AutoBalanceNAvX. */
   public AutoBalanceNAvX(Drivetrain drivetrain, NAVX navx) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -36,6 +37,7 @@ public class AutoBalanceNAvX extends CommandBase {
   public void initialize() {
 
     finished = false;
+    HasMoved = false;
 
   }
 
@@ -45,14 +47,15 @@ public class AutoBalanceNAvX extends CommandBase {
     
     double pitch = navx.getPitch();
     double speed = 0;
-    
-    drivetrain.mecanumDrive(1, 0, 0);
-
-
-    if (Math.abs(pitch) > 2.5){
-      speed = pitch / 10;
+    if (Math.abs(pitch) < 0.3 && HasMoved == false){
+      speed = 1;
+      HasMoved = true;
     }
-    else{
+
+    else if (Math.abs(pitch) > 2.5 && HasMoved == true){
+      speed = pitch / 100;
+    }
+    else if(Math.abs(pitch) < 0.3 && HasMoved == true) {
       speed = 0;
       finished = true;
     }
