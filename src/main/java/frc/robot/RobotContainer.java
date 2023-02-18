@@ -4,7 +4,10 @@
 
 package frc.robot;
 
+import frc.robot.Constants.ControlConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.AutoBalanceNAvX;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Pneumatics;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
@@ -80,16 +83,13 @@ public class RobotContainer {
 		driverController.rightBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, false));
 		driverController.leftBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, true));
 
-		secondaryController.rightBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, false));
-		secondaryController.leftBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, true));
+		secondaryController.rightTrigger(ControlConstants.JOY_DEADBAND).whileTrue(new GrabberLifterCommand(0.2, grabberLifter, false));
+		secondaryController.leftTrigger(ControlConstants.JOY_DEADBAND).whileTrue(new GrabberLifterCommand(0.2, grabberLifter, true));
 
-		driverController.x().whileTrue(new FineTUNECommand(drivetrain));
+		secondaryController.rightBumper().whileTrue(new GrabberLifterCommand(0.4, grabberLifter, false)).onFalse(new GetClosePosition(grabberLifter));
+		secondaryController.leftBumper().whileTrue(new GrabberLifterCommand(0.4, grabberLifter, true)).onFalse(new GetClosePosition(grabberLifter));
 
-		driverController.a().onTrue(pneumatics.toggleGrabberSolenoid());
-		driverController.b().onTrue(pneumatics.toggleLifter());
-
-		secondaryController.a().onTrue(pneumatics.toggleGrabberSolenoid());
-		secondaryController.b().onTrue(pneumatics.toggleLifter());
+		driverController.leftTrigger(ControlConstants.JOY_DEADBAND).whileTrue(new FineTUNECommand(drivetrain));
 
 		driverController.start().onTrue(
 				new StartEndCommand(
@@ -100,11 +100,16 @@ public class RobotContainer {
 						() -> cameraSelection.setString(armCamera.getName()),
 						() -> cameraSelection.setString(mastCamera.getName())));
 
+		secondaryController.b().onTrue(pneumatics.toggleGrabberSolenoid());
+		secondaryController.a().onTrue(pneumatics.toggleLifter());
+
 		// Example: Schedule `exampleMethodCommand` when the Xbox controller's B button
 		// is
 		// pressed,
 		// cancelling on release.
 		// m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+		driverController.a().whileTrue(new AutoBalanceNAvX(drivetrain, navx));
+		
 	}
 
 	public Command getAutonomousCommand() {
