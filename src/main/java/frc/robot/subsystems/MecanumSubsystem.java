@@ -47,12 +47,12 @@ public class MecanumSubsystem extends SubsystemBase {
 
     // declaring motors
     // right
-    frontRight = new CANSparkMax(0, MotorType.kBrushless);
-    backRight = new CANSparkMax(1, MotorType.kBrushless);
+    frontRight = new CANSparkMax(4, MotorType.kBrushless);
+    backRight = new CANSparkMax(3, MotorType.kBrushless);
 
     // left
-    frontLeft = new CANSparkMax(2, MotorType.kBrushless);
-    backLeft = new CANSparkMax(3, MotorType.kBrushless);
+    frontLeft = new CANSparkMax(1, MotorType.kBrushless);
+    backLeft = new CANSparkMax(2, MotorType.kBrushless);
     
 
 
