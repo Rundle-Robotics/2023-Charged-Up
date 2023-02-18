@@ -5,14 +5,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.MecanumSubsystem;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
-
 
 public class LimelightFollow extends CommandBase {
 	/** Creates a new LimelightFollow. */
 
-	private MecanumSubsystem meca;
+	private Drivetrain drivetrain;
 	private Limelight limelight;
 
 	private final double CENTER_DISTANCE = 1;
@@ -24,78 +23,72 @@ public class LimelightFollow extends CommandBase {
 	boolean closeToTargeta;
 	boolean finite;
 
-	public LimelightFollow(MecanumSubsystem meca, Limelight limelight) {
-		this.meca = meca;
+	public LimelightFollow(Drivetrain drivetrain, Limelight limelight) {
+		this.drivetrain = drivetrain;
 		this.limelight = limelight;
 
-		
-
-		addRequirements(meca);
+		addRequirements(drivetrain);
 		addRequirements(limelight);
 	}
 
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
-		Limelight.enableLimelight();
+		limelight.enableLimelight();
 
 		limelight.setPipeline(0); // Pipeline 0 is for AprilTag detection
 
 		finite = false;
-		
+
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
 		limelight.putTargetPoseDataonSmartDashboard();
-		
-			if (limelight.getTV() == 0) {
-				System.out.println("No target found, trying to turn and find one..."); // debug
-				// drivetrain.setSpeeds(0, 0.25);
-				meca.setSpeeds(0, 0, 0.6, 0);
+
+		if (limelight.getTV() == 0) {
+			System.out.println("No target found, trying to turn and find one..."); // debug
+			drivetrain.mecanumDrive(0, 0, 0.6);
+
+		} else {
+			System.out.println("Target found");
+			// If target is on the right, turn right
+			if (limelight.getTX() > CENTER_DISTANCE) {
+				System.out.println("Target on the right, trying to turn..."); // debug
+				drivetrain.mecanumDrive(0, -0.5, 0);
+			}
+			// If target is on the left, turn left
+			else if (limelight.getTX() < -CENTER_DISTANCE) {
+				System.out.println("Target on the left, trying to turn..."); // debug
+				drivetrain.mecanumDrive(0, 0.5, 0);
+			}
+			// If target area is too small, move forward
+			else if (limelight.getTA() < TARGET_AREA_CUTOFF) {
+				System.out.println("Target too far, trying to move forward..."); // debug
+				drivetrain.mecanumDrive(0.5, 0, 0);
 			} else {
-				System.out.println("Target found");
-				// If target is on the right, turn right
-				if (limelight.getTX() > CENTER_DISTANCE) {
-					System.out.println("Target on the right, trying to turn..."); // debug
-					meca.setSpeeds(0,-0.5, 0, 0);
-				}
-				// If target is on the left, turn left
-				else if (limelight.getTX() < -CENTER_DISTANCE) {
-					System.out.println("Target on the left, trying to turn..."); // debug
-					meca.setSpeeds(0,0.5, 0, 0);
-				}
-				// If target area is too small, move forward
-				else if (limelight.getTA() < TARGET_AREA_CUTOFF) {
-					System.out.println("Target too far, trying to move forward..."); // debug
-					meca.setSpeeds(-0.5, 0, 0, 0);
+				double[] targetPoseCameraData = limelight.getTARGETPOSECAMERA();
+
+				if (Math.abs(targetPoseCameraData[5]) > 10) {
+					System.out.println("trying to oddly center");
+					drivetrain.mecanumDrive(0, 0, targetPoseCameraData[5] / Math.abs(targetPoseCameraData[5]) * 0.45);
 				} else {
-					double[] tmom = limelight.getTARGETPOSECAMERA();
-
-					if (Math.abs(tmom[5]) > 10) {
-						System.out.println("trying to oddly center");
-						meca.setSpeeds(0,0, tmom[5] / Math.abs(tmom[5]) * 0.45, 0);
-					} else {
-						System.out.println("Aligned!");
-						finite = true;
-					}
+					System.out.println("Aligned!");
+					finite = true;
 				}
-
-			
+			}
 
 		}
 
 		System.out.println(); // debug
 	}
 
-	
-
 	// Called once the command ends or is interrupted.
 	@Override
 	public void end(boolean interrupted) {
 		limelight.disableLimelight();
-		
+
 		limelight.setPipeline(2); // Pipeline 2 is for driver vision
 	}
 
@@ -109,6 +102,4 @@ public class LimelightFollow extends CommandBase {
 		return finite;
 	}
 
-	
-	
 }

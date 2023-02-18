@@ -25,7 +25,7 @@ public class Limelight extends SubsystemBase {
 		disableLimelight();
 	}
 
-	public static void enableLimelight() {
+	public void enableLimelight() {
 		table.getEntry("ledMode").setNumber(3);
 	}
 
@@ -38,11 +38,9 @@ public class Limelight extends SubsystemBase {
 		tx = table.getEntry("tx").getDouble(0.0);
 		ty = table.getEntry("tv").getDouble(0.0);
 		ta = table.getEntry("ta").getDouble(0.0);
-
 		tshort = table.getEntry("tshort").getDouble(0.0);
 		tlong = table.getEntry("tlong").getDouble(0.0);
 		targetpose_cameraspace = table.getEntry("targetpose_cameraspace").getDoubleArray(new double[6]);
-
 
 		apriltagid = table.getEntry("tid").getDouble(0.0);
 
@@ -56,11 +54,11 @@ public class Limelight extends SubsystemBase {
 		SmartDashboard.putNumber("tlong", tlong);
 		SmartDashboard.putNumber("targetpose", targetpose_cameraspace[5]);
 
-
 		limelightCenter();
 
 	}
 
+	// Debug
 	public void putTargetPoseDataonSmartDashboard() {
 		targetpose_cameraspace = getTARGETPOSECAMERA();
 		SmartDashboard.putNumberArray("TPArray", targetpose_cameraspace);
@@ -71,7 +69,6 @@ public class Limelight extends SubsystemBase {
 		SmartDashboard.putNumber("TP4", targetpose_cameraspace[4]);
 		SmartDashboard.putNumber("TP5", targetpose_cameraspace[5]);
 	}
-
 
 	public double getTX() {
 		return table.getEntry("tx").getDouble(0.0);
@@ -84,6 +81,7 @@ public class Limelight extends SubsystemBase {
 	public double getTA() {
 		return table.getEntry("ta").getDouble(0.0);
 	}
+
 	public double getTSHORT() {
 		return table.getEntry("tshort").getDouble(0.0);
 	}
@@ -99,9 +97,9 @@ public class Limelight extends SubsystemBase {
 	public void limelightCenter() {
 
 	}
+
 	public void setPipeline(int n) {
 		table.getEntry("pipeline").setNumber(n);
 	}
-
 
 }

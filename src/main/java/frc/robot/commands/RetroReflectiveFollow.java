@@ -5,14 +5,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.MecanumSubsystem;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
-
 
 public class RetroReflectiveFollow extends CommandBase {
 	/** Creates a new RetroREFLECTIVE. */
 
-	private MecanumSubsystem meca;
+	private Drivetrain drivetrain;
 	private Limelight limelight;
 
 	private final double CENTER_DISTANCE = 1;
@@ -24,68 +23,61 @@ public class RetroReflectiveFollow extends CommandBase {
 	boolean closeToTargeta;
 	boolean finite;
 
-	public RetroReflectiveFollow(MecanumSubsystem meca, Limelight limelight) {
-		this.meca = meca;
+	public RetroReflectiveFollow(Drivetrain drivetrain, Limelight limelight) {
+		this.drivetrain = drivetrain;
 		this.limelight = limelight;
 
-		
-
-		addRequirements(meca);
+		addRequirements(drivetrain);
 		addRequirements(limelight);
 	}
 
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
-		Limelight.enableLimelight();
+		limelight.enableLimelight();
 
 		limelight.setPipeline(1); // Pipeline 1 is for RetroReflective detection
 
 		finite = false;
-		
+
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
 		limelight.putTargetPoseDataonSmartDashboard();
-		
-			if (limelight.getTV() == 0) {
-				System.out.println("No target found, trying to turn and find one..."); // debug
-				// drivetrain.setSpeeds(0, 0.25);
-				meca.setSpeeds(0, 0, 0.6, 0);
-			} else {
-				System.out.println("Target found");
-				// If target is on the right, turn right
-				if (limelight.getTX() > CENTER_DISTANCE) {
-					System.out.println("Target on the right, trying to turn..."); // debug
-					meca.setSpeeds(0,-0.5, 0, 0);
-				}
-				// If target is on the left, turn left
-				else if (limelight.getTX() < -CENTER_DISTANCE) {
-					System.out.println("Target on the left, trying to turn..."); // debug
-					meca.setSpeeds(0,0.5, 0, 0);
-				}
-				// If target area is too small, move forward
-				else if (limelight.getTA() < TARGET_AREA_CUTOFF) {
-					System.out.println("Target too far, trying to move forward..."); // debug
-					meca.setSpeeds(-0.5, 0, 0, 0);
-				}
 
-			
+		if (limelight.getTV() == 0) {
+			System.out.println("No target found, trying to turn and find one..."); // debug
+			drivetrain.mecanumDrive(0, 0, 0.6);
+		} else {
+			System.out.println("Target found");
+			// If target is on the right, turn right
+			if (limelight.getTX() > CENTER_DISTANCE) {
+				System.out.println("Target on the right, trying to turn..."); // debug
+				drivetrain.mecanumDrive(0, -0.5, 0);
+			}
+			// If target is on the left, turn left
+			else if (limelight.getTX() < -CENTER_DISTANCE) {
+				System.out.println("Target on the left, trying to turn..."); // debug
+				drivetrain.mecanumDrive(0, 0.5, 0);
+			}
+			// If target area is too small, move forward
+			else if (limelight.getTA() < TARGET_AREA_CUTOFF) {
+				System.out.println("Target too far, trying to move forward..."); // debug
+				drivetrain.mecanumDrive(0.5, 0, 0);
+			}
 
 		}
 
 		System.out.println(); // debug
 	}
 
-	
-
 	// Called once the command ends or is interrupted.
 	@Override
 	public void end(boolean interrupted) {
 		limelight.disableLimelight();
-		
+
 		limelight.setPipeline(2); // Pipeline 2 is for driver vision
 	}
 
@@ -99,6 +91,4 @@ public class RetroReflectiveFollow extends CommandBase {
 		return finite;
 	}
 
-	
-	
 }
