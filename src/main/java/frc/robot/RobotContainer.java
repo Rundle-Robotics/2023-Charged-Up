@@ -6,6 +6,8 @@ package frc.robot;
 
 import frc.robot.Constants.ControlConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.AutoBalanceNAvX;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Pneumatics;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
@@ -129,6 +131,8 @@ public class RobotContainer {
 		// pressed,
 		// cancelling on release.
 		// m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+		driverController.a().whileTrue(new AutoBalanceNAvX(drivetrain, navx));
+		
 	}
 
 	public Command getAutonomousCommand() {
