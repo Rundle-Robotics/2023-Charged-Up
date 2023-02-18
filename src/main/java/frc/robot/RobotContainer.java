@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.ControlConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AutoBalanceNAvX;
+import frc.robot.commands.AutoPlanA;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Pneumatics;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -117,6 +118,6 @@ public class RobotContainer {
 	}
 
 	public Command getAutonomousCommand() {
-		return null;
+		return new AutoPlanA(drivetrain, limelight, navx);
 	}
 }
