@@ -6,24 +6,14 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-
-import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.ControlConstants;
 import frc.robot.Constants.OperatorConstants;
-
-
 import frc.robot.subsystems.Drivetrain;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-
 import com.revrobotics.RelativeEncoder;
+
 public class Drivetrain extends SubsystemBase {
 	private CANSparkMax frontLeft;
 	private CANSparkMax frontRight;
@@ -33,7 +23,7 @@ public class Drivetrain extends SubsystemBase {
 	private RelativeEncoder frontRighte;
 	private RelativeEncoder backLefte;
 	private RelativeEncoder backRighte;
-  private RelativeEncoder frontLefte;
+	private RelativeEncoder frontLefte;
 	private boolean finetuned;
 
 	public Drivetrain() {
@@ -42,7 +32,7 @@ public class Drivetrain extends SubsystemBase {
 		frontRight = new CANSparkMax(4, MotorType.kBrushless);
 		backLeft = new CANSparkMax(2, MotorType.kBrushless);
 		backRight = new CANSparkMax(3, MotorType.kBrushless);
-        frontLefte = frontLeft.getEncoder();
+		frontLefte = frontLeft.getEncoder();
 		frontRighte = frontRight.getEncoder();
 		backLefte = backLeft.getEncoder();
 		backRighte = backRight.getEncoder();
@@ -51,10 +41,7 @@ public class Drivetrain extends SubsystemBase {
 		backLeft.setIdleMode(CANSparkMax.IdleMode.kBrake);
 		backRight.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
-
 	}
-
-
 
 	@Override
 	public void periodic() {
@@ -66,12 +53,11 @@ public class Drivetrain extends SubsystemBase {
 		mecanumDrive(joyX, joyY, rotation);
 
 		double v = frontLefte.getVelocity();
-        double p = frontLefte.getPosition();
-        double CPR = frontLefte.getCountsPerRevolution();
-        double revolutions = CPR/4; //not sure where this came from but okay
-        SmartDashboard.putNumber("Velocity", v);
-        SmartDashboard.putNumber("Position", p);
-        SmartDashboard.putNumber("CountsPerRevolution", CPR);
+		double p = frontLefte.getPosition();
+		double CPR = frontLefte.getCountsPerRevolution();
+		SmartDashboard.putNumber("Velocity", v);
+		SmartDashboard.putNumber("Position", p);
+		SmartDashboard.putNumber("CountsPerRevolution", CPR);
 
 	}
 
@@ -105,24 +91,18 @@ public class Drivetrain extends SubsystemBase {
 		if (Math.abs(backRightPower) > ControlConstants.MAX_ROBOT_SPEED)
 			backRightPower *= ControlConstants.MAX_ROBOT_SPEED / Math.abs(backRightPower);
 
-
-
-
-
-		//finetuned driving system
-
+		// finetuned driving system
 		if (finetuned == true) {
-			frontRightPower = frontRightPower/5;
-			frontLeftPower = frontLeftPower/5;
-			backRightPower = backRightPower/5;
-			backLeftPower= backLeftPower/5;
-	}
+			frontRightPower = frontRightPower / 5;
+			frontLeftPower = frontLeftPower / 5;
+			backRightPower = backRightPower / 5;
+			backLeftPower = backLeftPower / 5;
+		}
 
 		SmartDashboard.putNumber("frontRight", frontRightPower);
 		SmartDashboard.putNumber("frontLeft", frontLeftPower);
 		SmartDashboard.putNumber("backLeft", backLeftPower);
 		SmartDashboard.putNumber("backRight", backLeftPower);
-
 
 		// Power the motors
 		frontLeft.set(frontLeftPower);
@@ -131,42 +111,55 @@ public class Drivetrain extends SubsystemBase {
 		backRight.set(backRightPower);
 
 	}
+
 	public double getBackRightPosition() {
 		return backRighte.getPosition();
 	}
+
 	public double getBackLeftPosition() {
 		return backLefte.getPosition();
 	}
+
 	public double getFrontLeftPosition() {
 		return frontLefte.getPosition();
 	}
+
 	public double getFrontRightPosition() {
 		return frontRighte.getPosition();
 	}
+
 	public double getBackRightVelocity() {
 		return backRighte.getVelocity();
 	}
+
 	public double getBackLeftVelocity() {
 		return backLefte.getVelocity();
 	}
+
 	public double getFrontLeftVelocity() {
 		return frontLefte.getVelocity();
 	}
+
 	public double getFrontRightVelocity() {
 		return frontRighte.getVelocity();
 	}
+
 	public double getBackRightCPR() {
 		return backRighte.getCountsPerRevolution();
 	}
+
 	public double getBackLeftCPR() {
 		return backLefte.getCountsPerRevolution();
 	}
+
 	public double getFrontLeftCPR() {
 		return frontLefte.getCountsPerRevolution();
 	}
+
 	public double getFrontRightCPR() {
 		return frontRighte.getCountsPerRevolution();
 	}
+
 	public void stop() {
 		frontLeft.set(0);
 		frontRight.set(0);
@@ -174,10 +167,10 @@ public class Drivetrain extends SubsystemBase {
 		backRight.set(0);
 	}
 
-public void finetune(boolean newValue) {
+	public void finetune(boolean newValue) {
 
-	finetuned = newValue;
+		finetuned = newValue;
 
-}
+	}
 
 }

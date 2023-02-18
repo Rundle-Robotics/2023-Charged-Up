@@ -15,21 +15,16 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import frc.robot.commands.GetClosePosition;
 import frc.robot.commands.GrabberLifterCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.GrabberLifter;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-
-import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.FineTUNECommand;
 import frc.robot.subsystems.NAVX;
 
 public class RobotContainer {
 	public static final CommandXboxController driverController = new CommandXboxController(
 			OperatorConstants.DRIVER_CONTROLLER_PORT);
-	private final XboxController controller = driverController.getHID();
 
 	public static final CommandXboxController secondaryController = new CommandXboxController(
 			OperatorConstants.SECONDARY_CONTROLLER_PORT);
@@ -38,9 +33,8 @@ public class RobotContainer {
 	private static UsbCamera armCamera;
 	private static NetworkTableEntry cameraSelection;
 
-
 	// Subsystems
-	// private static Compressor compressor;
+	private static Compressor compressor;
 	private final Pneumatics pneumatics;
 
 	// The robot's subsystems and commands are defined here...
@@ -54,8 +48,8 @@ public class RobotContainer {
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
 	 */
 	public RobotContainer() {
-		// compressor = new Compressor(PneumaticsModuleType.REVPH);
-		// compressor.enableDigital();
+		compressor = new Compressor(PneumaticsModuleType.REVPH);
+		compressor.enableDigital();
 
 		pneumatics = new Pneumatics();
 
@@ -63,7 +57,7 @@ public class RobotContainer {
 		armCamera = CameraServer.startAutomaticCapture(OperatorConstants.ARM_CAMERA_PORT);
 
 		cameraSelection = NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection");
-		
+
 		// Configure the trigger bindings
 		configureBindings();
 	}
@@ -83,37 +77,28 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
-		// driverController.y().onTrue(new GrabberLifterCommand(0.4,
-		// grabberLifter)).onFalse(new GetClosePosition(grabberLifter));
-
-		// driverController.a().onTrue(new GrabberLifterCommand(-0.4,
-		// grabberLifter)).onFalse(new GetClosePosition(grabberLifter));
-
-		// driverController.rightBumper().onTrue(new GrabberLifterCommand(0.2,
-		// grabberLifter, false)).onFalse(new GrabberLifterCommand(0, grabberLifter,
-		// false));
-		// driverController.leftBumper().onTrue(new GrabberLifterCommand(0.2,
-		// grabberLifter, true)).onFalse(new GrabberLifterCommand(0, grabberLifter,
-		// false));
-
 		driverController.rightBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, false));
 		driverController.leftBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, true));
 
-		// Example: Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-		// new Trigger(drivetrain::exampleCondition)
-		// .onTrue(new ExampleCommand(m_exampleSubsystem));
+		secondaryController.rightBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, false));
+		secondaryController.leftBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, true));
 
 		driverController.x().whileTrue(new FineTUNECommand(drivetrain));
 
 		driverController.a().onTrue(pneumatics.toggleGrabberSolenoid());
 		driverController.b().onTrue(pneumatics.toggleLifter());
 
+		secondaryController.a().onTrue(pneumatics.toggleGrabberSolenoid());
+		secondaryController.b().onTrue(pneumatics.toggleLifter());
+
 		driverController.start().onTrue(
-			new StartEndCommand(
-				() -> cameraSelection.setString(armCamera.getName()),
-				() -> cameraSelection.setString(mastCamera.getName())
-			)
-		);
+				new StartEndCommand(
+						() -> cameraSelection.setString(armCamera.getName()),
+						() -> cameraSelection.setString(mastCamera.getName())));
+		secondaryController.start().onTrue(
+				new StartEndCommand(
+						() -> cameraSelection.setString(armCamera.getName()),
+						() -> cameraSelection.setString(mastCamera.getName())));
 
 		// Example: Schedule `exampleMethodCommand` when the Xbox controller's B button
 		// is
