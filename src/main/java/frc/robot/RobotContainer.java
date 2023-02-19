@@ -6,6 +6,9 @@ package frc.robot;
 
 import frc.robot.Constants.ControlConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.auto.AutoLifterCommand;
+import frc.robot.auto.PID_Drive_Straight;
+import frc.robot.auto.PID_Turn;
 import frc.robot.commands.AutoBalanceNAvX;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Pneumatics;
@@ -117,6 +120,9 @@ public class RobotContainer {
 	}
 
 	public Command getAutonomousCommand() {
-		return null;
+		return (new PID_Drive_Straight(3, drivetrain))
+		.andThen(new PID_Turn((double)90, drivetrain, navx))
+		.andThen(new AutoLifterCommand(420, grabberLifter))
+		.andThen(pneumatics.toggleGrabberSolenoid());
 	}
 }
