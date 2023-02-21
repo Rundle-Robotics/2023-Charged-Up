@@ -41,13 +41,20 @@ public class Drivetrain extends SubsystemBase {
 		backLeft.setIdleMode(CANSparkMax.IdleMode.kBrake);
 		backRight.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
+		//set robot to acceleate from 0 to max speed in a MINIMUM of 2 seconds
+		frontLeft.setOpenLoopRampRate(2);
+		backLeft.setOpenLoopRampRate(2);
+		frontRight.setOpenLoopRampRate(2);
+		backRight.setOpenLoopRampRate(2);
+
+
 	}
 
 	@Override
 	public void periodic() {
 
-		double joyX = RobotContainer.driverController.getRawAxis(OperatorConstants.XBOX_LEFT_X_AXIS);
-		double joyY = -RobotContainer.driverController.getRawAxis(OperatorConstants.XBOX_LEFT_Y_AXIS);
+		double joyX = -RobotContainer.driverController.getRawAxis(OperatorConstants.XBOX_LEFT_X_AXIS);
+		double joyY = RobotContainer.driverController.getRawAxis(OperatorConstants.XBOX_LEFT_Y_AXIS);
 		double rotation = ControlConstants.ROTATION_MULT
 				* (RobotContainer.driverController.getRawAxis(OperatorConstants.XBOX_RIGHT_X_AXIS));
 		mecanumDrive(joyX, joyY, rotation);
