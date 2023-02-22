@@ -48,14 +48,14 @@ public class AutoBalanceNAvX extends CommandBase {
     double pitch = navx.getPitch();
     double speed = 0;
     if (Math.abs(pitch) < 0.3 && HasMoved == false){
-      speed = 1;
+      speed = -1;
       HasMoved = true;
     }
 
-    else if (Math.abs(pitch) > 2.5 && HasMoved == true){
+    else if (Math.abs(pitch) < -2.5 && HasMoved == true){
       speed = pitch / 100;
     }
-    else if (Math.abs(pitch) < -2.5 && HasMoved == true){
+    else if (Math.abs(pitch) > 2.5 && HasMoved == true){
       speed = -1*(pitch / 100);
     }
     else if(Math.abs(pitch) < 0.3 && Math.abs(pitch) > -0.3 && HasMoved == true) {
