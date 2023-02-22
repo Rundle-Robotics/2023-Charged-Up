@@ -42,8 +42,13 @@ public class GrabberLifter extends SubsystemBase {
     }
 
     public void lift(double newValue) {
-        rm.set(newValue); // positive speed on rm is up
-        lm.set(newValue);
+        if ((newValue > 0 && !getTopSwitch()) || (newValue < 0 && !getBottomSwitch())) {
+            rm.set(0);
+            lm.set(0);
+        } else {
+            rm.set(newValue); // positive speed on rm is up
+            lm.set(newValue);
+        }
     }
 
     @Override
