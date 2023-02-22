@@ -42,7 +42,7 @@ public class GrabberLifter extends SubsystemBase {
     }
 
     public void lift(double newValue) {
-        if ((newValue > 0 && !getTopSwitch()) || (newValue < 0 && !getBottomSwitch())) {
+        if ((newValue > 0 && getTopSwitch()) || (newValue < 0 && getBottomSwitch()) || getMiddleSwitch()) {
             rm.set(0);
             lm.set(0);
         } else {

@@ -10,7 +10,7 @@ public class RaiseToPosition extends CommandBase {
         HIGH
     }
 
-    private static final double MID_HEIGHT = 0; // TODO
+    private static final double MID_HEIGHT = 85;
     private static final double HIGH_HEIGHT = 100;
     private static final double DEADBAND = 10; // TODO
 
