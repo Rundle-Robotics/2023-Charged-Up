@@ -132,7 +132,7 @@ public class RobotContainer {
 	public Command getAutonomousCommand() {
 		return (new PID_Drive_Straight(3, drivetrain))
 				.andThen(new PID_Turn((double) 90, drivetrain, navx))
-				.andThen(new AutoLifterCommand(420, grabberLifter))
+				.andThen(new RaiseToPosition(grabberLifter, Height.HIGH))
 				.andThen(pneumatics.toggleGrabberSolenoid());
 	}
 }
