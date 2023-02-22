@@ -13,9 +13,9 @@ public class GetClosePosition extends CommandBase {
 
     public GetClosePosition(GrabberLifter subsystem) {
         m_GrabberLifter = subsystem;
-        lowHeight = 0;
-        midHeight = 0;
-        highHeight = 120;
+        lowHeight = 200;
+        midHeight = 400;
+        highHeight = 600;
         position = 0;
         finished = false;
     }

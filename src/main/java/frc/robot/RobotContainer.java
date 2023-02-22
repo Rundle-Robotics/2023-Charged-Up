@@ -98,6 +98,8 @@ public class RobotContainer {
 
 		secondaryController.rightTrigger().onTrue(new RaiseToPosition(grabberLifter, Height.HIGH));
 		secondaryController.leftTrigger().onTrue(new RaiseToPosition(grabberLifter, Height.MID));
+		secondaryController.rightBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, false));
+		secondaryController.leftBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, true));
 
 		// Camera swap binding
 		driverController.start().onTrue(
