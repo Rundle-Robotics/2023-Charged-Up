@@ -28,6 +28,7 @@ import frc.robot.subsystems.GrabberLifter;
 import frc.robot.subsystems.Limelight;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.FineTUNECommand;
+import frc.robot.commands.GetClosePosition;
 import frc.robot.subsystems.NAVX;
 
 public class RobotContainer {
@@ -88,10 +89,10 @@ public class RobotContainer {
 	 */
 	private void configureBindings() {
 		// GrabberLifter binding
-		driverController.rightBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, false));
-		driverController.leftBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, true));
-		secondaryController.rightBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, false));
-		secondaryController.leftBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, true));
+		driverController.rightBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, false)).onFalse(new GetClosePosition(grabberLifter));
+		driverController.leftBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, true)).onFalse(new GetClosePosition(grabberLifter));
+		secondaryController.rightBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, false)).onFalse(new GetClosePosition(grabberLifter));
+		secondaryController.leftBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, true)).onFalse(new GetClosePosition(grabberLifter));
 
 		// Camera swap binding
 		driverController.start().onTrue(
