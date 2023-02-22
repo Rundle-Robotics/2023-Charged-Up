@@ -23,11 +23,14 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import frc.robot.commands.GrabberLifterCommand;
 import frc.robot.commands.LimelightFollow;
+import frc.robot.commands.RaiseToPosition;
 import frc.robot.commands.RetroReflectiveFollow;
+import frc.robot.commands.RaiseToPosition.Height;
 import frc.robot.subsystems.GrabberLifter;
 import frc.robot.subsystems.Limelight;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.FineTUNECommand;
+import frc.robot.commands.GetClosePosition;
 import frc.robot.subsystems.NAVX;
 
 public class RobotContainer {
@@ -88,8 +91,13 @@ public class RobotContainer {
 	 */
 	private void configureBindings() {
 		// GrabberLifter binding
-		//driverController.rightBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, false));
-		//driverController.leftBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, true));
+		driverController.rightBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, false))
+				.onFalse(new GetClosePosition(grabberLifter));
+		driverController.leftBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, true))
+				.onFalse(new GetClosePosition(grabberLifter));
+
+		secondaryController.rightTrigger().onTrue(new RaiseToPosition(grabberLifter, Height.HIGH));
+		secondaryController.leftTrigger().onTrue(new RaiseToPosition(grabberLifter, Height.MID));
 		secondaryController.rightBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, false));
 		secondaryController.leftBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, true));
 
@@ -104,6 +112,8 @@ public class RobotContainer {
 						() -> cameraSelection.setString(mastCamera.getName())));
 
 		// Solenoid binding
+		driverController.b().onTrue(pneumatics.toggleGrabberSolenoid());
+		driverController.a().onTrue(pneumatics.toggleLifter());
 		secondaryController.b().onTrue(pneumatics.toggleGrabberSolenoid());
 		secondaryController.a().onTrue(pneumatics.toggleLifter());
 
@@ -114,7 +124,6 @@ public class RobotContainer {
 		driverController.y().whileTrue(new LimelightFollow(drivetrain, limelight));
 		driverController.b().whileTrue(new RetroReflectiveFollow(drivetrain, limelight));
 
-
 		// FineTune binding
 		driverController.leftTrigger(ControlConstants.JOY_DEADBAND).whileTrue(new FineTUNECommand(drivetrain));
 
@@ -122,8 +131,8 @@ public class RobotContainer {
 
 	public Command getAutonomousCommand() {
 		return (new PID_Drive_Straight(3, drivetrain))
-		.andThen(new PID_Turn((double)90, drivetrain, navx))
-		.andThen(new AutoLifterCommand(420, grabberLifter))
-		.andThen(pneumatics.toggleGrabberSolenoid());
+				.andThen(new PID_Turn((double) 90, drivetrain, navx))
+				.andThen(new AutoLifterCommand(420, grabberLifter))
+				.andThen(pneumatics.toggleGrabberSolenoid());
 	}
 }
