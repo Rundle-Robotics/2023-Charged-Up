@@ -88,8 +88,8 @@ public class RobotContainer {
 	 */
 	private void configureBindings() {
 		// GrabberLifter binding
-		driverController.rightBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, false));
-		driverController.leftBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, true));
+		//driverController.rightBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, false));
+		//driverController.leftBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, true));
 		secondaryController.rightBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, false));
 		secondaryController.leftBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, true));
 
@@ -104,8 +104,6 @@ public class RobotContainer {
 						() -> cameraSelection.setString(mastCamera.getName())));
 
 		// Solenoid binding
-		driverController.b().onTrue(pneumatics.toggleGrabberSolenoid());
-		driverController.a().onTrue(pneumatics.toggleLifter());
 		secondaryController.b().onTrue(pneumatics.toggleGrabberSolenoid());
 		secondaryController.a().onTrue(pneumatics.toggleLifter());
 
