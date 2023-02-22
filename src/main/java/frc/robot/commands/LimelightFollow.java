@@ -14,8 +14,8 @@ public class LimelightFollow extends CommandBase {
 	private Drivetrain drivetrain;
 	private Limelight limelight;
 
-	private final double CENTER_DISTANCE = 1;
-	private final double TARGET_AREA_CUTOFF = 10;
+	private final double CENTER_DISTANCE = -8.8;
+	private final double TARGET_AREA_CUTOFF = 1.3;
 
 	double rotation = 0;
 	double speed = 0;
@@ -54,13 +54,13 @@ public class LimelightFollow extends CommandBase {
 		} else {
 			System.out.println("Target found");
 			// If target is on the right, turn right
-			if (limelight.getTX() > CENTER_DISTANCE) {
-				System.out.println("Target on the right, trying to turn..."); // debug
+			if (limelight.getTX() > (CENTER_DISTANCE+0.73)) {
+				System.out.println("Target on the left, trying to turn..."); // debug
 				drivetrain.mecanumDrive(0, -0.5, 0);
 			}
 			// If target is on the left, turn left
-			else if (limelight.getTX() < -CENTER_DISTANCE) {
-				System.out.println("Target on the left, trying to turn..."); // debug
+			else if (limelight.getTX() < (CENTER_DISTANCE-0.73)) {
+				System.out.println("Target on the right, trying to turn..."); // debug
 				drivetrain.mecanumDrive(0, 0.5, 0);
 			}
 			// If target area is too small, move forward
