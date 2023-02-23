@@ -30,9 +30,9 @@ public class GrabberLifter extends SubsystemBase {
         rm.setIdleMode(CANSparkMax.IdleMode.kBrake);
         lm.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
-        bottomSwitch = new DigitalInput(0);
-        middleSwitch = new DigitalInput(1);
-        topSwitch = new DigitalInput(2);
+        bottomSwitch = new DigitalInput(0); // lifter (solenoid/piston) at bottom = pressed, no switch for lifter at top
+        middleSwitch = new DigitalInput(1); // arm (motors) at bottom height = pressed
+        topSwitch = new DigitalInput(2); // arm (motors) at max height = pressed
 
         bottomEncoderValue = e.getPosition();
     }
@@ -67,36 +67,40 @@ public class GrabberLifter extends SubsystemBase {
 
     public boolean getTopSwitch() {
         return topSwitch.get();
-    } // returns true when top switch is pressed (lifter at top)
+    } // returns true when top switch is pressed
 
     public boolean getMiddleSwitch() {
         return middleSwitch.get();
-    } // returns true when middle switch is pressed (this switch tells if the arm is
-      // down)
+    } // returns true when middle switch is pressed
 
     public boolean getBottomSwitch() {
-        return !bottomSwitch.get(); // keep the inversion
-    } // returns true when bottom switch is pressed (lifter at bottom)
+        return !bottomSwitch.get(); // this switch is inverted
+    } // returns true when bottom switch is pressed
 
+    /**
+     * @param speed given to the motors
+     * @return true if the arm needs to stop moving, false if it can continue moving
+     */
     public boolean stopArm(double speed) {
-
         // assume positive speed is moving up
-        if (getTopSwitch() && speed > 0) // at top, wanting to move higher
-        {
-            return true;
-        } else if (getBottomSwitch() && speed < 0) // at bottom, wanting to move lower
-        {
-            return true;
-        } else if (!getBottomSwitch() && getMiddleSwitch()) // arm lifter is up, arm is down - can't move in either
-                                                            // direction
-        {
-            return true;
-        } else if (!getBottomSwitch() && !getMiddleSwitch() && speed < 0) // arm lifter is up, arm is not tucked and
-                                                                          // wants to move lower
-        {
-            return true;
-        }
 
+        // at top, wanting to move higher
+        if (getTopSwitch() && speed > 0)
+            return true;
+
+        // at bottom, wanting to move lower
+        else if (getMiddleSwitch() && speed < 0)
+            return true;
+
+        // arm lifter is up, arm is tucked in - can't move in either direction
+        else if (!getBottomSwitch() && getMiddleSwitch())
+            return true;
+
+        // arm lifter is up, arm is not tucked in and wants to move lower
+        else if (!getBottomSwitch() && !getMiddleSwitch() && speed < 0)
+            return true;
+
+        // none of the above cases
         return false;
 
     }
