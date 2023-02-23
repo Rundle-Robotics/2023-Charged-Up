@@ -16,6 +16,8 @@ public class LimelightFollow extends CommandBase {
 
 	private final double CENTER_DISTANCE = -8.8;
 	private final double TARGET_AREA_CUTOFF = 1.3;
+	private final double CENTER_DEADBAND = 0.73;
+	private final double YAW_DEADBAND = 10;
 
 	double rotation = 0;
 	double speed = 0;
@@ -54,12 +56,12 @@ public class LimelightFollow extends CommandBase {
 		} else {
 			System.out.println("Target found");
 			// If target is on the right, turn right
-			if (limelight.getTX() > (CENTER_DISTANCE+0.73)) {
+			if (limelight.getTX() > (CENTER_DISTANCE + CENTER_DEADBAND)) {
 				System.out.println("Target on the left, trying to turn..."); // debug
 				drivetrain.mecanumDrive(0, -0.5, 0);
 			}
 			// If target is on the left, turn left
-			else if (limelight.getTX() < (CENTER_DISTANCE-0.73)) {
+			else if (limelight.getTX() < (CENTER_DISTANCE - CENTER_DEADBAND)) {
 				System.out.println("Target on the right, trying to turn..."); // debug
 				drivetrain.mecanumDrive(0, 0.5, 0);
 			}
@@ -70,8 +72,8 @@ public class LimelightFollow extends CommandBase {
 			} else {
 				double[] targetPoseCameraData = limelight.getTARGETPOSECAMERA();
 
-				if (Math.abs(targetPoseCameraData[5]) > 10) {
-					System.out.println("trying to oddly center");
+				if (Math.abs(targetPoseCameraData[5]) > YAW_DEADBAND) {
+					System.out.println("Target is detected at an angle, trying to rotate until perpendicular...");
 					drivetrain.mecanumDrive(0, 0, targetPoseCameraData[5] / Math.abs(targetPoseCameraData[5]) * 0.45);
 				} else {
 					System.out.println("Aligned!");
