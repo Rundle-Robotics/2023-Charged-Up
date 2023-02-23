@@ -57,6 +57,14 @@ public class Drivetrain extends SubsystemBase {
 		double joyY = RobotContainer.driverController.getRawAxis(OperatorConstants.XBOX_LEFT_Y_AXIS);
 		double rotation = -ControlConstants.ROTATION_MULT
 				* (RobotContainer.driverController.getRawAxis(OperatorConstants.XBOX_RIGHT_X_AXIS));
+
+		// strafe lock
+		if (Math.abs(joyX) <= (Math.tan(0.26)) * joyY) {
+			joyX = 0;
+		} else if (Math.abs(joyY) <= (Math.tan(0.26)) * joyX) {
+			joyY = 0;
+		}
+
 		mecanumDrive(joyX, joyY, rotation);
 
 		double v = frontLefte.getVelocity();

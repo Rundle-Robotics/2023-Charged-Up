@@ -38,7 +38,7 @@ public class RaiseToPosition extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return Math.abs(targetHeight - getPos()) <= DEADBAND;
+        return Math.abs(targetHeight - getPos()) <= DEADBAND || grabberLifter.stopArm(speed);
     }
 
     @Override
