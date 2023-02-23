@@ -67,15 +67,16 @@ public class GrabberLifter extends SubsystemBase {
 
     public boolean getTopSwitch() {
         return topSwitch.get();
-    } // top switch is 'active' when low
+    } // returns true when top switch is pressed (lifter at top)
 
     public boolean getMiddleSwitch() {
         return middleSwitch.get();
-    } // middle switch is 'active' when high
+    } // returns true when middle switch is pressed (this switch tells if the arm is
+      // down)
 
     public boolean getBottomSwitch() {
-        return bottomSwitch.get();
-    } // bottom siwtch is 'active' when low
+        return !bottomSwitch.get(); // keep the inversion
+    } // returns true when bottom switch is pressed (lifter at bottom)
 
     public boolean stopArm(double speed) {
 
@@ -83,7 +84,7 @@ public class GrabberLifter extends SubsystemBase {
         if (getTopSwitch() && speed > 0) // at top, wanting to move higher
         {
             return true;
-        } else if (getMiddleSwitch() && speed < 0) // at bottom, wanting to move lower
+        } else if (getBottomSwitch() && speed < 0) // at bottom, wanting to move lower
         {
             return true;
         } else if (!getBottomSwitch() && getMiddleSwitch()) // arm lifter is up, arm is down - can't move in either
