@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import frc.robot.commands.GrabberLifterCommand;
 import frc.robot.commands.LimelightFollow;
+import frc.robot.commands.LowerToPosition;
 import frc.robot.commands.RaiseToPosition;
 import frc.robot.commands.RetroReflectiveFollow;
 import frc.robot.commands.RaiseToPosition.Height;
@@ -100,6 +101,7 @@ public class RobotContainer {
 		secondaryController.leftTrigger().onTrue(new RaiseToPosition(grabberLifter, Height.MID));
 		secondaryController.rightBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, false));
 		secondaryController.leftBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, true));
+		secondaryController.povDown().onTrue(new LowerToPosition(grabberLifter, pneumatics));
 
 		// Camera swap binding
 		driverController.start().onTrue(
