@@ -6,7 +6,6 @@ package frc.robot;
 
 import frc.robot.Constants.ControlConstants;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.auto.AutoLifterCommand;
 import frc.robot.auto.PID_Drive_Straight;
 import frc.robot.auto.PID_Turn;
 import frc.robot.commands.AutoBalanceNAvX;
@@ -31,7 +30,6 @@ import frc.robot.subsystems.GrabberLifter;
 import frc.robot.subsystems.Limelight;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.FineTUNECommand;
-import frc.robot.commands.GetClosePosition;
 import frc.robot.subsystems.NAVX;
 
 public class RobotContainer {

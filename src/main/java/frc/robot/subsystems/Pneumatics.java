@@ -9,12 +9,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Pneumatics extends SubsystemBase {
 	private DoubleSolenoid sol1;
 	private DoubleSolenoid armsolenoid;
-	private boolean israised;
 
 	public Pneumatics() {
-		// set solenoid values (placeholder values)
-		israised = true;
-
 		sol1 = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0, 1);
 		sol1.set(Value.kReverse);
 
