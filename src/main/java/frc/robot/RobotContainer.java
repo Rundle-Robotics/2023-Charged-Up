@@ -92,10 +92,8 @@ public class RobotContainer {
 	 */
 	private void configureBindings() {
 		// GrabberLifter binding
-		driverController.rightBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, false))
-				.onFalse(new GetClosePosition(grabberLifter));
-		driverController.leftBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, true))
-				.onFalse(new GetClosePosition(grabberLifter));
+		driverController.rightBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, false));
+		driverController.leftBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, true));
 
 		secondaryController.rightTrigger().onTrue(new RaiseToPosition(grabberLifter, Height.HIGH));
 		secondaryController.leftTrigger().onTrue(new RaiseToPosition(grabberLifter, Height.MID));
