@@ -59,6 +59,10 @@ public class GrabberLifter extends SubsystemBase {
         SmartDashboard.putNumber("left encoder rpm", eL.getVelocity());
         SmartDashboard.putNumber(" right encoder rpm", e.getVelocity());
 
+        SmartDashboard.putBoolean("middle", getMiddleSwitch());
+        SmartDashboard.putBoolean("bottom", getBottomSwitch());
+        SmartDashboard.putBoolean("top", getTopSwitch());
+
     }
     /*
      * IMPORTANT
