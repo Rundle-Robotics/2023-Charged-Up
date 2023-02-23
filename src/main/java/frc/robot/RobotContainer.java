@@ -90,13 +90,13 @@ public class RobotContainer {
 	 */
 	private void configureBindings() {
 		// GrabberLifter binding
-		driverController.rightBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, false));
-		driverController.leftBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, true));
+		driverController.rightBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter));
+		driverController.leftBumper().whileTrue(new GrabberLifterCommand(-0.2, grabberLifter));
 
 		secondaryController.rightTrigger().onTrue(new RaiseToPosition(grabberLifter, Height.HIGH));
 		secondaryController.leftTrigger().onTrue(new RaiseToPosition(grabberLifter, Height.MID));
-		secondaryController.rightBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, false));
-		secondaryController.leftBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter, true));
+		secondaryController.rightBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter));
+		secondaryController.leftBumper().whileTrue(new GrabberLifterCommand(-0.2, grabberLifter));
 		secondaryController.povDown().onTrue(new LowerToPosition(grabberLifter, pneumatics));
 
 		// Camera swap binding

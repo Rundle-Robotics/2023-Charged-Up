@@ -6,18 +6,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class GrabberLifterCommand extends CommandBase {
   private final GrabberLifter m_GrabberLifter;
-  private double speed2;
-  private boolean tof2;
+  private double speed;
 
-  public GrabberLifterCommand(double speed, GrabberLifter subsystem, boolean tof) {
-
+  public GrabberLifterCommand(double speed, GrabberLifter subsystem) {
     m_GrabberLifter = subsystem;
-    speed2 = speed;
-    tof2 = tof;
-
-    if (tof2) {
-      speed2 = -speed;
-    }
+    this.speed = speed;
 
     addRequirements(subsystem);
 
@@ -35,7 +28,7 @@ public class GrabberLifterCommand extends CommandBase {
   @Override
   public void execute() {
 
-    m_GrabberLifter.lift(speed2);
+    m_GrabberLifter.lift(speed);
 
     SmartDashboard.putBoolean("middle", m_GrabberLifter.getMiddleSwitch());
     SmartDashboard.putBoolean("bottom", m_GrabberLifter.getBottomSwitch());
@@ -50,6 +43,6 @@ public class GrabberLifterCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return m_GrabberLifter.stopArm(speed2);
+    return m_GrabberLifter.stopArm(speed);
   }
 }
