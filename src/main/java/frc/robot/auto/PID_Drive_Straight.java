@@ -14,10 +14,10 @@ import frc.robot.subsystems.Drivetrain;
 public class PID_Drive_Straight extends PIDCommand {
   /** Creates a new PID_Drive_Straight. */
   private Drivetrain m_drive;
-  public PID_Drive_Straight(double getDistance, Drivetrain drive) {
+  public PID_Drive_Straight(double getDistance, Drivetrain drive, double kp, double ki, double kd) {
     super(
         // The controller that the command will use
-        new PIDController(0.05,0.0,0),
+        new PIDController(kp,ki,kd),
         // This should return the measurement
         drive::getFrontLeftPosition,
         // This should return the setpoint (can also be a constant)

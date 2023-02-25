@@ -119,11 +119,9 @@ public class RobotContainer {
 		driverController.x().whileTrue(new AutoBalanceNAvX(drivetrain, navx));
 
 		// Limelight follow binding
-		//driverController.y().whileTrue(new LimelightFollow(drivetrain, limelight));
-		//driverController.b().whileTrue(new RetroReflectiveFollow(drivetrain, limelight));
+		driverController.y().whileTrue(new LimelightFollow(drivetrain, limelight));
+		driverController.b().whileTrue(new RetroReflectiveFollow(drivetrain, limelight));
 
-		driverController.y().whileTrue(new PID_Drive_Straight(2, drivetrain));
-		driverController.b().whileTrue(new PID_Turn(90, drivetrain, navx));
 		
 
 		// FineTune binding
@@ -131,10 +129,7 @@ public class RobotContainer {
 
 	}
 
-	public Command getAutonomousCommand() {
-		return (pneumatics.toggleLifter()
-				.andThen(new RaiseToPosition(grabberLifter, Height.HIGH))
-				.andThen(new RetroReflectiveFollow(drivetrain, limelight))
-				.andThen(pneumatics.toggleGrabberSolenoid()));
+	public Command getAutonomousCommand(double kp, double ki, double kd) {
+		return (new PID_Turn(90, drivetrain, navx, kp, ki, kd));
 	}
 }

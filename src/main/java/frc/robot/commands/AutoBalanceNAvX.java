@@ -45,25 +45,27 @@ public class AutoBalanceNAvX extends CommandBase {
   @Override
   public void execute() {
     
-    double pitch = navx.getPitch();
+    double roll = navx.getRoll();
     double speed = 0;
-    if (Math.abs(pitch) < 1 && HasMoved == false){
-      speed = -0.6;
-      HasMoved = true;
+    if (Math.abs(roll) < 5 && HasMoved == false){
+      speed = -0.2;
+      
     }
 
-    else if (Math.abs(pitch) < -2.5 && HasMoved == true){
-      speed = pitch / 100;
+    else if (Math.abs(roll) < -5){
+      speed = 0.2;
+      HasMoved = true;
     }
-    else if (Math.abs(pitch) > 2.5 && HasMoved == true){
-      speed = -1*(pitch / 100);
+    else if (Math.abs(roll) > 5){
+      speed = -0.2;
+      HasMoved = true;
     }
-    else if(Math.abs(pitch) < 1 && Math.abs(pitch) > -1 && HasMoved == true) {
+    else if(Math.abs(roll) < 5 && Math.abs(roll) > -5 && HasMoved == true) {
       speed = 0;
       finished = true;
     }
   
-    drivetrain.mecanumDrive(0, speed, 0);
+    drivetrain.mecanumDrive(0, -1*speed, 0);
     
   }
 

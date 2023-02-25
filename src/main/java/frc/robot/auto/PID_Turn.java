@@ -32,10 +32,10 @@ public class PID_Turn extends PIDCommand {
    private NAVX m_navx;
    private double setpointDegrees;
 
-  public PID_Turn(double targetAngleDegrees, Drivetrain drive, NAVX navx) {
+  public PID_Turn(double targetAngleDegrees, Drivetrain drive, NAVX navx, double kp, double ki, double kd) {
     super(
         // these constants have the potential to be dangerously wrong...
-        new PIDController(0.05, 0.0, 0),
+        new PIDController(kp,ki,kd),
         // This should return the measurement
         //     !!!I already feel that this is wrong... pls help
         navx::getYaw,
@@ -79,6 +79,7 @@ public class PID_Turn extends PIDCommand {
   public void initialize() {
       // TODO Auto-generated method stub
     getController().setSetpoint(m_navx.getYaw() + setpointDegrees);
+    super.initialize();
   }
 
   @Override

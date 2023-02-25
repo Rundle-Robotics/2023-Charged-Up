@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -73,7 +74,11 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+		m_autonomousCommand = m_robotContainer.getAutonomousCommand(
+			SmartDashboard.getNumber("Turn Kp", 0),
+			SmartDashboard.getNumber("Turn Ki", 0),
+			SmartDashboard.getNumber("Turn Kd", 0)
+		);
 
 		// schedule the autonomous command (example)
 		if (m_autonomousCommand != null) {

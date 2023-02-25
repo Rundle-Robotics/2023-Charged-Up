@@ -32,6 +32,8 @@ public class NAVX extends SubsystemBase {
         irSensor1 = new AnalogInput(2);
         lidar = new LiDAR(Port.kMXP);
 
+        navx.reset();
+
     }
 
     public class LiDAR {

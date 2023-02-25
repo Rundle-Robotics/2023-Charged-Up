@@ -42,10 +42,10 @@ public class Drivetrain extends SubsystemBase {
 		backRight.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
 		//set robot to acceleate from 0 to max speed in a MINIMUM of 2 seconds
-		frontLeft.setOpenLoopRampRate(2);
-		backLeft.setOpenLoopRampRate(2);
-		frontRight.setOpenLoopRampRate(2);
-		backRight.setOpenLoopRampRate(2);
+		frontLeft.setOpenLoopRampRate(1);
+		backLeft.setOpenLoopRampRate(1);
+		frontRight.setOpenLoopRampRate(1);
+		backRight.setOpenLoopRampRate(1);
 
 
 	}
