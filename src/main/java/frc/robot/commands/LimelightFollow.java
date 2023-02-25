@@ -69,6 +69,11 @@ public class LimelightFollow extends CommandBase {
 			drivetrain.mecanumDrive(forwardSpeed, strafeSpeed, rotationSpeed);
 			finite = !targetOnLeft && !targetOnRight && !targetTooFar && !targetSkewed;
 
+			System.out.print("Target detected on right: " + targetOnRight);
+			System.out.print("Target detected on left: " + targetOnLeft);
+			System.out.print("Target detected too far: " + targetTooFar);
+			System.out.print("Target detected at a skew: " + targetSkewed);
+
 		}
 
 		System.out.println(); // debug
