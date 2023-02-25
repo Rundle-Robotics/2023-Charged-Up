@@ -75,9 +75,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		m_autonomousCommand = m_robotContainer.getAutonomousCommand(
-			SmartDashboard.getNumber("Turn Kp", 0),
-			SmartDashboard.getNumber("Turn Ki", 0),
-			SmartDashboard.getNumber("Turn Kd", 0)
+			0.05, 0, 0
 		);
 
 		// schedule the autonomous command (example)

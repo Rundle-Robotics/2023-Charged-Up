@@ -51,19 +51,20 @@ public class AutoBalanceNAvX extends CommandBase {
       speed = -0.2;
       
     }
-
-    else if (Math.abs(roll) < -5){
-      speed = 0.2;
+   
+    else if (roll < -5){
+      speed = 0.13;
       HasMoved = true;
     }
-    else if (Math.abs(roll) > 5){
-      speed = -0.2;
+    else if ((roll) > 5){
+      speed = -0.13;
       HasMoved = true;
     }
-    else if(Math.abs(roll) < 5 && Math.abs(roll) > -5 && HasMoved == true) {
+    else if((Math.abs(roll) < 5) && HasMoved == true) {
       speed = 0;
       finished = true;
     }
+    
   
     drivetrain.mecanumDrive(0, -1*speed, 0);
     

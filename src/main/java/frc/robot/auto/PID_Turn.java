@@ -42,7 +42,7 @@ public class PID_Turn extends PIDCommand {
         // This should return the setpoint (can also be a constant)
         //    !!!this should turn 90 degrees right, right?
 
-        targetAngleDegrees,
+        navx.getYaw() + targetAngleDegrees,
         // This uses the output
         output -> {
           if (output > 0.5){
@@ -75,13 +75,7 @@ public class PID_Turn extends PIDCommand {
     return null;
   }
 
-  @Override
-  public void initialize() {
-      // TODO Auto-generated method stub
-    getController().setSetpoint(m_navx.getYaw() + setpointDegrees);
-    super.initialize();
-  }
-
+  
   @Override
   public void end(boolean interrupted) {
     m_drive.mecanumDrive(0, 0, 0);
@@ -91,6 +85,6 @@ public class PID_Turn extends PIDCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return getController().atSetpoint();
+    return false; //getController().atSetpoint();
   }
 }
