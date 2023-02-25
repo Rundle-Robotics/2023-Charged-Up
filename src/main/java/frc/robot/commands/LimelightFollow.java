@@ -57,20 +57,21 @@ public class LimelightFollow extends CommandBase {
 		} else {
 			System.out.println("Target found");
 
-			double[] targetPoseCameraData = limelight.getTARGETPOSECAMERA();
+			double yaw = limelight.getTARGETPOSECAMERA()[5];
 
 			boolean targetOnRight = limelight.getTX() > (CENTER_DISTANCE + CENTER_DEADBAND);
 			boolean targetOnLeft = limelight.getTX() < (CENTER_DISTANCE - CENTER_DEADBAND);
 			boolean targetTooFar = limelight.getTA() < TARGET_AREA_CUTOFF;
-			boolean targetSkewed = Math.abs(targetPoseCameraData[5]) > YAW_DEADBAND;
+			boolean targetSkewed = Math.abs(yaw) > YAW_DEADBAND;
 
+			// Positive forwardSpeed to move forward,
 			double forwardSpeed = targetTooFar ? SPEED : 0;
-			double strafeSpeed = targetOnRight ? SPEED : targetOnLeft ? -SPEED : 0;
-			double rotationSpeed = targetSkewed
-					? (targetPoseCameraData[5] - TARGET_YAW) / Math.abs(targetPoseCameraData[5] - TARGET_YAW) * SPEED
-					: 0;
+			// Positive strafeSpeed to move left
+			double strafeSpeed = targetOnRight ? -SPEED : targetOnLeft ? SPEED : 0;
+			// Positive rotation to turn clockwise
+			double rotationSpeed = targetSkewed ? (yaw - TARGET_YAW) / Math.abs(yaw - TARGET_YAW) * SPEED : 0;
 
-			drivetrain.mecanumDrive(forwardSpeed, strafeSpeed, rotationSpeed);
+			drivetrain.mecanumDrive(strafeSpeed, forwardSpeed, rotationSpeed);
 			finite = !targetOnLeft && !targetOnRight && !targetTooFar && !targetSkewed;
 
 			System.out.print("Target detected on right: " + targetOnRight);
