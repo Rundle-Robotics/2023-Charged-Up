@@ -14,9 +14,9 @@ public class LimelightFollow extends CommandBase {
 	private Drivetrain drivetrain;
 	private Limelight limelight;
 
-	private final double CENTER_DISTANCE = -8.8;
-	private final double TARGET_AREA_CUTOFF = 1.3;
-	private final double CENTER_DEADBAND = 0.73;
+	private final double CENTER_DISTANCE = 0;
+	private final double TARGET_AREA_CUTOFF = 10;
+	private final double CENTER_DEADBAND = 5;
 	private final double YAW_DEADBAND = 10;
 
 	double rotation = 0;
@@ -63,7 +63,7 @@ public class LimelightFollow extends CommandBase {
 			boolean targetSkewed = Math.abs(targetPoseCameraData[5]) > YAW_DEADBAND;
 
 			double forwardSpeed = targetTooFar ? 0.3 : 0;
-			double strafeSpeed = targetOnRight ? -0.3 : targetOnLeft ? 0.3 : 0;
+			double strafeSpeed = targetOnRight ? 0.3 : targetOnLeft ? -0.3 : 0;
 			double rotationSpeed = targetSkewed ? targetPoseCameraData[5] / Math.abs(targetPoseCameraData[5]) * 0.3 : 0;
 
 			drivetrain.mecanumDrive(forwardSpeed, strafeSpeed, rotationSpeed);
