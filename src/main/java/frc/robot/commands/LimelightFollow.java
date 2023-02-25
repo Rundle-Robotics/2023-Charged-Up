@@ -22,7 +22,6 @@ public class LimelightFollow extends CommandBase {
 	double rotation = 0;
 	double speed = 0;
 
-	boolean closeToTargeta;
 	boolean finite;
 
 	public LimelightFollow(Drivetrain drivetrain, Limelight limelight) {
@@ -51,35 +50,24 @@ public class LimelightFollow extends CommandBase {
 
 		if (limelight.getTV() == 0) {
 			System.out.println("No target found, trying to turn and find one..."); // debug
-			drivetrain.mecanumDrive(0, 0, 0.6);
+			drivetrain.mecanumDrive(0, 0, 0.3);
 
 		} else {
 			System.out.println("Target found");
-			// If target is on the right, turn right
-			if (limelight.getTX() > (CENTER_DISTANCE + CENTER_DEADBAND)) {
-				System.out.println("Target on the left, trying to turn..."); // debug
-				drivetrain.mecanumDrive(0, -0.5, 0);
-			}
-			// If target is on the left, turn left
-			else if (limelight.getTX() < (CENTER_DISTANCE - CENTER_DEADBAND)) {
-				System.out.println("Target on the right, trying to turn..."); // debug
-				drivetrain.mecanumDrive(0, 0.5, 0);
-			}
-			// If target area is too small, move forward
-			else if (limelight.getTA() < TARGET_AREA_CUTOFF) {
-				System.out.println("Target too far, trying to move forward..."); // debug
-				drivetrain.mecanumDrive(0.5, 0, 0);
-			} else {
-				double[] targetPoseCameraData = limelight.getTARGETPOSECAMERA();
 
-				if (Math.abs(targetPoseCameraData[5]) > YAW_DEADBAND) {
-					System.out.println("Target is detected at an angle, trying to rotate until perpendicular...");
-					drivetrain.mecanumDrive(0, 0, targetPoseCameraData[5] / Math.abs(targetPoseCameraData[5]) * 0.45);
-				} else {
-					System.out.println("Aligned!");
-					finite = true;
-				}
-			}
+			double[] targetPoseCameraData = limelight.getTARGETPOSECAMERA();
+
+			boolean targetOnRight = limelight.getTX() > (CENTER_DISTANCE + CENTER_DEADBAND);
+			boolean targetOnLeft = limelight.getTX() < (CENTER_DISTANCE - CENTER_DEADBAND);
+			boolean targetTooFar = limelight.getTA() < TARGET_AREA_CUTOFF;
+			boolean targetSkewed = Math.abs(targetPoseCameraData[5]) > YAW_DEADBAND;
+
+			double forwardSpeed = targetTooFar ? 0.3 : 0;
+			double strafeSpeed = targetOnRight ? -0.3 : targetOnLeft ? 0.3 : 0;
+			double rotationSpeed = targetSkewed ? targetPoseCameraData[5] / Math.abs(targetPoseCameraData[5]) * 0.3 : 0;
+
+			drivetrain.mecanumDrive(forwardSpeed, strafeSpeed, rotationSpeed);
+			finite = !targetOnLeft && !targetOnRight && !targetTooFar && !targetSkewed;
 
 		}
 
@@ -97,10 +85,6 @@ public class LimelightFollow extends CommandBase {
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-		// boolean hasTarget = limelight.getTV() != 0;
-		// boolean isCentered = Math.abs(limelight.getTX()) < CENTER_DISTANCE;
-		// boolean isCloseEnough = limelight.getTA() > TARGET_AREA_CUTOFF;
-		// return hasTarget && isCentered && isCloseEnough;
 		return finite;
 	}
 
