@@ -70,7 +70,7 @@ public class LimelightFollow extends CommandBase {
 					? (targetPoseCameraData[5] - TARGET_YAW) / Math.abs(targetPoseCameraData[5] - TARGET_YAW) * SPEED
 					: 0;
 
-			drivetrain.mecanumDrive(forwardSpeed, strafeSpeed, rotationSpeed);
+			drivetrain.mecanumDrive(-forwardSpeed, -strafeSpeed, -rotationSpeed);
 			finite = !targetOnLeft && !targetOnRight && !targetTooFar && !targetSkewed;
 
 			System.out.print("Target detected on right: " + targetOnRight);

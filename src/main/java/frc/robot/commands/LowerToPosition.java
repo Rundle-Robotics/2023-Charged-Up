@@ -45,6 +45,6 @@ public class LowerToPosition extends CommandBase {
 	@Override
 	public boolean isFinished() {
 		// Might need to be .getMiddleSwitch()
-		return grabberLifter.getBottomSwitch() || grabberLifter.stopArm(-0.2);
+		return grabberLifter.getMiddleSwitch();
 	}
 }

@@ -13,26 +13,32 @@ import frc.robot.subsystems.Drivetrain;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class PID_Drive_Straight extends PIDCommand {
   /** Creates a new PID_Drive_Straight. */
+  private Drivetrain m_drive;
   public PID_Drive_Straight(double getDistance, Drivetrain drive) {
     super(
         // The controller that the command will use
-        new PIDController(0.222,0.222,01),
+        new PIDController(0.05,0.0,0),
         // This should return the measurement
         drive::getFrontLeftPosition,
         // This should return the setpoint (can also be a constant)
         getDistance / ControlConstants.kDriveTick2Meter, //convert meters to encoder ticks
         // This uses the output
         output -> { 
-          drive.mecanumDrive(output, 0, 0);
+          drive.mecanumDrive(0, -1*output, 0);
         },
         drive);
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
-
+        m_drive = drive;
     getController().setTolerance(0.1/ControlConstants.kDriveTick2Meter); //tolerance of 0.1m (10cm)
 
   }
 
+  @Override
+  public void end(boolean interrupted) {
+    m_drive.mecanumDrive(0, 0, 0);
+		//limelight.setPipeline(2); // Pipeline 2 is for driver vision
+	}
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {

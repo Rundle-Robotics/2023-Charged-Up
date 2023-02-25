@@ -35,16 +35,28 @@ public class GrabberLifter extends SubsystemBase {
         topSwitch = new DigitalInput(2); // arm (motors) at max height = pressed
 
         bottomEncoderValue = e.getPosition();
+
+        rm.setOpenLoopRampRate(1);
+        lm.setOpenLoopRampRate(1);
     }
 
     public double getPosOfLift() {
         return e.getPosition();
     }
 
+    public void resetEncoder(){
+        e.setPosition(0);
+        eL.setPosition(0);
+    }
+
     public void lift(double newValue) {
         if (stopArm(newValue)) {
             rm.set(0);
             lm.set(0);
+
+            if (getMiddleSwitch()){
+                resetEncoder();
+            }
         } else {
             rm.set(newValue); // positive speed on rm is up
             lm.set(newValue);

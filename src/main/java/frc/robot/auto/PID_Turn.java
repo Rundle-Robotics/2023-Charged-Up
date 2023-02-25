@@ -28,10 +28,14 @@ public class PID_Turn extends PIDCommand {
 
    private static DoubleSupplier targetAngleDegreesDoubleSupplier;
 
+   private Drivetrain m_drive;
+   private NAVX m_navx;
+   private double setpointDegrees;
+
   public PID_Turn(double targetAngleDegrees, Drivetrain drive, NAVX navx) {
     super(
         // these constants have the potential to be dangerously wrong...
-        new PIDController(0.333, 0.3, 0.03),
+        new PIDController(0.05, 0.0, 0),
         // This should return the measurement
         //     !!!I already feel that this is wrong... pls help
         navx::getYaw,
@@ -40,7 +44,16 @@ public class PID_Turn extends PIDCommand {
 
         targetAngleDegrees,
         // This uses the output
-        output -> drive.mecanumDrive(0, 0, output),
+        output -> {
+          if (output > 0.5){
+            output = 0.5;
+          }
+          else if (output < -0.5){
+            output = -0.5;
+          }
+          drive.mecanumDrive(0, 0, -1*output);
+        }
+          ,
           // Use the output here
           drive);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -52,11 +65,27 @@ public class PID_Turn extends PIDCommand {
     //      !!!does that seem like a reasonable tolerance? should I put it in constants?
     getController().setTolerance(1);
 
+    m_drive = drive;
+    m_navx = navx;
+    setpointDegrees = targetAngleDegrees;
+
   }
 
   private static DoubleSupplier targetAngleDegrees(int i) {
     return null;
   }
+
+  @Override
+  public void initialize() {
+      // TODO Auto-generated method stub
+    getController().setSetpoint(m_navx.getYaw() + setpointDegrees);
+  }
+
+  @Override
+  public void end(boolean interrupted) {
+    m_drive.mecanumDrive(0, 0, 0);
+		//limelight.setPipeline(2); // Pipeline 2 is for driver vision
+	}
 
   // Returns true when the command should end.
   @Override

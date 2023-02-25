@@ -15,7 +15,7 @@ public class RetroReflectiveFollow extends CommandBase {
 	private Limelight limelight;
 
 	private final double CENTER_DISTANCE = 1;
-	private final double TARGET_AREA_CUTOFF = 10;
+	private final double TARGET_AREA_CUTOFF = 0.7;
 
 	double rotation = 0;
 	double speed = 0;
@@ -45,30 +45,41 @@ public class RetroReflectiveFollow extends CommandBase {
 	// Called every time the scheduler runs while the command is scheduled.
 	@Override
 	public void execute() {
-		limelight.putTargetPoseDataonSmartDashboard();
+		// limelight.putTargetPoseDataonSmartDashboard();
 
-		if (limelight.getTV() == 0) {
-			System.out.println("No target found, trying to turn and find one..."); // debug
-			drivetrain.mecanumDrive(0, 0, 0.6);
-		} else {
-			System.out.println("Target found");
-			// If target is on the right, turn right
-			if (limelight.getTX() > CENTER_DISTANCE) {
-				System.out.println("Target on the right, trying to turn..."); // debug
-				drivetrain.mecanumDrive(0, -0.5, 0);
-			}
-			// If target is on the left, turn left
-			else if (limelight.getTX() < -CENTER_DISTANCE) {
-				System.out.println("Target on the left, trying to turn..."); // debug
-				drivetrain.mecanumDrive(0, 0.5, 0);
-			}
-			// If target area is too small, move forward
-			else if (limelight.getTA() < TARGET_AREA_CUTOFF) {
-				System.out.println("Target too far, trying to move forward..."); // debug
-				drivetrain.mecanumDrive(0.5, 0, 0);
-			}
+		// if (limelight.getTV() == 0) {
+		// 	System.out.println("No target found, trying to turn and find one..."); // debug
+		// 	drivetrain.mecanumDrive(0, 0, 0.6);
+		// } else {
+		// 	System.out.println("Target found");
+		// 	// If target is on the right, turn right
+		// 	if (limelight.getTX() > CENTER_DISTANCE) {
+		// 		System.out.println("Target on the right, trying to turn..."); // debug
+		// 		drivetrain.mecanumDrive(0, -0.5, 0);
+		// 	}
+		// 	// If target is on the left, turn left
+		// 	else if (limelight.getTX() < -CENTER_DISTANCE) {
+		// 		System.out.println("Target on the left, trying to turn..."); // debug
+		// 		drivetrain.mecanumDrive(0, 0.5, 0);
+		// 	}
+		// 	// If target area is too small, move forward
+		// 	else if (limelight.getTA() < TARGET_AREA_CUTOFF) {
+		// 		System.out.println("Target too far, trying to move forward..."); // debug
+		// 		drivetrain.mecanumDrive(0.5, 0, 0);
+		// 	}
 
+		// }
+
+		if (limelight.getTA() < TARGET_AREA_CUTOFF){
+			drivetrain.mecanumDrive(0,-.2,0);
+			System.out.println("target is too far, moving forward");
+
+		} 
+		else {
+			finite = true;
 		}
+
+		
 
 		System.out.println(); // debug
 	}
@@ -78,7 +89,7 @@ public class RetroReflectiveFollow extends CommandBase {
 	public void end(boolean interrupted) {
 		limelight.disableLimelight();
 
-		limelight.setPipeline(2); // Pipeline 2 is for driver vision
+		//limelight.setPipeline(2); // Pipeline 2 is for driver vision
 	}
 
 	// Returns true when the command should end.

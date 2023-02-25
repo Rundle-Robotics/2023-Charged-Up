@@ -95,9 +95,9 @@ public class RobotContainer {
 
 		secondaryController.rightTrigger().onTrue(new RaiseToPosition(grabberLifter, Height.HIGH));
 		secondaryController.leftTrigger().onTrue(new RaiseToPosition(grabberLifter, Height.MID));
-		secondaryController.rightBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter));
-		secondaryController.leftBumper().whileTrue(new GrabberLifterCommand(-0.2, grabberLifter));
-		secondaryController.povDown().onTrue(new LowerToPosition(grabberLifter, pneumatics));
+		secondaryController.rightBumper().whileTrue(new GrabberLifterCommand(0.4, grabberLifter));
+		secondaryController.leftBumper().whileTrue(new GrabberLifterCommand(-0.4, grabberLifter));
+		//secondaryController.povDown().onTrue(new LowerToPosition(grabberLifter, pneumatics));
 
 		// Camera swap binding
 		driverController.start().onTrue(
@@ -110,8 +110,8 @@ public class RobotContainer {
 						() -> cameraSelection.setString(mastCamera.getName())));
 
 		// Solenoid binding
-		driverController.b().onTrue(pneumatics.toggleGrabberSolenoid());
-		driverController.a().onTrue(pneumatics.toggleLifter());
+		//driverController.b().onTrue(pneumatics.toggleGrabberSolenoid());
+		//driverController.a().onTrue(pneumatics.toggleLifter());
 		secondaryController.b().onTrue(pneumatics.toggleGrabberSolenoid());
 		secondaryController.a().onTrue(pneumatics.toggleLifter());
 
@@ -119,8 +119,12 @@ public class RobotContainer {
 		driverController.x().whileTrue(new AutoBalanceNAvX(drivetrain, navx));
 
 		// Limelight follow binding
-		driverController.y().whileTrue(new LimelightFollow(drivetrain, limelight));
-		driverController.b().whileTrue(new RetroReflectiveFollow(drivetrain, limelight));
+		//driverController.y().whileTrue(new LimelightFollow(drivetrain, limelight));
+		//driverController.b().whileTrue(new RetroReflectiveFollow(drivetrain, limelight));
+
+		driverController.y().whileTrue(new PID_Drive_Straight(2, drivetrain));
+		driverController.b().whileTrue(new PID_Turn(90, drivetrain, navx));
+		
 
 		// FineTune binding
 		driverController.leftTrigger(ControlConstants.JOY_DEADBAND).whileTrue(new FineTUNECommand(drivetrain));
@@ -128,9 +132,9 @@ public class RobotContainer {
 	}
 
 	public Command getAutonomousCommand() {
-		return (new PID_Drive_Straight(3, drivetrain))
-				.andThen(new PID_Turn((double) 90, drivetrain, navx))
+		return (pneumatics.toggleLifter()
 				.andThen(new RaiseToPosition(grabberLifter, Height.HIGH))
-				.andThen(pneumatics.toggleGrabberSolenoid());
+				.andThen(new RetroReflectiveFollow(drivetrain, limelight))
+				.andThen(pneumatics.toggleGrabberSolenoid()));
 	}
 }
