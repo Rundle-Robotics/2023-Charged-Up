@@ -5,6 +5,7 @@
 package frc.robot.commands;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.NAVX;
+import java.util.concurrent.TimeUnit;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -61,7 +62,13 @@ public class AutoBalanceNAvX extends CommandBase {
       HasMoved = true;
     }
     else if((Math.abs(roll) < 5) && HasMoved == true) {
-      speed = 0;
+      speed = 0.1;
+      try {
+        TimeUnit.SECONDS.sleep(10);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      
       finished = true;
     }
     
