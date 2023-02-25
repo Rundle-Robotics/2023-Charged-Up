@@ -14,10 +14,12 @@ public class LimelightFollow extends CommandBase {
 	private Drivetrain drivetrain;
 	private Limelight limelight;
 
-	private final double CENTER_DISTANCE = 0;
-	private final double TARGET_AREA_CUTOFF = 10;
+	private final double CENTER_DISTANCE = -10.2;
+	private final double TARGET_AREA_CUTOFF = 1.2;
 	private final double CENTER_DEADBAND = 5;
 	private final double YAW_DEADBAND = 10;
+	private final double TARGET_YAW = 0;
+	private final double SPEED = 0.45;
 
 	double rotation = 0;
 	double speed = 0;
@@ -50,7 +52,7 @@ public class LimelightFollow extends CommandBase {
 
 		if (limelight.getTV() == 0) {
 			System.out.println("No target found, trying to turn and find one..."); // debug
-			drivetrain.mecanumDrive(0, 0, 0.3);
+			drivetrain.mecanumDrive(0, 0, SPEED);
 
 		} else {
 			System.out.println("Target found");
@@ -62,9 +64,11 @@ public class LimelightFollow extends CommandBase {
 			boolean targetTooFar = limelight.getTA() < TARGET_AREA_CUTOFF;
 			boolean targetSkewed = Math.abs(targetPoseCameraData[5]) > YAW_DEADBAND;
 
-			double forwardSpeed = targetTooFar ? 0.3 : 0;
-			double strafeSpeed = targetOnRight ? 0.3 : targetOnLeft ? -0.3 : 0;
-			double rotationSpeed = targetSkewed ? targetPoseCameraData[5] / Math.abs(targetPoseCameraData[5]) * 0.3 : 0;
+			double forwardSpeed = targetTooFar ? SPEED : 0;
+			double strafeSpeed = targetOnRight ? SPEED : targetOnLeft ? -SPEED : 0;
+			double rotationSpeed = targetSkewed
+					? (targetPoseCameraData[5] - TARGET_YAW) / Math.abs(targetPoseCameraData[5] - TARGET_YAW) * SPEED
+					: 0;
 
 			drivetrain.mecanumDrive(forwardSpeed, strafeSpeed, rotationSpeed);
 			finite = !targetOnLeft && !targetOnRight && !targetTooFar && !targetSkewed;
