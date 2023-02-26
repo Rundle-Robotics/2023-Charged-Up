@@ -53,12 +53,12 @@ public class AutoBalanceNAvX extends CommandBase {
       
     }
    
-    else if (roll < 9){
-      speed = 0.13;
+    else if (roll < -9){
+      speed = 0.2;
       HasMoved = true;
     }
     else if ((roll) > 9){
-      speed = -0.13;
+      speed = -0.2;
       HasMoved = true;
     }
     else if((Math.abs(roll) < 9) && (Math.abs(roll) > 5) && HasMoved == true) {

@@ -175,6 +175,7 @@ public class Drivetrain extends SubsystemBase {
 		return frontRighte.getCountsPerRevolution();
 	}
 
+
 	public void stop() {
 		frontLeft.set(0);
 		frontRight.set(0);

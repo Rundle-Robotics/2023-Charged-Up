@@ -30,15 +30,23 @@ public class Pneumatics extends SubsystemBase {
 		armsolenoid.set(value);
 	}
 
+	public void toggleLifterMethod() {
+		armsolenoid.toggle();
+	}
+
+	public void toggleGrabberMethod() {
+		sol1.toggle();
+	}
+
 	public CommandBase toggleGrabberSolenoid() {
-		return runOnce(() -> {
+		return this.runOnce(() -> {
 			sol1.toggle();
 			System.out.println("Toggling Grabber solenoid"); // debug
 		});
 	}
 
 	public CommandBase toggleLifter() {
-		return runOnce(() -> {
+		return this.runOnce(() -> {
 			armsolenoid.toggle();
 			System.out.println("Toggling Grabber solenoid"); // debug
 		});
