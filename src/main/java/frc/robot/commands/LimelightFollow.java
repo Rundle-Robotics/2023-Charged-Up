@@ -71,7 +71,7 @@ public class LimelightFollow extends CommandBase {
 			// Positive rotation to turn clockwise
 			double rotationSpeed = targetSkewed ? (yaw - TARGET_YAW) / Math.abs(yaw - TARGET_YAW) * SPEED : 0;
 
-			drivetrain.mecanumDrive(-forwardSpeed, -strafeSpeed, -rotationSpeed);
+			drivetrain.mecanumDrive(-strafeSpeed, forwardSpeed, -rotationSpeed);
 			finite = !targetOnLeft && !targetOnRight && !targetTooFar && !targetSkewed;
 
 			System.out.print("Target detected on right: " + targetOnRight);
