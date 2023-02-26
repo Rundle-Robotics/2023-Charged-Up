@@ -27,19 +27,21 @@ public class TogglePneumatics extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // switch (selected){
-    // case GRABBER:
-    // System.out.println("toggling grabber method");
-    // pneumatics.toggleGrabberMethod();
-    // break;
-    // case LIFTER:
-    // System.out.println("toggling lifter method");
-    // pneumatics.toggleLifterMethod();
-    // break;
-    // default:
-    // System.out.println("default");
-    // break;
-    // }
+    switch (selected){
+    case GRABBER:
+    System.out.println("toggling grabber method");
+    pneumatics.setGrabberOpen();
+    break;
+    case LIFTER:
+    System.out.println("toggling lifter method");
+    pneumatics.setLifterDown();
+    break;
+    default:
+    System.out.println("default");
+    break;
+    }
+
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -51,7 +53,6 @@ public class TogglePneumatics extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    pneumatics.toggleLifterMethod(); // Moved here to ensure it runs
   }
 
   // Returns true when the command should end.

@@ -40,6 +40,8 @@ public class BackupAutoMove extends CommandBase {
 
     yPID = new PIDController(0.05,0, 0);
 
+    yPID.setTolerance(2);
+
     yPID.setSetpoint(targetPosition);
 
   }

@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator.Validity;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -11,11 +13,11 @@ public class Pneumatics extends SubsystemBase {
 	private DoubleSolenoid armsolenoid;
 
 	public Pneumatics() {
-		sol1 = new DoubleSolenoid(PneumaticsModuleType.REVPH, 0, 1);
+		sol1 = new DoubleSolenoid(PneumaticsModuleType.REVPH, 2, 3);
 		sol1.set(Value.kReverse);
 
-		armsolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 2, 3);
-		armsolenoid.set(Value.kReverse);
+		armsolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 0);
+		armsolenoid.set(Value.kForward);
 	}
 
 	@Override
@@ -30,12 +32,12 @@ public class Pneumatics extends SubsystemBase {
 		armsolenoid.set(value);
 	}
 
-	public void toggleLifterMethod() {
-		armsolenoid.toggle();
+	public void setLifterDown() {
+		armsolenoid.set(Value.kReverse);
 	}
 
-	public void toggleGrabberMethod() {
-		sol1.toggle();
+	public void setGrabberOpen() {
+		sol1.set(Value.kForward);
 	}
 
 	public CommandBase toggleGrabberSolenoid() {

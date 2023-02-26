@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.ControlConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.auto.BackupAutoMove;
+import frc.robot.auto.DoNothing;
 import frc.robot.auto.PID_Drive_Straight;
 import frc.robot.auto.PID_Turn;
 import frc.robot.auto.TogglePneumatics;
@@ -116,8 +117,8 @@ public class RobotContainer {
 		// Solenoid binding
 		//driverController.b().onTrue(pneumatics.toggleGrabberSolenoid());
 		//driverController.a().onTrue(pneumatics.toggleLifter());
-		//secondaryController.b().onTrue(pneumatics.toggleGrabberSolenoid());
-		//secondaryController.a().onTrue(pneumatics.toggleLifter());
+		secondaryController.b().onTrue(pneumatics.toggleLifter());
+		secondaryController.a().onTrue(pneumatics.toggleGrabberSolenoid());
 
 		// Autobalance binding
 		driverController.x().whileTrue(new AutoBalanceNAvX(drivetrain, navx));
@@ -134,13 +135,19 @@ public class RobotContainer {
 	}
 
 	public Command getAutonomousCommand() {
-		return (new RaiseToPosition(grabberLifter, Height.HIGH))
+		return (new TogglePneumatics(pneumatics, actuators.LIFTER))
+		.andThen((new DoNothing(2))
+		.andThen((new RaiseToPosition(grabberLifter, Height.HIGH))
 		.andThen((new BackupAutoMove(-30, drivetrain))
-		.andThen((new BackupAutoMove(50, drivetrain))
-		.andThen((new LowerToPosition(grabberLifter, pneumatics)))));
+		.andThen((new DoNothing(1))
 
-		//return (new TogglePneumatics(pneumatics, actuators.GRABBER));
+		.andThen((new TogglePneumatics(pneumatics, actuators.GRABBER))
+		.andThen((new DoNothing(1))
 
+		.andThen((new BackupAutoMove(30, drivetrain))
+		)))))));
+
+		
 		
 	}
 }

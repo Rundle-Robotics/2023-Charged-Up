@@ -63,6 +63,8 @@ public class Robot extends TimedRobot {
 	/** This function is called once each time the robot enters Disabled mode. */
 	@Override
 	public void disabledInit() {
+		RobotContainer.secondaryController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0);
+
 	}
 
 	@Override
@@ -77,7 +79,7 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
-		RobotContainer.secondaryController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0.5);
+		RobotContainer.secondaryController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0.25);
 
 		// schedule the autonomous command (example)
 		if (m_autonomousCommand != null) {
