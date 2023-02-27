@@ -36,6 +36,9 @@ public class LowerToPosition extends CommandBase {
 	// Called once the command ends or is interrupted.
 	@Override
 	public void end(boolean interrupted) {
+
+		grabberLifter.lift(0);
+
 		if (!interrupted) {
 			pneumatics.toggleLifter();
 		}
