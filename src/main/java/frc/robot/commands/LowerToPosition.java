@@ -40,7 +40,7 @@ public class LowerToPosition extends CommandBase {
 		grabberLifter.lift(0);
 
 		if (!interrupted) {
-			pneumatics.toggleLifter();
+			pneumatics.toggleLifter(); //may have to set this to a raise method
 		}
 	}
 

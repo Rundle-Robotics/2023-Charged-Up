@@ -48,7 +48,7 @@ public class RaiseToPosition extends CommandBase {
     }
 
     private double getPos() {
-        return grabberLifter.getPosOfLift() - GrabberLifter.bottomEncoderValue;
+        return grabberLifter.getPosOfLift() - grabberLifter.bottomEncoderValue();
     }
 
 }

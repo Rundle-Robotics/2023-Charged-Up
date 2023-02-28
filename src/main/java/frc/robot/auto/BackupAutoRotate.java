@@ -44,6 +44,7 @@ public class BackupAutoRotate extends CommandBase {
     zPID = new PIDController(0.05,0, 0);
 
     zPID.setSetpoint(targetPosition);
+    zPID.setTolerance(2); //2 degrees
 
   }
 

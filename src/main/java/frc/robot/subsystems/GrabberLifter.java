@@ -18,7 +18,7 @@ public class GrabberLifter extends SubsystemBase {
     private DigitalInput middleSwitch;
     private DigitalInput topSwitch;
 
-    public static double bottomEncoderValue;
+    public double bottomEncoderValue;
 
     public GrabberLifter() {
         rm = new CANSparkMax(5, MotorType.kBrushless);
@@ -47,8 +47,12 @@ public class GrabberLifter extends SubsystemBase {
     public void resetEncoder(){
         e.setPosition(0);
         eL.setPosition(0);
+        bottomEncoderValue = 0;
     }
 
+    public double bottomEncoderValue() {
+        return bottomEncoderValue;
+    }
     public void lift(double newValue) {
         if (stopArm(newValue)) {
             rm.set(0);
