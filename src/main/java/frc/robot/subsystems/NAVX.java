@@ -32,6 +32,8 @@ public class NAVX extends SubsystemBase {
         irSensor1 = new AnalogInput(2);
         lidar = new LiDAR(Port.kMXP);
 
+        navx.reset();
+
     }
 
     public class LiDAR {
@@ -84,7 +86,7 @@ public class NAVX extends SubsystemBase {
     public void periodic() {
 
         SmartDashboard.putNumber("gyroX", getGyroX());
-        SmartDashboard.putNumber("gyroY", getGyroY());
+        SmartDashboard.putNumber("gyroY", getRawAccelY());
         SmartDashboard.putNumber("gyroZ", getGyroZ());
         SmartDashboard.putNumber("Pitch", getPitch());
         SmartDashboard.putNumber("Roll",  getRoll());
@@ -121,6 +123,11 @@ public class NAVX extends SubsystemBase {
     public double getYaw() {
         return navx.getYaw();
     }
+
+    public double getRawAccelY(){
+        return navx.getRawAccelY();
+    }
+
 
     public double getIrVoltage() {
         double sensorVoltage = irSensor1.getVoltage();

@@ -1,4 +1,5 @@
 package frc.robot.subsystems;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -13,11 +14,11 @@ public class GrabberLifter extends SubsystemBase {
     private RelativeEncoder e;
     private RelativeEncoder eL;
 
-
-
     private DigitalInput bottomSwitch;
     private DigitalInput middleSwitch;
     private DigitalInput topSwitch;
+
+    public double bottomEncoderValue;
 
     public GrabberLifter() {
         rm = new CANSparkMax(5, MotorType.kBrushless);
@@ -25,89 +26,123 @@ public class GrabberLifter extends SubsystemBase {
         rm.setInverted(true);
         eL = lm.getEncoder();
         e = rm.getEncoder();
-        
+
         rm.setIdleMode(CANSparkMax.IdleMode.kBrake);
         lm.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
-        bottomSwitch = new DigitalInput(0);
-        middleSwitch = new DigitalInput(1);
-        topSwitch = new DigitalInput(2);
+        bottomSwitch = new DigitalInput(0); // lifter (solenoid/piston) at bottom = pressed, no switch for lifter at top
+        middleSwitch = new DigitalInput(1); // arm (motors) at bottom height = pressed
+        topSwitch = new DigitalInput(2); // arm (motors) at max height = pressed
+
+        bottomEncoderValue = e.getPosition(); 
+
+        rm.setOpenLoopRampRate(1);
+        lm.setOpenLoopRampRate(1);
     }
-    
+
     public double getPosOfLift() {
-		return e.getPosition();
-	}
+        return e.getPosition();
+    }
+
+    public void resetEncoder(){
+        e.setPosition(0);
+        eL.setPosition(0);
+        bottomEncoderValue = 0;
+    }
+
+    public double bottomEncoderValue() {
+        return bottomEncoderValue;
+    }
     public void lift(double newValue) {
-        rm.set(newValue); //positive speed on rm is up
-        lm.set(newValue);
+        if (stopArm(newValue)) {
+            rm.set(0);
+            lm.set(0);
+
+            if (getMiddleSwitch()){
+                resetEncoder();
+            }
+        } else {
+            rm.set(newValue); // positive speed on rm is up
+            lm.set(newValue);
+        }
+
     }
 
     @Override
     public void periodic() {
-
-        double speed = rm.get();
         SmartDashboard.putNumber("right encoder", e.getPosition());
         SmartDashboard.putNumber("left encoder", eL.getPosition());
         SmartDashboard.putNumber("left encoder rpm", eL.getVelocity());
         SmartDashboard.putNumber(" right encoder rpm", e.getVelocity());
-        
+
+        SmartDashboard.putBoolean("middle", getMiddleSwitch());
+        SmartDashboard.putBoolean("bottom", getBottomSwitch());
+        SmartDashboard.putBoolean("top", getTopSwitch());
+
     }
     /*
      * IMPORTANT
      * ADJUST EXCLAMATION MARKS TO CHANGE LOGICs
      */
 
-    public boolean getTopSwitch() {return topSwitch.get(); } //top switch is 'active' when low
-    public boolean getMiddleSwitch() {return middleSwitch.get(); } //middle switch is 'active' when high
-    public boolean getBottomSwitch() {return bottomSwitch.get(); } //bottom siwtch is 'active' when low
+    public boolean getTopSwitch() {
+        return topSwitch.get();
+    } // returns true when top switch is pressed
 
-    public boolean stopArm(double speed) 
-    {
+    public boolean getMiddleSwitch() {
+        return middleSwitch.get();
+    } // returns true when middle switch is pressed
 
-        //assume positive speed is moving up
-        if (getTopSwitch() && speed > 0) //at top, wanting to move higher
+    public boolean getBottomSwitch() {
+        return !bottomSwitch.get(); // this switch is inverted
+    } // returns true when bottom switch is pressed
+
+    /**
+     * @param speed given to the motors
+     * @return true if the arm needs to stop moving, false if it can continue moving
+     */
+    public boolean stopArm(double speed) {
+        // assume positive speed is moving up
+
+        // at top, wanting to move higher
+        if (getTopSwitch() && speed > 0)
+            return true;
+
+        // at bottom, wanting to move lower
+        else if (getMiddleSwitch() && speed < 0)
+            return true;
+
+        // arm lifter is up, arm is tucked in - can't move in either direction
+        else if (!getBottomSwitch() && getMiddleSwitch())
+            return true;
+
+        // arm lifter is up, arm is not tucked in and wants to move lower
+        else if (!getBottomSwitch() && !getMiddleSwitch() && speed < 0)
+            return true;
+
+        // none of the above cases
+        return false;
+
+    }
+
+    public boolean lifterNeedsLowering(double speed) {
+        if (!getBottomSwitch() && getMiddleSwitch()) // arm lifter is up, arm is down - can't move in either direction
         {
             return true;
-        } 
-        else if (getMiddleSwitch() && speed < 0) //at bottom, wanting to move lower
-        {
-            return true;
-        }
-        else if (!getBottomSwitch() && getMiddleSwitch()) //arm lifter is up, arm is down - can't move in either direction
-        {
-            return true;
-        }
-        else if (!getBottomSwitch() && !getMiddleSwitch() && speed < 0) //arm lifter is up, arm is not tucked and wants to move lower
+        } else if (!getBottomSwitch() && !getMiddleSwitch() && speed < 0) // arm lifter is up, arm is not tucked and
+                                                                          // wants to move lower
         {
             return true;
         }
 
         return false;
-
     }
 
-    public boolean lifterNeedsLowering(double speed)
-    {
-        if (!getBottomSwitch() && getMiddleSwitch()) //arm lifter is up, arm is down - can't move in either direction
-        {
-            return true;
-        }
-        else if (!getBottomSwitch() && !getMiddleSwitch() && speed < 0) //arm lifter is up, arm is not tucked and wants to move lower
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    public boolean lifterNeedsRaising(double speed)
-    {
-        if (getBottomSwitch() && getMiddleSwitch())
-        {
+    public boolean lifterNeedsRaising(double speed) {
+        if (getBottomSwitch() && getMiddleSwitch()) {
             return true;
         }
         return false;
     }
-    
+
 }
-

@@ -6,6 +6,13 @@ package frc.robot;
 
 import frc.robot.Constants.ControlConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.auto.BackupAutoMove;
+import frc.robot.auto.DoNothing;
+import frc.robot.auto.PID_Drive_Straight;
+import frc.robot.auto.PID_Turn;
+import frc.robot.auto.TogglePneumatics;
+import frc.robot.auto.TogglePneumatics.actuators;
+import frc.robot.auto.BackupAutoMove;
 import frc.robot.commands.AutoBalanceNAvX;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Pneumatics;
@@ -18,21 +25,21 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import frc.robot.commands.GetClosePosition;
 import frc.robot.commands.GrabberLifterCommand;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.commands.LimelightFollow;
+import frc.robot.commands.LowerToPosition;
+import frc.robot.commands.RaiseToPosition;
+import frc.robot.commands.RetroReflectiveFollow;
+import frc.robot.commands.RaiseToPosition.Height;
 import frc.robot.subsystems.GrabberLifter;
+import frc.robot.subsystems.Limelight;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-
-import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.FineTUNECommand;
 import frc.robot.subsystems.NAVX;
 
 public class RobotContainer {
 	public static final CommandXboxController driverController = new CommandXboxController(
 			OperatorConstants.DRIVER_CONTROLLER_PORT);
-	private final XboxController controller = driverController.getHID();
 
 	public static final CommandXboxController secondaryController = new CommandXboxController(
 			OperatorConstants.SECONDARY_CONTROLLER_PORT);
@@ -41,14 +48,14 @@ public class RobotContainer {
 	private static UsbCamera armCamera;
 	private static NetworkTableEntry cameraSelection;
 
-
 	// Subsystems
-	// private static Compressor compressor;
+	private static Compressor compressor;
 	private final Pneumatics pneumatics;
 
 	// The robot's subsystems and commands are defined here...
 	private final GrabberLifter grabberLifter = new GrabberLifter();
 	private final Drivetrain drivetrain = new Drivetrain();
+	private final Limelight limelight = new Limelight();
 
 	// declared NAVX
 	public final NAVX navx = new NAVX();
@@ -57,8 +64,8 @@ public class RobotContainer {
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
 	 */
 	public RobotContainer() {
-		// compressor = new Compressor(PneumaticsModuleType.REVPH);
-		// compressor.enableDigital();
+		compressor = new Compressor(PneumaticsModuleType.REVPH);
+		compressor.enableDigital();
 
 		pneumatics = new Pneumatics();
 
@@ -66,9 +73,10 @@ public class RobotContainer {
 		armCamera = CameraServer.startAutomaticCapture(OperatorConstants.ARM_CAMERA_PORT);
 
 		cameraSelection = NetworkTableInstance.getDefault().getTable("").getEntry("CameraSelection");
-		
+
 		// Configure the trigger bindings
 		configureBindings();
+
 	}
 
 	/**
@@ -86,56 +94,60 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
-		// driverController.y().onTrue(new GrabberLifterCommand(0.4,
-		// grabberLifter)).onFalse(new GetClosePosition(grabberLifter));
+		// GrabberLifter binding
+		driverController.rightBumper().whileTrue(new GrabberLifterCommand(0.2, grabberLifter));
+		driverController.leftBumper().whileTrue(new GrabberLifterCommand(-0.2, grabberLifter));
 
-		// driverController.a().onTrue(new GrabberLifterCommand(-0.4,
-		// grabberLifter)).onFalse(new GetClosePosition(grabberLifter));
+		secondaryController.rightTrigger().onTrue(new RaiseToPosition(grabberLifter, Height.HIGH));
+		secondaryController.leftTrigger().onTrue(new RaiseToPosition(grabberLifter, Height.MID));
+		secondaryController.rightBumper().whileTrue(new GrabberLifterCommand(0.4, grabberLifter));
+		secondaryController.leftBumper().whileTrue(new GrabberLifterCommand(-0.4, grabberLifter));
+		//secondaryController.povDown().onTrue(new LowerToPosition(grabberLifter, pneumatics));
 
-		// driverController.rightBumper().onTrue(new GrabberLifterCommand(0.2,
-		// grabberLifter, false)).onFalse(new GrabberLifterCommand(0, grabberLifter,
-		// false));
-		// driverController.leftBumper().onTrue(new GrabberLifterCommand(0.2,
-		// grabberLifter, true)).onFalse(new GrabberLifterCommand(0, grabberLifter,
-		// false));
+		// Camera swap binding
+		driverController.start().onTrue(
+				new StartEndCommand(
+						() -> cameraSelection.setString(armCamera.getName()),
+						() -> cameraSelection.setString(mastCamera.getName())));
+		secondaryController.start().onTrue(
+				new StartEndCommand(
+						() -> cameraSelection.setString(armCamera.getName()),
+						() -> cameraSelection.setString(mastCamera.getName())));
 
-		secondaryController.rightTrigger(ControlConstants.JOY_DEADBAND).whileTrue(new GrabberLifterCommand(0.2, grabberLifter, false));
-		secondaryController.leftTrigger(ControlConstants.JOY_DEADBAND).whileTrue(new GrabberLifterCommand(0.2, grabberLifter, true));
+		// Solenoid binding
+		//driverController.b().onTrue(pneumatics.toggleGrabberSolenoid());
+		//driverController.a().onTrue(pneumatics.toggleLifter());
+		secondaryController.b().onTrue(pneumatics.toggleLifter());
+		secondaryController.a().onTrue(pneumatics.toggleGrabberSolenoid());
 
-		secondaryController.rightBumper().whileTrue(new GrabberLifterCommand(0.4, grabberLifter, false)).onFalse(new GetClosePosition(grabberLifter));
-		secondaryController.leftBumper().whileTrue(new GrabberLifterCommand(0.4, grabberLifter, true)).onFalse(new GetClosePosition(grabberLifter));
+		// Autobalance binding
+		driverController.x().whileTrue(new AutoBalanceNAvX(drivetrain, navx));
+
+		// Limelight follow binding
+		driverController.y().whileTrue(new LimelightFollow(drivetrain, limelight));
+		driverController.b().whileTrue(new RetroReflectiveFollow(drivetrain, limelight));
+
 		
 
-		// Example: Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-		// new Trigger(drivetrain::exampleCondition)
-		// .onTrue(new ExampleCommand(m_exampleSubsystem));
-
+		// FineTune binding
 		driverController.leftTrigger(ControlConstants.JOY_DEADBAND).whileTrue(new FineTUNECommand(drivetrain));
 
-
-		//driverController.b().whileTrue(new --the limelight retro reflective -- );
-		//driverController.x().whileTrue(new --limelight follow--);
-
-		secondaryController.b().onTrue(pneumatics.toggleGrabberSolenoid());
-		secondaryController.a().onTrue(pneumatics.toggleLifter());
-
-		driverController.rightTrigger(ControlConstants.JOY_DEADBAND).whileTrue(
-			new StartEndCommand(
-				() -> cameraSelection.setString(armCamera.getName()),
-				() -> cameraSelection.setString(mastCamera.getName())
-			)
-		);
-
-		// Example: Schedule `exampleMethodCommand` when the Xbox controller's B button
-		// is
-		// pressed,
-		// cancelling on release.
-		// m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-		driverController.a().whileTrue(new AutoBalanceNAvX(drivetrain, navx));
-		
 	}
 
 	public Command getAutonomousCommand() {
-		return null;
+		return (new TogglePneumatics(pneumatics, actuators.LIFTER))
+		.andThen((new DoNothing(2))
+		.andThen((new RaiseToPosition(grabberLifter, Height.HIGH))
+		.andThen((new BackupAutoMove(-30, drivetrain))
+		.andThen((new DoNothing(1))
+
+		.andThen((new TogglePneumatics(pneumatics, actuators.GRABBER))
+		.andThen((new DoNothing(1))
+
+		.andThen((new BackupAutoMove(30, drivetrain))
+		)))))));
+
+		
+		
 	}
 }
