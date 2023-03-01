@@ -90,6 +90,8 @@ public class LimelightFollow extends CommandBase {
 		limelight.disableLimelight();
 
 		limelight.setPipeline(2); // Pipeline 2 is for driver vision
+
+		drivetrain.mecanumDrive(0, 0, 0); //failsafe
 	}
 
 	// Returns true when the command should end.

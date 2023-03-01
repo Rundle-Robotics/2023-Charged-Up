@@ -65,6 +65,7 @@ public class Drivetrain extends SubsystemBase {
 			joyY = 0;
 		}
 
+
 		mecanumDrive(joyX, joyY, rotation);
 
 		double v = frontLefte.getVelocity();
@@ -85,6 +86,12 @@ public class Drivetrain extends SubsystemBase {
 			joystickX = 0;
 		if (Math.abs(joystickY) < ControlConstants.JOY_DEADBAND)
 			joystickY = 0;
+
+		if (rotation + joystickX + joystickY < 3*ControlConstants.JOY_DEADBAND){
+			this.setRampRate(0.2);
+		} else {
+			this.setRampRate(1);
+		}
 
 		// Cap rotation to ControlConstants value
 		if (Math.abs(rotation) > ControlConstants.MAX_TURN_SPEED)
@@ -188,5 +195,14 @@ public class Drivetrain extends SubsystemBase {
 		finetuned = newValue;
 
 	}
+
+	private void setRampRate(double rampRate){
+		frontLeft.setOpenLoopRampRate(rampRate);
+		backLeft.setOpenLoopRampRate(rampRate);
+		frontRight.setOpenLoopRampRate(rampRate);
+		backRight.setOpenLoopRampRate(rampRate);
+	}
+
+
 
 }

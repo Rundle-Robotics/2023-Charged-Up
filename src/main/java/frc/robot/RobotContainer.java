@@ -134,20 +134,67 @@ public class RobotContainer {
 
 	}
 
-	public Command getAutonomousCommand() {
-		return (new TogglePneumatics(pneumatics, actuators.LIFTER))
-		.andThen((new DoNothing(2))
-		.andThen((new RaiseToPosition(grabberLifter, Height.HIGH))
-		.andThen((new BackupAutoMove(-30, drivetrain))
-		.andThen((new DoNothing(1))
+	public Command getAutonomousCommand(String startingPosition, String autoBalancing) {
 
-		.andThen((new TogglePneumatics(pneumatics, actuators.GRABBER))
-		.andThen((new DoNothing(1))
+		Command autoCommand = null;
 
-		.andThen((new BackupAutoMove(30, drivetrain))
-		)))))));
+		if (startingPosition.equals("cableProtectorRoutine") || startingPosition.equals("substationSideRoutine")){
+			autoCommand = new TogglePneumatics(pneumatics, actuators.LIFTER)
+			.andThen(new DoNothing(2)
+			.andThen(new RaiseToPosition(grabberLifter, Height.HIGH)
+			.andThen(new BackupAutoMove(-30, drivetrain)
+			.andThen(new DoNothing(1)
+			.andThen(new TogglePneumatics(pneumatics, actuators.GRABBER)
+			.andThen(new DoNothing(1)
+	
+			.andThen(new BackupAutoMove(30, drivetrain)
 
-		
-		
+			)))))));
+
+		} else if (startingPosition.equals("middleRoutine") && autoBalancing.equals("noAutoBalancing")){
+			autoCommand = new TogglePneumatics(pneumatics, actuators.LIFTER)
+			.andThen(new DoNothing(2)
+			.andThen(new RaiseToPosition(grabberLifter, Height.HIGH)
+			.andThen(new BackupAutoMove(-30, drivetrain)
+			.andThen(new DoNothing(1)
+			.andThen(new TogglePneumatics(pneumatics, actuators.GRABBER)
+			.andThen(new DoNothing(1)
+	
+			.andThen(new BackupAutoMove(30, drivetrain)
+
+			)))))));
+
+		}
+
+		else if (startingPosition.equals("middleRoutine") && autoBalancing.equals("autoBalancing")){
+			autoCommand = new TogglePneumatics(pneumatics, actuators.LIFTER)
+			.andThen(new DoNothing(2)
+			.andThen(new RaiseToPosition(grabberLifter, Height.HIGH)
+			.andThen(new BackupAutoMove(-30, drivetrain)
+			.andThen(new DoNothing(1)
+			.andThen(new TogglePneumatics(pneumatics, actuators.GRABBER)
+			.andThen(new DoNothing(1)
+
+			.andThen(new BackupAutoMove(30, drivetrain)
+
+			.andThen(new AutoBalanceNAvX(drivetrain, navx)
+
+			))))))));
+
+		}
+
+		// return (new TogglePneumatics(pneumatics, actuators.LIFTER))
+		// .andThen((new DoNothing(2))
+		// .andThen((new RaiseToPosition(grabberLifter, Height.HIGH))
+		// .andThen((new BackupAutoMove(-30, drivetrain))
+		// .andThen((new DoNothing(1))
+
+		// .andThen((new TogglePneumatics(pneumatics, actuators.GRABBER))
+		// .andThen((new DoNothing(1))
+
+		// .andThen((new BackupAutoMove(30, drivetrain))
+		// )))))));
+
+		return autoCommand;
 	}
 }

@@ -4,8 +4,10 @@
 
 package frc.robot;
 
+import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -24,6 +26,9 @@ public class Robot extends TimedRobot {
 
 	private RobotContainer m_robotContainer;
 
+	private SendableChooser<String> startingPostitionChooser = new SendableChooser<>();
+	private SendableChooser<String> autoBalanceChooser = new SendableChooser<>();
+
 	/**
 	 * This function is run when the robot is first started up and should be used
 	 * for any
@@ -34,6 +39,21 @@ public class Robot extends TimedRobot {
 		// Instantiate our RobotContainer. This will perform all our button bindings,
 		// and put our
 		// autonomous chooser on the dashboard.
+		for (int port = 5800; port <= 5805; port++) {
+        	PortForwarder.add(port, "limelight.local", port);
+    	}
+
+		startingPostitionChooser.setDefaultOption("Cable Protector Routine", "cableProtectorRoutine");
+		startingPostitionChooser.addOption("Midlle Routine", "middleRoutine");
+		startingPostitionChooser.addOption("Substation Side Routine", "substationSideRoutine");
+
+		SmartDashboard.putData(startingPostitionChooser);
+
+		autoBalanceChooser.setDefaultOption("No Auto Balance", "noAutoBalance");
+		autoBalanceChooser.addOption("Auto Balance", "autoBalance");
+
+		SmartDashboard.putData(autoBalanceChooser);
+
 		m_robotContainer = new RobotContainer();
 	}
 
@@ -77,7 +97,15 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+
+		String startingPosition = startingPostitionChooser.getSelected();
+		String autoBalancing = autoBalanceChooser.getSelected();
+
+		if (startingPosition != "middleRoutine") {
+			autoBalancing = "noAutoBalance";
+		}
+
+		m_autonomousCommand = m_robotContainer.getAutonomousCommand(startingPosition, autoBalancing);
 
 		RobotContainer.secondaryController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0.25);
 
