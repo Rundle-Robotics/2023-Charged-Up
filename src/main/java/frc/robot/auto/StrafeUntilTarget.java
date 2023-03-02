@@ -37,16 +37,14 @@ public class StrafeUntilTarget extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (Math.abs(limelight.getTX()) > PLACEHOLDER){
-      drivetrain.mecanumDrive(0.3*Math.signum(limelight.getTX()),0,0);
-    }
+    if (Math.abs(limelight.getTX()) > PLACEHOLDER && limelight.getTV() != 0){drivetrain.mecanumDrive(0.15*Math.signum(limelight.getTX()),0,0);}
     else {finite = true;}
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    drivetrain.mecanumDrive(00,0,0);
+    drivetrain.mecanumDrive(0,0,0);
     limelight.disableLimelight();
     limelight.setPipeline(2);
   }
