@@ -6,10 +6,12 @@ package frc.robot;
 
 import frc.robot.Constants.ControlConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.auto.AutoForwardLimelight;
 import frc.robot.auto.BackupAutoMove;
 import frc.robot.auto.DoNothing;
 import frc.robot.auto.PID_Drive_Straight;
 import frc.robot.auto.PID_Turn;
+import frc.robot.auto.StrafeUntilTarget;
 import frc.robot.auto.TogglePneumatics;
 import frc.robot.auto.TogglePneumatics.actuators;
 import frc.robot.auto.BackupAutoMove;
@@ -102,7 +104,7 @@ public class RobotContainer {
 		secondaryController.leftTrigger().onTrue(new RaiseToPosition(grabberLifter, Height.MID));
 		secondaryController.rightBumper().whileTrue(new GrabberLifterCommand(0.4, grabberLifter));
 		secondaryController.leftBumper().whileTrue(new GrabberLifterCommand(-0.4, grabberLifter));
-		//secondaryController.povDown().onTrue(new LowerToPosition(grabberLifter, pneumatics));
+		secondaryController.povDown().onTrue(new LowerToPosition(grabberLifter, pneumatics));
 
 		// Camera swap binding
 		driverController.start().onTrue(
@@ -115,8 +117,8 @@ public class RobotContainer {
 						() -> cameraSelection.setString(mastCamera.getName())));
 
 		// Solenoid binding
-		//driverController.b().onTrue(pneumatics.toggleGrabberSolenoid());
-		//driverController.a().onTrue(pneumatics.toggleLifter());
+		
+		driverController.a().onTrue(pneumatics.toggleLifter());
 		secondaryController.b().onTrue(pneumatics.toggleLifter());
 		secondaryController.a().onTrue(pneumatics.toggleGrabberSolenoid());
 
@@ -124,8 +126,8 @@ public class RobotContainer {
 		driverController.x().whileTrue(new AutoBalanceNAvX(drivetrain, navx));
 
 		// Limelight follow binding
-		driverController.y().whileTrue(new LimelightFollow(drivetrain, limelight));
-		driverController.b().whileTrue(new RetroReflectiveFollow(drivetrain, limelight));
+		driverController.y().whileTrue(new AutoForwardLimelight(drivetrain, limelight));
+		driverController.b().whileTrue(new StrafeUntilTarget(drivetrain, limelight));
 
 		
 
@@ -135,17 +137,42 @@ public class RobotContainer {
 	}
 
 	public Command getAutonomousCommand() {
-		return (new TogglePneumatics(pneumatics, actuators.LIFTER))
+		return  
+
+		(new TogglePneumatics(pneumatics, actuators.LIFTER))
 		.andThen((new DoNothing(2))
 		.andThen((new RaiseToPosition(grabberLifter, Height.HIGH))
-		.andThen((new BackupAutoMove(-30, drivetrain))
+		.andThen((new DoNothing(1))
+		.andThen(new BackupAutoMove(-30, drivetrain))
+		.raceWith((new DoNothing (3)))
 		.andThen((new DoNothing(1))
 
 		.andThen((new TogglePneumatics(pneumatics, actuators.GRABBER))
 		.andThen((new DoNothing(1))
-
 		.andThen((new BackupAutoMove(30, drivetrain))
-		)))))));
+		.raceWith((new DoNothing(3))
+
+
+		
+		//.andThen((new LowerToPosition(grabberLifter, pneumatics))
+		))))))));
+
+
+		//.andThen((new RaiseToPosition(grabberLifter, Height.HIGH))
+		// (new BackupAutoMove(-30, drivetrain))
+		// .raceWith((new DoNothing (3)))
+		// .andThen((new DoNothing(1))
+		// .andThen((new TogglePneumatics(pneumatics, actuators.LIFTER))
+		// .andThen((new DoNothing(2))
+		// .andThen((new TogglePneumatics(pneumatics, actuators.GRABBER))
+		// .andThen((new DoNothing(1))
+		// .andThen((new TogglePneumatics(pneumatics, actuators.LIFTERUP))
+		// .andThen((new DoNothing(1))
+		// //.andThen((new RaiseToPosition(grabberLifter, Height.HIGH))
+
+		// .andThen((new BackupAutoMove(30, drivetrain))
+		// .raceWith((new DoNothing(3))
+		// )))))))));
 
 		
 		

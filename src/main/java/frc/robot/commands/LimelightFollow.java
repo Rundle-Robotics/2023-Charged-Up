@@ -14,9 +14,9 @@ public class LimelightFollow extends CommandBase {
 	private Drivetrain drivetrain;
 	private Limelight limelight;
 
-	private final double CENTER_DISTANCE = -10.2;
-	private final double TARGET_AREA_CUTOFF = 1.2;
-	private final double CENTER_DEADBAND = 5;
+	private final double CENTER_DISTANCE = 0.7;
+	private final double TARGET_AREA_CUTOFF = 2.1;
+	private final double CENTER_DEADBAND = 3;
 	private final double YAW_DEADBAND = 10;
 	private final double TARGET_YAW = 0;
 	private final double SPEED = 0.45;
@@ -88,6 +88,7 @@ public class LimelightFollow extends CommandBase {
 	@Override
 	public void end(boolean interrupted) {
 		limelight.disableLimelight();
+		drivetrain.mecanumDrive(0,0,0);
 
 		limelight.setPipeline(2); // Pipeline 2 is for driver vision
 	}

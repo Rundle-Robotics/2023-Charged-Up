@@ -20,6 +20,7 @@ public class BackupAutoMove extends CommandBase {
   private double targetPosition;
 
   private PIDController yPID;
+  private int mu;
 
   public BackupAutoMove(double getDistanceMetres, Drivetrain drive) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -53,11 +54,11 @@ public class BackupAutoMove extends CommandBase {
 
     double output = yPID.calculate(currentPosition);
 
-    if (output > 0.4) {
-      output = 0.4;
+    if (output > 0.2) {
+      output = 0.2;
     }
-    else if (output < -0.4) {
-      output = -0.4;
+    else if (output < -0.2) {
+      output = -0.2;
     }
 
     drive.mecanumDrive(0, output, 0);

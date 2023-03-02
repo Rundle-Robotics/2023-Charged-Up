@@ -14,8 +14,8 @@ public class RetroReflectiveFollow extends CommandBase {
 	private Drivetrain drivetrain;
 	private Limelight limelight;
 
-	private final double CENTER_DISTANCE = 1;
-	private final double TARGET_AREA_CUTOFF = 0.7;
+	private final double CENTER_DISTANCE = 0;
+	private final double TARGET_AREA_CUTOFF = 6.5;
 
 	double rotation = 0;
 	double speed = 0;
@@ -53,14 +53,14 @@ public class RetroReflectiveFollow extends CommandBase {
 		} else {
 			System.out.println("Target found");
 			// If target is on the right, turn right
-			if (limelight.getTX() > CENTER_DISTANCE) {
+			if (limelight.getTX() > CENTER_DISTANCE+1) {
 				System.out.println("Target on the right, trying to turn..."); // debug
-				drivetrain.mecanumDrive(-0.5, 0, 0);
+				drivetrain.mecanumDrive(0, 0, (-0.25));
 			}
 			// If target is on the left, turn left
-			else if (limelight.getTX() < -CENTER_DISTANCE) {
+			else if (limelight.getTX() < CENTER_DISTANCE-1) {
 				System.out.println("Target on the left, trying to turn..."); // debug
-				drivetrain.mecanumDrive(0.5, 0, 0);
+				drivetrain.mecanumDrive(0, 0, 0.25);
 			}
 			// If target area is too small, move forward
 			else if (limelight.getTA() < TARGET_AREA_CUTOFF) {
