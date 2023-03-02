@@ -136,31 +136,34 @@ public class RobotContainer {
 
 	}
 
+	/**
+	 * @return
+	 */
 	public Command getAutonomousCommand() {
 		return  
 
-		(new TogglePneumatics(pneumatics, actuators.LIFTER))
-		.andThen((new DoNothing(2))
-		.andThen((new RaiseToPosition(grabberLifter, Height.HIGH))
-		.andThen((new DoNothing(1))
-		.andThen(new BackupAutoMove(-30, drivetrain))
-		.raceWith((new DoNothing (3)))
-		.andThen((new DoNothing(1))
+		// (new TogglePneumatics(pneumatics, actuators.LIFTER))
+		// .andThen((new DoNothing(2))
+		// .andThen((new RaiseToPosition(grabberLifter, Height.HIGH))
+		// .andThen((new DoNothing(1))
+		// .andThen(new BackupAutoMove(-20, drivetrain))
+		// .raceWith((new DoNothing (3)))
+		// .andThen((new DoNothing(1))
 
-		.andThen((new TogglePneumatics(pneumatics, actuators.GRABBER))
-		.andThen((new DoNothing(1))
-		.andThen((new BackupAutoMove(30, drivetrain))
-		.raceWith((new DoNothing(3))
+		// .andThen((new TogglePneumatics(pneumatics, actuators.GRABBER))
+		// .andThen((new DoNothing(1))
+		// .andThen((new BackupAutoMove(60, drivetrain))
+		// .raceWith((new DoNothing(3))
 
 
 		
 		//.andThen((new LowerToPosition(grabberLifter, pneumatics))
-		))))))));
+		//))))))));
 
 
-		//.andThen((new RaiseToPosition(grabberLifter, Height.HIGH))
-		// (new BackupAutoMove(-30, drivetrain))
-		// .raceWith((new DoNothing (3)))
+		// (new RaiseToPosition(grabberLifter, Height.HIGH))
+		// .andThen((new BackupAutoMove(-20, drivetrain))
+		// .raceWith((new DoNothing (2)))
 		// .andThen((new DoNothing(1))
 		// .andThen((new TogglePneumatics(pneumatics, actuators.LIFTER))
 		// .andThen((new DoNothing(2))
@@ -170,10 +173,21 @@ public class RobotContainer {
 		// .andThen((new DoNothing(1))
 		// //.andThen((new RaiseToPosition(grabberLifter, Height.HIGH))
 
-		// .andThen((new BackupAutoMove(30, drivetrain))
-		// .raceWith((new DoNothing(3))
-		// )))))))));
+		
+		// ))))))));
 
+		(new TogglePneumatics(pneumatics, actuators.LIFTER)
+		.andThen((new DoNothing(2))
+		.andThen((new RaiseToPosition(grabberLifter, Height.HIGH)))
+		//.raceWith(new DoNothing(2))
+		.andThen((new DoNothing(1)))
+		.andThen((new BackupAutoMove(-30, drivetrain)))
+		.andThen((new DoNothing(1)))
+		.andThen((new TogglePneumatics(pneumatics, actuators.GRABBER)))
+		.andThen((new DoNothing(1)))
+		.andThen((new BackupAutoMove(70, drivetrain)))
+		.andThen((new LowerToPosition(grabberLifter, pneumatics)))
+		));
 		
 		
 	}

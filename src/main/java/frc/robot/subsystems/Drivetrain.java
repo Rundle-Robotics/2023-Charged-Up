@@ -94,6 +94,13 @@ public class Drivetrain extends SubsystemBase {
 		if (Math.abs(rotation) > ControlConstants.MAX_TURN_SPEED)
 			rotation *= ControlConstants.MAX_TURN_SPEED / Math.abs(rotation);
 
+		// New finetune driving system
+		if (finetuned) {
+			joystickX /= 3;
+			joystickY /= 5;
+			rotation /= 5;
+		}
+
 		// Calculate speed for each wheel
 		double frontRightPower = joystickY - joystickX - rotation;
 		double frontLeftPower = joystickY + joystickX + rotation;
@@ -116,13 +123,13 @@ public class Drivetrain extends SubsystemBase {
 		if (Math.abs(backRightPower) > ControlConstants.MAX_ROBOT_SPEED)
 			backRightPower *= ControlConstants.MAX_ROBOT_SPEED / Math.abs(backRightPower);
 
-		// finetuned driving system
-		if (finetuned == true) {
-			frontRightPower = frontRightPower / 5;
-			frontLeftPower = frontLeftPower / 5;
-			backRightPower = backRightPower / 5;
-			backLeftPower = backLeftPower / 5;
-		}
+		// // finetuned driving system
+		// if (finetuned == true) {
+		// 	frontRightPower = frontRightPower / 5;
+		// 	frontLeftPower = frontLeftPower / 5;
+		// 	backRightPower = backRightPower / 5;
+		// 	backLeftPower = backLeftPower / 5;
+		// }
 
 		SmartDashboard.putNumber("frontRight", frontRightPower);
 		SmartDashboard.putNumber("frontLeft", frontLeftPower);
