@@ -67,11 +67,16 @@ public class LimelightFollow extends CommandBase {
 			// Positive forwardSpeed to move forward,
 			double forwardSpeed = targetTooFar ? SPEED : 0;
 			// Positive strafeSpeed to move left
-			double strafeSpeed = targetOnRight ? -SPEED : targetOnLeft ? SPEED : 0;
+			//double strafeSpeed = targetOnRight ? -SPEED : targetOnLeft ? SPEED : 0;
+			double rotationSpeed = targetOnRight ? -SPEED : targetOnLeft ? SPEED : 0;
 			// Positive rotation to turn clockwise
-			double rotationSpeed = targetSkewed ? (yaw - TARGET_YAW) / Math.abs(yaw - TARGET_YAW) * SPEED : 0;
+			//double rotationSpeed = targetSkewed ? (yaw - TARGET_YAW) / Math.abs(yaw - TARGET_YAW) * SPEED : 0;
 
-			drivetrain.mecanumDrive(-strafeSpeed, forwardSpeed, -rotationSpeed);
+			double skewSpeed = targetSkewed ? (yaw - TARGET_YAW) / Math.abs(yaw - TARGET_YAW) * SPEED : 0;
+
+			
+
+			drivetrain.mecanumDrive(0, forwardSpeed, -rotationSpeed);
 			finite = !targetOnLeft && !targetOnRight && !targetTooFar && !targetSkewed;
 
 			System.out.print("Target detected on right: " + targetOnRight);

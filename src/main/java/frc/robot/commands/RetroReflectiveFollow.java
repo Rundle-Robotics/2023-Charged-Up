@@ -15,7 +15,7 @@ public class RetroReflectiveFollow extends CommandBase {
 	private Limelight limelight;
 
 	private final double CENTER_DISTANCE = 0;
-	private final double TARGET_AREA_CUTOFF = 6.5;
+	private final double TARGET_AREA_CUTOFF = 0.078;
 
 	double rotation = 0;
 	double speed = 0;
@@ -49,7 +49,7 @@ public class RetroReflectiveFollow extends CommandBase {
 
 		if (limelight.getTV() == 0) {
 			System.out.println("No target found, trying to turn and find one..."); // debug
-			drivetrain.mecanumDrive(0, 0, 0.6);
+			drivetrain.mecanumDrive(0, 0, 0.4);
 		} else {
 			System.out.println("Target found");
 			// If target is on the right, turn right
