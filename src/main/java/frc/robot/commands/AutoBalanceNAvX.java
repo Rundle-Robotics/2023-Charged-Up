@@ -48,23 +48,25 @@ public class AutoBalanceNAvX extends CommandBase {
     
     double roll = navx.getRoll();
     double speed = 0;
-    if (Math.abs(roll) < 9 && HasMoved == false){
+    double AccelY = navx.getRawAccelY();
+
+    if (Math.abs(roll) <  7 && HasMoved == false){
       speed = -0.2;
       
     }
    
-    else if (roll < -9){
+    else if (roll <= -7){
       speed = 0.2;
       HasMoved = true;
     }
-    else if ((roll) > 9){
+    else if ((roll) >= 7){
       speed = -0.2;
       HasMoved = true;
     }
-    else if((Math.abs(roll) < 9) && (Math.abs(roll) > 5) && HasMoved == true) {
+    else if((Math.abs(roll) < 7) && (Math.abs(roll) >= 5) && HasMoved == true) {
       speed = 0.1;
     }
-    else if((Math.abs(roll) < 5) && HasMoved == true) {
+    else if((Math.abs(roll) < 5) && HasMoved == true && AccelY > -0.3) {
       speed = 0;
       finished = true;
     }

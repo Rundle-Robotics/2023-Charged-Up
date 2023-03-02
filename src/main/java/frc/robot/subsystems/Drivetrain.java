@@ -87,7 +87,7 @@ public class Drivetrain extends SubsystemBase {
 		if (Math.abs(joystickY) < ControlConstants.JOY_DEADBAND)
 			joystickY = 0;
 
-		if (rotation + joystickX + joystickY < 3*ControlConstants.JOY_DEADBAND){
+		if (rotation + joystickX + joystickY < 3*ControlConstants.JOY_DEADBAND || finetuned == false){
 			this.setRampRate(0.2);
 		} else {
 			this.setRampRate(1);
