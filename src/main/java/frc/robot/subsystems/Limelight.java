@@ -21,8 +21,10 @@ public class Limelight extends SubsystemBase {
 	private double apriltagid;
 
 	public Limelight() {
-		table = NetworkTableInstance.getDefault().getTable("limelight");
+		
+		this.table = NetworkTableInstance.getDefault().getTable("limelight");
 		disableLimelight();
+		setPipeline(2);
 	}
 
 	public void enableLimelight() {

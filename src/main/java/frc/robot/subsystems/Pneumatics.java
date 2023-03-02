@@ -36,6 +36,10 @@ public class Pneumatics extends SubsystemBase {
 		armsolenoid.set(Value.kReverse);
 	}
 
+	public void setLifterUp() {
+		armsolenoid.set(Value.kForward);
+	}
+
 	public void setGrabberOpen() {
 		sol1.set(Value.kForward);
 	}

@@ -13,7 +13,8 @@ public class TogglePneumatics extends CommandBase {
 
   public static enum actuators {
     GRABBER,
-    LIFTER
+    LIFTER,
+    LIFTERUP;
   }
 
   private actuators selected;
@@ -35,6 +36,9 @@ public class TogglePneumatics extends CommandBase {
     case LIFTER:
     System.out.println("toggling lifter method");
     pneumatics.setLifterDown();
+    break;
+    case LIFTERUP:
+    pneumatics.setLifterUp();
     break;
     default:
     System.out.println("default");
