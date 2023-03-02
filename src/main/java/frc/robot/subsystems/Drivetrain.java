@@ -26,6 +26,11 @@ public class Drivetrain extends SubsystemBase {
 	private RelativeEncoder frontLefte;
 	private boolean finetuned;
 
+	private static final double FRONT_LEFT_STRAFE_CORRECTION_CONSTANT = 0;
+	private static final double FRONT_RIGHT_STRAFE_CORRECTION_CONSTANT = 0;
+	private static final double BACK_RIGHT_STRAFE_CORRECTION_CONSTANT = 0;
+	private static final double BACK_LEFT_STRAFE_CORRECTION_CONSTANT = 0;
+
 	public Drivetrain() {
 		finetuned = false;
 		frontLeft = new CANSparkMax(1, MotorType.kBrushless);
@@ -41,12 +46,11 @@ public class Drivetrain extends SubsystemBase {
 		backLeft.setIdleMode(CANSparkMax.IdleMode.kBrake);
 		backRight.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
-		//set robot to acceleate from 0 to max speed in a MINIMUM of 2 seconds
+		// set robot to acceleate from 0 to max speed in a MINIMUM of 2 seconds
 		frontLeft.setOpenLoopRampRate(1);
 		backLeft.setOpenLoopRampRate(1);
 		frontRight.setOpenLoopRampRate(1);
 		backRight.setOpenLoopRampRate(1);
-
 
 	}
 
@@ -95,6 +99,12 @@ public class Drivetrain extends SubsystemBase {
 		double frontLeftPower = joystickY + joystickX + rotation;
 		double backLeftPower = joystickY - joystickX + rotation;
 		double backRightPower = joystickY + joystickX - rotation;
+
+		// Correct for unequal weight distribution on wheels while strafing
+		frontLeftPower *= 1 + (FRONT_LEFT_STRAFE_CORRECTION_CONSTANT * joystickX);
+		frontRightPower *= 1 + (FRONT_RIGHT_STRAFE_CORRECTION_CONSTANT * joystickX);
+		backLeftPower *= 1 + (BACK_LEFT_STRAFE_CORRECTION_CONSTANT * joystickX);
+		backRightPower *= 1 + (BACK_RIGHT_STRAFE_CORRECTION_CONSTANT * joystickX);
 
 		// Cap motor powers
 		if (Math.abs(frontLeftPower) > ControlConstants.MAX_ROBOT_SPEED)
@@ -174,7 +184,6 @@ public class Drivetrain extends SubsystemBase {
 	public double getFrontRightCPR() {
 		return frontRighte.getCountsPerRevolution();
 	}
-
 
 	public void stop() {
 		frontLeft.set(0);
