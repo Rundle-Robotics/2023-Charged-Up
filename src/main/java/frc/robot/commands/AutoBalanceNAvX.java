@@ -3,91 +3,73 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
+
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.NAVX;
-import java.util.concurrent.TimeUnit;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-
 public class AutoBalanceNAvX extends CommandBase {
 
-  private Drivetrain drivetrain;
-  private NAVX navx;
-  private boolean finished;
-  private boolean HasMoved;
-  /** Creates a new AutoBalanceNAvX. */
-  public AutoBalanceNAvX(Drivetrain drivetrain, NAVX navx) {
-    // Use addRequirements() here to declare subsystem dependencies.
+	private Drivetrain drivetrain;
+	private NAVX navx;
+	private boolean finished;
+	private boolean HasMoved;
 
-    this.drivetrain = drivetrain;
-    this.navx = navx;
+	/** Creates a new AutoBalanceNAvX. */
+	public AutoBalanceNAvX(Drivetrain drivetrain, NAVX navx) {
+		// Use addRequirements() here to declare subsystem dependencies.
 
-    addRequirements(drivetrain);
-    addRequirements(navx);
+		this.drivetrain = drivetrain;
+		this.navx = navx;
 
+		addRequirements(drivetrain);
+		addRequirements(navx);
+	}
 
+	// Called when the command is initially scheduled.
+	@Override
+	public void initialize() {
+		finished = false;
+		HasMoved = false;
+	}
 
+	// Called every time the scheduler runs while the command is scheduled.
+	@Override
+	public void execute() {
+		double roll = navx.getRoll();
+		double speed = 0;
+		double AccelY = navx.getRawAccelY();
 
+		if (Math.abs(roll) < 9 && HasMoved == false) {
+			speed = -0.2;
+		}
 
+		else if (roll < -7) {
+			speed = 0.2;
+			HasMoved = true;
+		} else if ((roll) > 7) {
+			speed = -0.2;
+			HasMoved = true;
+		} else if ((Math.abs(roll) < 7) && (Math.abs(roll) > 5) && HasMoved == true) {
+			speed = -0.1 * Math.signum(speed);
+		} else if ((Math.abs(roll) < 5) && HasMoved && Math.abs(AccelY) < 0.3) {
+			speed = 0;
+			finished = true;
+		}
 
-  }
+		drivetrain.mecanumDrive(0, -1 * speed, 0);
+	}
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
+	// Called once the command ends or is interrupted.
+	@Override
+	public void end(boolean interrupted) {
+		drivetrain.mecanumDrive(0, 0, 0);
+	}
 
-    finished = false;
-    HasMoved = false;
-
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    
-    double roll = navx.getRoll();
-    double speed = 0;
-    double AccelY = navx.getRawAccelY();
-
-    if (Math.abs(roll) < 9 && HasMoved == false){
-      speed = -0.2;
-      
-    }
-   
-    else if (roll < -7){
-      speed = 0.2;
-      HasMoved = true;
-    }
-    else if ((roll) > 7){
-      speed = -0.2;
-      HasMoved = true;
-    }
-    else if((Math.abs(roll) < 7) && (Math.abs(roll) > 5) && HasMoved == true) {
-      speed = -0.1*Math.signum(speed);
-    }
-    else if((Math.abs(roll) < 5) && HasMoved && Math.abs(AccelY) < 0.3) {
-      speed = 0;
-      finished = true;
-    }
-    
-  
-    drivetrain.mecanumDrive(0, -1*speed, 0);
-    
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    drivetrain.mecanumDrive(0, 0, 0);
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    
-
-    
-    return finished;
-  }
+	// Returns true when the command should end.
+	@Override
+	public boolean isFinished() {
+		return finished;
+	}
 }
