@@ -161,33 +161,35 @@ public class RobotContainer {
 		//))))))));
 
 
-		// (new RaiseToPosition(grabberLifter, Height.HIGH))
-		// .andThen((new BackupAutoMove(-20, drivetrain))
-		// .raceWith((new DoNothing (2)))
-		// .andThen((new DoNothing(1))
-		// .andThen((new TogglePneumatics(pneumatics, actuators.LIFTER))
-		// .andThen((new DoNothing(2))
-		// .andThen((new TogglePneumatics(pneumatics, actuators.GRABBER))
-		// .andThen((new DoNothing(1))
-		// .andThen((new TogglePneumatics(pneumatics, actuators.LIFTERUP))
-		// .andThen((new DoNothing(1))
+		(new RaiseToPosition(grabberLifter, Height.HIGH))
+		.andThen((new BackupAutoMove(-20, drivetrain))
+		.raceWith((new DoNothing (2)))
+		.andThen((new DoNothing(1))
+		.andThen((new TogglePneumatics(pneumatics, actuators.LIFTER))
+		.andThen((new DoNothing(2))
+		.andThen((new TogglePneumatics(pneumatics, actuators.GRABBER))
+		.andThen((new DoNothing(1))
+		.andThen((new TogglePneumatics(pneumatics, actuators.LIFTERUP))
+		.andThen((new DoNothing(1))
+		.andThen((new BackupAutoMove(80, drivetrain)))
+		))))))));
 		// //.andThen((new RaiseToPosition(grabberLifter, Height.HIGH))
 
 		
 		// ))))))));
 
-		(new TogglePneumatics(pneumatics, actuators.LIFTER)
-		.andThen((new DoNothing(2))
-		.andThen((new RaiseToPosition(grabberLifter, Height.HIGH)))
-		//.raceWith(new DoNothing(2))
-		.andThen((new DoNothing(1)))
-		.andThen((new BackupAutoMove(-30, drivetrain)))
-		.andThen((new DoNothing(1)))
-		.andThen((new TogglePneumatics(pneumatics, actuators.GRABBER)))
-		.andThen((new DoNothing(1)))
-		.andThen((new BackupAutoMove(70, drivetrain)))
-		.andThen((new LowerToPosition(grabberLifter, pneumatics)))
-		));
+		// (new TogglePneumatics(pneumatics, actuators.LIFTER)
+		// .andThen((new DoNothing(2))
+		// .andThen((new RaiseToPosition(grabberLifter, Height.HIGH)))
+		// //.raceWith(new DoNothing(2))
+		// .andThen((new DoNothing(1)))
+		// .andThen((new BackupAutoMove(-30, drivetrain)))
+		// .andThen((new DoNothing(1)))
+		// .andThen((new TogglePneumatics(pneumatics, actuators.GRABBER)))
+		// .andThen((new DoNothing(1)))
+		// .andThen((new BackupAutoMove(80, drivetrain)))
+		// .andThen((new LowerToPosition(grabberLifter, pneumatics)))
+		// ));
 		
 		
 	}

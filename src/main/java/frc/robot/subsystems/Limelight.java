@@ -23,8 +23,8 @@ public class Limelight extends SubsystemBase {
 	public Limelight() {
 		
 		this.table = NetworkTableInstance.getDefault().getTable("limelight");
-		disableLimelight();
 		setPipeline(2);
+		disableLimelight();
 	}
 
 	public void enableLimelight() {
