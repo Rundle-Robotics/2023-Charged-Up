@@ -37,14 +37,12 @@ public class NewAutoBalance extends CommandBase {
         backUpOnStationPID.setSetpoint(DISTANCE);
 
         backingUp = true;
-
-        initialDistance = (drivetrain.getFrontLeftPosition() + drivetrain.getFrontRightPosition()) / 2;
     }
 
     @Override
     public void execute() {
         // Check if we hit the charge station (and should stop backing up)
-        if (Math.abs(navx.getRoll()) > ROLL_DEADBAND) {
+        if (Math.abs(navx.getRoll()) > ROLL_DEADBAND && backingUp) {
             backingUp = false;
 
             initialDistance = (drivetrain.getFrontLeftPosition() + drivetrain.getFrontRightPosition()) / 2;
@@ -53,7 +51,8 @@ public class NewAutoBalance extends CommandBase {
         if (backingUp) {
             drivetrain.mecanumDrive(0, MAX_SPEED, 0);
         } else if (!backUpOnStationPID.atSetpoint()) {
-            double currentPosition = (drivetrain.getFrontLeftPosition() + drivetrain.getFrontRightPosition()) / 2 - initialDistance;
+            double currentPosition = (drivetrain.getFrontLeftPosition() + drivetrain.getFrontRightPosition()) / 2
+                    - initialDistance;
             double output = backUpOnStationPID.calculate(currentPosition);
 
             if (output > MAX_SPEED) {
