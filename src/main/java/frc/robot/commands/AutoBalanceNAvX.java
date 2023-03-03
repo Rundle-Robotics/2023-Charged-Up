@@ -14,7 +14,7 @@ public class AutoBalanceNAvX extends CommandBase {
 	private Drivetrain drivetrain;
 	private NAVX navx;
 	private boolean finished;
-	private boolean HasMoved;
+	private boolean tilted;
 
 	/** Creates a new AutoBalanceNAvX. */
 	public AutoBalanceNAvX(Drivetrain drivetrain, NAVX navx) {
@@ -31,7 +31,7 @@ public class AutoBalanceNAvX extends CommandBase {
 	@Override
 	public void initialize() {
 		finished = false;
-		HasMoved = false;
+		tilted = false;
 	}
 
 	// Called every time the scheduler runs while the command is scheduled.
@@ -41,24 +41,19 @@ public class AutoBalanceNAvX extends CommandBase {
 		double speed = 0;
 		double AccelY = navx.getRawAccelY();
 
-		if (Math.abs(roll) < 9 && HasMoved == false) {
-			speed = -0.2;
+		// not on charge, move backward
+		if (Math.abs(roll) < 9 && !tilted) {speed = -0.2;}
+
+		// on charge and it has tilted
+		else if (Math.abs(roll) > 9) {
+			speed = 0.1*Math.signum(roll);
+			tilted = true;
 		}
 
-		else if (roll < -7) {
-			speed = 0.2;
-			HasMoved = true;
-		} else if ((roll) > 7) {
-			speed = -0.2;
-			HasMoved = true;
-		} else if ((Math.abs(roll) < 7) && (Math.abs(roll) > 5) && HasMoved == true) {
-			speed = -0.1 * Math.signum(speed);
-		} else if ((Math.abs(roll) < 5) && HasMoved && Math.abs(AccelY) < 0.3) {
-			speed = 0;
-			finished = true;
-		}
+		// on charge and flattened
+		else if (Math.abs(roll) < 9 && tilted) {speed = 0;}
 
-		drivetrain.mecanumDrive(0, -1 * speed, 0);
+		drivetrain.mecanumDrive(0, speed, 0);
 	}
 
 	// Called once the command ends or is interrupted.

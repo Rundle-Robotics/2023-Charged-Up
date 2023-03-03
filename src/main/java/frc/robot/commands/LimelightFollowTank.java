@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import javax.management.remote.TargetedNotification;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
@@ -10,11 +12,16 @@ public class LimelightFollowTank extends CommandBase {
     private Limelight limelight;
 
     private final double CENTER_DISTANCE = -10.2;
-    private final double TARGET_AREA_CUTOFF = 1.2;
-    private final double CENTER_DEADBAND = 5;
+    private final double TARGET_AREA_CUTOFF = 1.7;
+    private final double CENTER_DEADBAND = 0.7;
     private final double YAW_DEADBAND = 10;
     private final double TARGET_YAW = 0;
-    private final double SPEED = 0.45;
+    private final double SPEED = 0.3;
+
+    private double rot = 0; 
+    private double forward = 0; 
+
+    boolean finite;
 
     private boolean finished;
 
@@ -32,48 +39,53 @@ public class LimelightFollowTank extends CommandBase {
 
         limelight.setPipeline(0); // Pipeline 0 is for AprilTag detection
 
-        finished = false;
+        finite = false;
     }
 
     @Override
     public void execute() {
-        limelight.putTargetPoseDataonSmartDashboard(); // Debug
+        if (limelight.getTX() != 0) {rot = (Math.pow((limelight.getTX()-CENTER_DISTANCE)*0.01,2)) + .1;}
+        else {rot = 0;}
 
-        if (limelight.getTV() == 0) {
-            System.out.println("No target found, trying to turn and find one..."); // debug
-            drivetrain.mecanumDrive(0, 0, SPEED);
-        } else {
-            System.out.println("Target found");
 
-            double yaw = limelight.getTARGETPOSECAMERA()[5];
+        if (rot > .3) {rot= .3;}
+        else if (rot < .3) {rot= -.3;}
 
-            boolean targetOnRight = limelight.getTX() > (CENTER_DISTANCE + CENTER_DEADBAND);
-            boolean targetOnLeft = limelight.getTX() < (CENTER_DISTANCE - CENTER_DEADBAND);
-            boolean targetTooFar = limelight.getTA() < TARGET_AREA_CUTOFF;
-            boolean targetSkewed = Math.abs(yaw) > YAW_DEADBAND;
+        if (Math.abs(rot) < 0.12) {rot = 0;}
 
-            // Positive forwardSpeed to move forward,
-            double forwardSpeed = targetTooFar ? SPEED : 0;
+        if (Math.signum(limelight.getTX()) == -1) {rot = -rot;}
 
-            // Positive rotation to turn clockwise
-            double rotation;
-            if (targetOnRight || targetOnLeft) { // First priority, face the target
-                rotation = targetOnRight ? SPEED : -SPEED;
-            } else if (targetTooFar) {
-                rotation = 0;
-            } else { // Once we are up close to the target, try and rotate to match target yaw
-                // Might need to invert
-                rotation = targetSkewed ? (yaw - TARGET_YAW) / Math.abs(yaw - TARGET_YAW) * SPEED : 0;
-            }
-
-            drivetrain.mecanumDrive(0, forwardSpeed, rotation);
-            finished = !targetOnLeft && !targetOnRight && !targetTooFar && !targetSkewed;
-
-            System.out.print("Target detected on right: " + targetOnRight);
-            System.out.print("Target detected on left: " + targetOnLeft);
-            System.out.print("Target detected too far: " + targetTooFar);
-            System.out.print("Target detected at a skew: " + targetSkewed);
+        else if (limelight.getTA()<TARGET_AREA_CUTOFF){
+            forward = -0.3;
         }
+        
+        
+        if (limelight.getTA()<TARGET_AREA_CUTOFF && rot == 0) {finite = true; }
+
+        drivetrain.mecanumDrive(0, forward, rot);
+
+        // if (limelight.getTV() !=1){
+        //     drivetrain.mecanumDrive(0,0,0.2);
+        // }
+        // else {
+        //     if (limelight.getTX()< CENTER_DEADBAND-0.75){
+        //         drivetrain.mecanumDrive(0,0,rot);
+                
+        //     }
+        //     else if (limelight.getTX()>CENTER_DEADBAND +0.75){
+        //         drivetrain.mecanumDrive(0,0,rot);
+
+            
+        //     }
+        //     else if (limelight.getTA()<TARGET_AREA_CUTOFF){
+        //         drivetrain.mecanumDrive(0,-0.35,0);
+        //     }
+        //     else{
+        //         finite = true;
+        //     }
+        
+        //}
+       
     }
 
     @Override
@@ -85,7 +97,7 @@ public class LimelightFollowTank extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return finished;
+        return finite;
     }
 
 }

@@ -40,7 +40,7 @@ public class AutoForwardLimelight extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (limelight.getTA() < 2.1) {drivetrain.mecanumDrive(0, -.15, 0);}
+    if (limelight.getTA() < 1.7) {drivetrain.mecanumDrive(0, -.15, 0);}
     else { finite = true; } 
 
     SmartDashboard.putNumber("area", limelight.getTA());

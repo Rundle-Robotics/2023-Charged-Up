@@ -46,7 +46,7 @@ public class LimelightFollowBackup extends CommandBase {
   @Override
   public void execute() {
     double yaw = limelight.getTARGETPOSECAMERA()[5];
-    if (limelight.getTV() == 0){drivetrain.mecanumDrive(0, 0, 0.25);}
+    if (limelight.getTV() == 0){drivetrain.mecanumDrive(0, 0, -0.25);}
     
     else {
       if (limelight.getTX() > CENTER_DISTANCE+1) {drivetrain.mecanumDrive(0, 0, -0.25);}

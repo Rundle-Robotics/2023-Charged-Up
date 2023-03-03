@@ -29,6 +29,8 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import frc.robot.commands.GrabberLifterCommand;
 import frc.robot.commands.LimelightFollow;
+import frc.robot.commands.LimelightFollowBackup;
+import frc.robot.commands.LimelightFollowTank;
 import frc.robot.commands.LowerToPosition;
 import frc.robot.commands.RaiseToPosition;
 import frc.robot.commands.RetroReflectiveFollow;
@@ -127,7 +129,7 @@ public class RobotContainer {
 
 		// Limelight follow binding
 		driverController.y().whileTrue(new AutoForwardLimelight(drivetrain, limelight));
-		driverController.b().whileTrue(new StrafeUntilTarget(drivetrain, limelight));
+		driverController.b().whileTrue(new LimelightFollowTank(drivetrain, limelight));
 
 		
 
@@ -172,6 +174,7 @@ public class RobotContainer {
 		.andThen((new TogglePneumatics(pneumatics, actuators.LIFTERUP))
 		.andThen((new DoNothing(1))
 		.andThen((new BackupAutoMove(80, drivetrain)))
+		.raceWith((new DoNothing(4)))
 		))))))));
 		// //.andThen((new RaiseToPosition(grabberLifter, Height.HIGH))
 
