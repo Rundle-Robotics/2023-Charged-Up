@@ -85,7 +85,7 @@ public class Drivetrain extends SubsystemBase {
 		// Deadband inputs
 		if (Math.abs(rotation) < ControlConstants.ROTATION_DEADBAND)
 			rotation = 0;
-		if (Math.abs(joystickX) < ControlConstants.JOY_DEADBAND)
+		if (Math.abs(joystickX) < ControlConstants.STRAFE_DEADBAND)
 			joystickX = 0;
 		if (Math.abs(joystickY) < ControlConstants.JOY_DEADBAND)
 			joystickY = 0;
@@ -135,6 +135,7 @@ public class Drivetrain extends SubsystemBase {
 		SmartDashboard.putNumber("frontLeft", frontLeftPower);
 		SmartDashboard.putNumber("backLeft", backLeftPower);
 		SmartDashboard.putNumber("backRight", backLeftPower);
+		SmartDashboard.putNumber("RightEncoder", frontRighte.getPosition());
 
 		// Power the motors
 		frontLeft.set(frontLeftPower);

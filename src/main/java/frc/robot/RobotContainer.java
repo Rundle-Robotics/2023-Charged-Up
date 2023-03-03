@@ -19,6 +19,7 @@ import frc.robot.commands.AutoBalanceNAvX;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Pneumatics;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.cameraserver.CameraServer;
@@ -32,6 +33,7 @@ import frc.robot.commands.LimelightFollow;
 import frc.robot.commands.LimelightFollowBackup;
 import frc.robot.commands.LimelightFollowTank;
 import frc.robot.commands.LowerToPosition;
+import frc.robot.commands.NewAutoBalance;
 import frc.robot.commands.RaiseToPosition;
 import frc.robot.commands.RetroReflectiveFollow;
 import frc.robot.commands.RaiseToPosition.Height;
@@ -104,8 +106,8 @@ public class RobotContainer {
 
 		secondaryController.rightTrigger().onTrue(new RaiseToPosition(grabberLifter, Height.HIGH));
 		secondaryController.leftTrigger().onTrue(new RaiseToPosition(grabberLifter, Height.MID));
-		secondaryController.rightBumper().whileTrue(new GrabberLifterCommand(0.4, grabberLifter));
-		secondaryController.leftBumper().whileTrue(new GrabberLifterCommand(-0.4, grabberLifter));
+		secondaryController.rightBumper().whileTrue(new RepeatCommand(new GrabberLifterCommand(0.4, grabberLifter)));
+		secondaryController.leftBumper().whileTrue(new RepeatCommand(new GrabberLifterCommand(-0.4, grabberLifter)));
 		secondaryController.povDown().onTrue(new LowerToPosition(grabberLifter, pneumatics));
 
 		// Camera swap binding
@@ -125,7 +127,7 @@ public class RobotContainer {
 		secondaryController.a().onTrue(pneumatics.toggleGrabberSolenoid());
 
 		// Autobalance binding
-		driverController.x().whileTrue(new AutoBalanceNAvX(drivetrain, navx));
+		driverController.x().whileTrue(new NewAutoBalance(drivetrain, navx));
 
 		// Limelight follow binding
 		driverController.y().whileTrue(new AutoForwardLimelight(drivetrain, limelight));

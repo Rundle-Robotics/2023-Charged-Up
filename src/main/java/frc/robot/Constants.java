@@ -39,6 +39,7 @@ public final class Constants {
 
   public static class ControlConstants {
     public static final double JOY_DEADBAND = 0.15;
+    public static final double STRAFE_DEADBAND = 0.7;
     public static final double ROTATION_MULT = 0.65;
     public static final double ROTATION_DEADBAND = 0.1;
     public static final double MAX_ROBOT_SPEED = 1;
