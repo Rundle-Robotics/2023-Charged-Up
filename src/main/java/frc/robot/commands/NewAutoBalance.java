@@ -15,8 +15,8 @@ public class NewAutoBalance extends CommandBase {
 
     private double initialDistance;
 
-    private static final double DISTANCE = 30;
-    private static final double MAX_SPEED = 0.15;
+    private static final double DISTANCE = 28.5;
+    private static final double MAX_SPEED = 0.22;
     private static final double ROLL_DEADBAND = 9;
 
     private boolean backingUp;

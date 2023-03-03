@@ -36,7 +36,7 @@ public class BackupAutoMove extends CommandBase {
   @Override
   public void initialize() {
 
-    initialPosition = drive.getFrontLeftPosition();
+    initialPosition = (drive.getFrontLeftPosition() + drive.getFrontRightPosition()) / 2;
 
     targetPosition = initialPosition + (distance);
 

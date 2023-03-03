@@ -165,8 +165,7 @@ public class RobotContainer {
 		//))))))));
 
 
-		(new RaiseToPosition(grabberLifter, Height.HIGH))
-		.andThen((new BackupAutoMove(-20, drivetrain))
+		((new BackupAutoMove(-20, drivetrain))
 		.raceWith((new DoNothing (2)))
 		.andThen((new DoNothing(1))
 		.andThen((new TogglePneumatics(pneumatics, actuators.LIFTER))
@@ -175,8 +174,10 @@ public class RobotContainer {
 		.andThen((new DoNothing(1))
 		.andThen((new TogglePneumatics(pneumatics, actuators.LIFTERUP))
 		.andThen((new DoNothing(1))
-		.andThen((new BackupAutoMove(80, drivetrain)))
-		.raceWith((new DoNothing(4)))
+		//.andThen((new BackupAutoMove(80, drivetrain))) // Just back up
+		//.raceWith((new DoNothing(4)))
+		.andThen(new NewAutoBalance(drivetrain, navx)) // Attempt autobalance
+		.raceWith(new DoNothing(6))
 		))))))));
 		// //.andThen((new RaiseToPosition(grabberLifter, Height.HIGH))
 
