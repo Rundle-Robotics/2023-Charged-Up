@@ -40,9 +40,9 @@ public class BackupAutoMove extends CommandBase {
 
     targetPosition = initialPosition + (distance);
 
-    yPID = new PIDController(0.05,0, 0);
+    yPID = new PIDController(0.05, 0, 0);
 
-    yPID.setTolerance(2); //2 ticks (1/21 of a rotation)
+    yPID.setTolerance(2); // 2 ticks (1/21 of a rotation)
 
     yPID.setSetpoint(targetPosition);
 
@@ -51,14 +51,13 @@ public class BackupAutoMove extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    currentPosition = drive.getFrontLeftPosition();
+    currentPosition = (drive.getFrontLeftPosition() + drive.getFrontRightPosition()) / 2;
 
     double output = yPID.calculate(currentPosition);
 
     if (output > MAX_SPEED) {
       output = MAX_SPEED;
-    }
-    else if (output < -MAX_SPEED) {
+    } else if (output < -MAX_SPEED) {
       output = -MAX_SPEED;
     }
 
