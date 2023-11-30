@@ -87,6 +87,8 @@ public class Robot extends TimedRobot {
 
 		RobotContainer.secondaryController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0.25);
 
+		RobotContainer.compressor.disable();
+
 		// schedule the autonomous command (example)
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.schedule();
@@ -109,6 +111,8 @@ public class Robot extends TimedRobot {
 		}
 
 		RobotContainer.secondaryController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0);
+
+		RobotContainer.compressor.enableDigital();
 
 	}
 

@@ -55,7 +55,7 @@ public class RobotContainer {
 	private static NetworkTableEntry cameraSelection;
 
 	// Subsystems
-	private static Compressor compressor;
+	public static Compressor compressor;
 	private final Pneumatics pneumatics;
 
 	// The robot's subsystems and commands are defined here...
@@ -71,7 +71,7 @@ public class RobotContainer {
 	 */
 	public RobotContainer() {
 		compressor = new Compressor(PneumaticsModuleType.REVPH);
-		compressor.enableDigital();
+		//compressor.enableDigital();
 
 		pneumatics = new Pneumatics();
 
@@ -146,25 +146,8 @@ public class RobotContainer {
 	public Command getAutonomousCommand() {
 		return  
 
-		// (new TogglePneumatics(pneumatics, actuators.LIFTER))
-		// .andThen((new DoNothing(2))
-		// .andThen((new RaiseToPosition(grabberLifter, Height.HIGH))
-		// .andThen((new DoNothing(1))
-		// .andThen(new BackupAutoMove(-20, drivetrain))
-		// .raceWith((new DoNothing (3)))
-		// .andThen((new DoNothing(1))
-
-		// .andThen((new TogglePneumatics(pneumatics, actuators.GRABBER))
-		// .andThen((new DoNothing(1))
-		// .andThen((new BackupAutoMove(60, drivetrain))
-		// .raceWith((new DoNothing(3))
-
-
-		
-		//.andThen((new LowerToPosition(grabberLifter, pneumatics))
-		//))))))));
-
-
+		/*
+		// No autobalance and low 
 		((new BackupAutoMove(-20, drivetrain))
 		.raceWith((new DoNothing (2)))
 		.andThen((new DoNothing(1))
@@ -174,29 +157,46 @@ public class RobotContainer {
 		.andThen((new DoNothing(1))
 		.andThen((new TogglePneumatics(pneumatics, actuators.LIFTERUP))
 		.andThen((new DoNothing(1))
-		//.andThen((new BackupAutoMove(80, drivetrain))) // Just back up
-		//.raceWith((new DoNothing(4)))
+		.andThen((new BackupAutoMove(80, drivetrain))) // Just back up
+		.raceWith((new DoNothing(4)))
+		))))))));
+		// //.andThen((new RaiseToPosition(grabberLifter, Height.HIGH))
+		*/
+
+		// /*
+		// Autobalance and low score
+		((new BackupAutoMove(-18, drivetrain))
+		.raceWith((new DoNothing (2)))
+		.andThen((new DoNothing(1))
+		.andThen((new TogglePneumatics(pneumatics, actuators.LIFTER))
+		.andThen((new DoNothing(2))
+		.andThen((new TogglePneumatics(pneumatics, actuators.GRABBER))
+		.andThen((new DoNothing(1))
+		.andThen((new TogglePneumatics(pneumatics, actuators.LIFTERUP))
+		.andThen((new DoNothing(1))
 		.andThen(new NewAutoBalance(drivetrain, navx)) // Attempt autobalance
 		.raceWith(new DoNothing(6))
 		))))))));
 		// //.andThen((new RaiseToPosition(grabberLifter, Height.HIGH))
+		// */
 
-		
-		// ))))))));
-
-		// (new TogglePneumatics(pneumatics, actuators.LIFTER)
-		// .andThen((new DoNothing(2))
-		// .andThen((new RaiseToPosition(grabberLifter, Height.HIGH)))
-		// //.raceWith(new DoNothing(2))
-		// .andThen((new DoNothing(1)))
-		// .andThen((new BackupAutoMove(-30, drivetrain)))
-		// .andThen((new DoNothing(1)))
-		// .andThen((new TogglePneumatics(pneumatics, actuators.GRABBER)))
-		// .andThen((new DoNothing(1)))
-		// .andThen((new BackupAutoMove(80, drivetrain)))
-		// .andThen((new LowerToPosition(grabberLifter, pneumatics)))
-		// ));
-		
-		
+		/* 
+		// Autobalance and high score
+		((new TogglePneumatics(pneumatics, actuators.LIFTER))
+		.andThen((new DoNothing(1))
+		.andThen((new RaiseToPosition(grabberLifter, Height.HIGH))
+		.andThen((new BackupAutoMove(-16, drivetrain))
+		.raceWith(new DoNothing (2))
+		.andThen((new TogglePneumatics(pneumatics, actuators.GRABBER))
+		.andThen((new DoNothing(1))
+		.andThen((new BackupAutoMove(20, drivetrain))
+		.andThen((new LowerToPosition(grabberLifter, pneumatics))
+		.andThen((new TogglePneumatics(pneumatics, actuators.LIFTERUP))
+		.andThen((new DoNothing(1))
+		.andThen((new BackupAutoMove(-5, drivetrain))
+		.andThen((new DoNothing(1))
+		.andThen((new NewAutoBalance(drivetrain, navx)) // Attempt autobalance
+		.raceWith(new DoNothing(6)))))))))))))));
+		*/
 	}
 }
